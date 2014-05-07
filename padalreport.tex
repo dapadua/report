@@ -1,0 +1,67 @@
+\documentclass{padalreport}
+
+\usepackage{rotating}
+\usepackage{textcomp}
+
+%\usepackage{draftwatermark}
+%\SetWatermarkText{DRAFT}
+%\SetWatermarkScale{2}
+
+\input{misc/preamble}
+
+\input{misc/title}
+
+\date{\today}           % Leave this here but empty
+
+
+\input{misc/authors}
+
+\PADALInstitutionOne{}
+\PADALInstitutionOneShort{}
+
+\PADALInstitutionTwo{}
+\PADALInstitutionTwoShort{}
+
+% Start the document
+\begin{document}
+    \PADALtitlepage
+
+    \input{misc/abstract}
+    \maketitle
+
+    \clearpage
+    \chapter*{Acknowledgment}
+    \input{misc/ack}
+
+    % The table of contents and list of figures and tables
+    \cleardoublepage            % TOC needs to start on an odd page
+    \tableofcontents
+ %   \listoffigures
+ %   \listoftables
+
+
+%    Start the main part of the report
+
+        \input{intro/introduction}
+        \input{background/background}
+        \input{apps/applications}
+        \input{datastructures/datastructures}
+        \input{langcomp/langcomp}
+        \input{taskmodels/taskmodels}
+        \input{systemscale/systemscale}
+        \input{conclusion/conclusion}
+
+    % ---------------------------------------------------------------------- %
+    % References
+    %
+    \clearpage
+    % If hyperref is included, then \phantomsection is already defined.
+    % If not, we need to define it.
+    \providecommand*{\phantomsection}{}
+    \phantomsection
+    \addcontentsline{toc}{chapter}{References}
+    \bibliographystyle{plain}
+    \bibliography{references}
+
+    \PADALbackpage
+\end{document}
