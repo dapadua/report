@@ -1,2 +1,83 @@
 \chapter{Data Structures and Layout Abstractions}
 \label{ch:datastructures}
+
+SUMMARY
+%Define your Area
+%  Create definition of your research area
+%  Describe key concepts that define your area or that were uncovered during the course of conversation
+%  A few examples of work in that area (can refer back to talks on website, but no need to recount entire talk)
+
+\begin{itemize}
+\item In this chapter, we discuss the data locality support through data structures and data layout in a program. 
+\item Key concepts are data layout, data decomposition, data distribution, iteration space traversal (need to clearly define terminology)
+\item (im)mature solutions implemented in different langauges: Kokkos, TiDA, OpenMP extensions, GridTools, Dash, Array Extensions
+\end{item}
+
+
+Terminology (define each of these up front)
+\begin{itemize}
+\item control space(use execution space?)
+\item binding  (or execution policy ?)
+\item memory spaces
+\item data layout
+\item polymorphic data layout
+\item data decomposition 
+\item data distribution 
+\item iteration space traversal (avoid using loop traversal, maybe use domain traversal?) 
+\item access type
+\end{itemize}
+
+%Findings:
+%■ Describe points/observations/discoveries/challenges/issues uncovered in the session
+ %● Distill into summary (major discoveries)
+ %● can refer back to presentations for details
+ %● Can also use data from panel discussions
+%■ Identify areas of agreement
+ %● Common approaches
+ %● Common concerns
+%■ Identify areas of disagreement
+ %● what is the substantive cause of the disagreement (document)
+ %● What metrics/information/research are needed to compare/resolve
+%■ Identify Gaps
+ %● What is missing?
+
+Agreements
+\begin{itemize}
+\item separation of concerns: separate logical from physical 
+\item have a data model to assess the data locality: we have a model for parallelism but do not have a model for data locality
+\item easier to standardize high level concepts 
+\item low hanging fruit: 
+  1) multidimensional array support (in C and C++) 
+  2) polymorphic data layout: 
+  ideally change the layout in runtime, 
+  alternatively at compile time without requiring a lot of code modifications, 
+  support layout in the type system 
+\item declaration about data vs declaration about control (I didn't understand this)
+\item there is a pragmatic reason to use C++ metaprogramming
+\item lambdas for domain traversal (or iteration space traversal)
+\end{itemize}
+
+Disagreements
+\begin{itemize}
+  \item Binding 
+  \item support for memory spaces: can be hidden from the programmer or exposed 
+\end{itemize}
+
+Gaps
+\begin{itemize}
+  \item a data model for which data layout is more suitable for which algorithm? or metric for locality
+\end{itemize}
+
+
+%Recommendations
+%■ Opportunities for standardization of mature technologies where the is substantial agreement or commonality
+ %● Have we met the necessary conditions for standardization (is the area well enough understood, are the elements of existing implementations sufficiently similar, are the benefits clearly demonstrated, is there a user community?)
+ %● What should we standardize? ( Low­hanging fruit )
+ %● How can we influence standards committees? (e.g. C++17standards committee?)
+%■ Define research agenda for new ideas or areas where there is insufficient information to choose a final implementation ( What areas need more research?)
+ %● identify research thrust
+ %● what are the opportunities
+ %● what needs to be done
+ %● What needs to be prioritized?
+ %● What resources would be required (estimate size/complexity ofthe problem if you can)
+%■ How do we create a user community? (bonus question)
