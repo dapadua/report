@@ -1,20 +1,21 @@
 \chapter{Data Structures and Layout Abstractions}
 \label{ch:datastructures}
 
-SUMMARY
+
 %Define your Area
 %  Create definition of your research area
 %  Describe key concepts that define your area or that were uncovered during the course of conversation
 %  A few examples of work in that area (can refer back to talks on website, but no need to recount entire talk)
 
+SCOPE
 \begin{itemize}
 \item In this chapter, we discuss the data locality support through data structures and data layout in a program. 
 \item Key concepts are data layout, data decomposition, data distribution, iteration space traversal (need to clearly define terminology)
 \item (im)mature solutions implemented in different langauges: Kokkos, TiDA, OpenMP extensions, GridTools, Dash, Array Extensions
-\end{item}
+\end{itemize}
 
 
-Terminology (define each of these up front)
+TERMINOLOGY (define each of these up front)
 \begin{itemize}
 \item control space(use execution space?)
 \item binding  (or execution policy ?)
@@ -41,7 +42,7 @@ Terminology (define each of these up front)
 %■ Identify Gaps
  %● What is missing?
 
-Agreements
+AGREEMENTS
 \begin{itemize}
 \item separation of concerns: separate logical from physical 
 \item have a data model to assess the data locality: we have a model for parallelism but do not have a model for data locality
@@ -57,13 +58,13 @@ Agreements
 \item lambdas for domain traversal (or iteration space traversal)
 \end{itemize}
 
-Disagreements
+DISAGREEMENTS
 \begin{itemize}
   \item Binding 
   \item support for memory spaces: can be hidden from the programmer or exposed 
 \end{itemize}
 
-Gaps
+GAPS (what is missing? not covered at the workshop)
 \begin{itemize}
   \item a data model for which data layout is more suitable for which algorithm? or metric for locality
 \end{itemize}
