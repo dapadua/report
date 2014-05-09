@@ -1,77 +1,73 @@
 \chapter{Motivating Applications and Their Requirements}
 \label{ch:apps}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% S U M M A R Y   P O I N T S
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+{\large\textbf{SUMMARY POINTS}}
+
+$ $\\
+\noindent
+\textbf{Agreements}
+\begin{itemize}
+  \item Non negotiable: A stable program paradigm with a life cycle that is at least several times that of the development cycle for application codes
+    \begin{itemize}
+      \item Applications are leery of adding dependencies
+      \item Code transformation to another high level language may be suboptimal, but maybe more attractive to apps
+      \item Apps are less skeptical of forms of embedded notations (DSLs or libraries) than full languages
+    \end{itemize}
+  \item Application development often locks in data structure before fully fleshing out the algorithm.
+    A formalism that imposes the discipline of algorithm before the data-structure might result in more opportunity for data locality in the app
+    \begin{itemize}
+      \item In general constraining semantics is desirable as long as the users can override the constraints when they really need it
+      \item Inling assembly in performance critical sections is still practiced
+    \end{itemize}
+  \item Data models are often very clear for the application, but it is not always possible to express them as a programming construct
+  \item (This is not yet a general agreement, but I hope people can be persuaded)
+    An application with more than one model needs a composable framework that can stitch together diverse data management demands placed upon the machines by different algorithms.
+    (We agree that we need composable applications, but not that frameworks are the obvious choice to do that)
+  \item Tool-chain supporting the incremental migration to the new programming paradigms are extremely important 
+    \begin{itemize}
+      \item In order to verify the correctness in the intermediate stages of migration  
+      \item Also in general
+    \end{itemize}
+\end{itemize}
 
 
-SUMMARY POINTS
-Agreements
+\noindent
+\textbf{Disagreements}
+\begin{itemize}
+  \item Whether frameworks are the answer: can they handle really divergent sets of models in the same code
+  \item Users appear to be voting with their feet by using python and matlab, should we be even concerned with new languages
+    \begin{itemize}
+      \item there are limitations to using those models for HPC
+      \item They use low level libraries and high level constructs for composability, maybe that is a workable model?
+    \end{itemize}
+\end{itemize}
 
-* Non negotiable : a stable program paradigm with a life cycle that is
-   at least several times that of the development cycle for
-   application codes
-   - Applications are leery of adding dependencies
-   - Code transformation to another high level language may be
-      suboptimal, but maybe more attractive to apps
-   - Apps are less skeptical of forms of embedded notations (DSLs or
-   libraries) than full languages
-
-* Application development often locks in data structure before fully
-   fleshing out the algorithm. A formalism that imposes the discipline
-   of algorithm before the data-structure might result in more
-   opportunity for data locality in the app
-   - In general constraining semantics is desirable as long as the
-      users can override the constraints when they really need it
-   - Inling assembly in performance critical sections is still
-      practiced
- 
-* Data models are often very clear for the application, but it is not
-  always possible to express them as a programming construct
-
-* (This is not yet a general agreement, but I hope people can be
-   persuaded) An application with more than one model needs a
-   composable framework that can stitch together diverse data
-   management demands placed upon the machines by different
-   algorithms. (We agree that we need composable applications, but not
-   that frameworks are the obvious choice to do that)
-
-* Tool-chain supporting the incremental migration to the new
-  programming paradigms are extremely important 
-  - In order to verify the correctness in the intermediate stages of
-     migration  
-  - Also in general 
-
-
-Disagreements
-
-* Whether frameworks are the answer: can they handle really divergent
-  sets of models in the same code
-* Users appear to be voting with their feet by using python and
-  matlab, should we be even concerned with new languages
-  - there are limitations to using those models for HPC
-  - They use low level libraries and high level constructs for
-     composability, maybe that is a workable model ?
-
+\noindent
 Things to Ponder
-* Communication avoidance algorithms are essentially a way of
-  horizontal caching (as opposed to vertical caching in memory
-  hierarchy) 
-* Should be able to express locality in the data structure, something
-  that not only does not exist now, but also there is no theory for
-  it. In fact there is no theory for data movement. (I think this
-  point is extremely important)
-* Should caching and redundant computations co-exist ? YES
-* Would scratch-pads be better than caches (possibly)
-* What is the optimum level of abstraction (translate a PDE into a
-   solver, which is clearly intractable, or abstractions at the level
-   of a functional module (probably still too ambitious) or something
-   lower 
-* The chicken-and-egg-problem of DSL/language design-is it possible to
-   create something general enough that can become its own open source
-   community ?
+\begin{itemize}
+  \item Communication avoidance algorithms are essentially a way of horizontal caching (as opposed to vertical caching in memory
+  hierarchy)
+  \item Should be able to express locality in the data structure, something that not only does not exist now, but also there is no theory for
+  it.
+    In fact there is no theory for data movement. (I think this point is extremely important)
+  \item Should caching and redundant computations co-exist ? YES
+  \item Would scratch-pads be better than caches (possibly)
+  \item What is the optimum level of abstraction (translate a PDE into a solver, which is clearly intractable, or abstractions at the level
+   of a functional module (probably still too ambitious) or something lower
+  \item The chicken-and-egg-problem of DSL/language design-is it possible to create something general enough that can become its own open source
+   community?
+\end{itemize}
 
+$ $\\
+\noindent
+{\large\textbf{SKELETON}}
 
-
-SKELETON
 Motivating Applications and application requirements:
 
 In this section we discuss data locality from the applications
