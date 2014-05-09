@@ -1,6 +1,9 @@
 \chapter{Motivating Applications and Their Requirements}
 \label{ch:apps}
 
+% define command for HIPAcc acronym
+\newcommand{\hipacc}{\textsf{HIPA\nolinebreak[4]\hspace{-0.1em}\textsuperscript{cc}}}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % S U M M A R Y   P O I N T S
@@ -72,9 +75,6 @@ Things to Ponder
 $ $\\
 \noindent
 {\large\textbf{SKELETON}}
-
-Motivating Applications and application requirements:
-
 In this section we discuss data locality from the applications perspective, covering a range of modeling methods.
 While the applications space itself is very large, the set of applications/applications experts included in the workshop do a fairly good job of spanning the range of basic algorithmic technology in majority of applications.
 They also represent the multi-physics applications that combine several different algorithmic technologies into one tightly coupled whole and therefore cover the biggest challenges faced by the applications.
@@ -82,7 +82,7 @@ The representative set includes climate modeling \cite{cosmo},  molecular dynami
 The represented problems also have varying degrees of arithmetic intensity and potential for data locality inherent to them.
 For example, Gromacs has a small working set size for (? short-range) .... therefore good data locality.
 And low enough resolution required for long range that the needed FFT's can be confined to a small subset of processes, thereby maintaining reasonable data locality.
-Whereas typical low order PDE solvers have low arithmetic intensity and multidimensional data, which poses a challege for exploiting data locality.
+Whereas typical low order PDE solvers have low arithmetic intensity and multidimensional data, which poses a challenge for exploiting data locality.
 Others fall somewhere in between.
 Multiphysics applications face issues with data locality in another important way because they have more than one model to solve and the memory access patterns are different from different models.
 Therefore increasing locality for one model can result in decreasing locality for another. 
@@ -99,7 +99,7 @@ The programming paradigm itself can take any of the forms under consideration, s
 \begin{itemize}
   \item Those that don't have their heads in the sand are experimenting with techniques under consideration for exascale
     \begin{itemize}
-      \item Frank's DSL, OP2 for unstructured meshes, microblocking in AMR, DSLs in Cosmo, SIMD for non-bonded interations or ensemble
+      \item Frank's DSL (\hipacc~\cite{MHTKE12a}), OP2 for unstructured meshes, microblocking in AMR, DSLs in Cosmo, SIMD for non-bonded iterations or ensemble
      simulations in Gromacs 
     \end{itemize}
   \item Hampered in their efforts by not having a stable paradigm to program to 
