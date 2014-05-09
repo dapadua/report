@@ -64,110 +64,101 @@ Things to Ponder
    community?
 \end{itemize}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% S K E L E T O N
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 $ $\\
 \noindent
 {\large\textbf{SKELETON}}
 
 Motivating Applications and application requirements:
 
-In this section we discuss data locality from the applications
-perspective, covering a range of modeling methods. While the
-applications space itself is very large, the set of
-applications/applications experts included in the workshop do a fairly
-good job of spanning the range of basic algorithmic technology in
-majority of applications. They also represent the multi-physics
-applications that combine several different algorithmic technologies
-into one tightly coupled whole and therefore cover the biggest
-challenges faced by the applications. The representative set
-includes climate modeling \cite{cosmo},  molecular dynamics
-\cite{gromacs}, .... , applications with structured \cite{chombo}  as well as
-unstructured \cite{}  mesh refinement, particle and mesh methods, and
-medical image processing. The represented problems also have varying degrees
-of arithmetic intensity and potential for data locality inherent to
-them. For example, Gromacs has a small working set size for (?
-short-range) .... therefore good data locality. And low enough
-resolution required for long range that the needed FFT's can be
-confined to a small subset of processes, thereby maintaining
-reasonable data locality. Whereas typical low order PDE solvers have
-low arithmetic intensity and multidimensional data, which poses a
-challege for exploiting data locality. Others fall somewhere in between.
-Multiphysics applications face issues with data locality in another
-important way because they have more than one model to solve and the  
-memory access patterns are different from different models. Therefore
-increasing locality for one model can result in decreasing locality
-for another. 
+In this section we discuss data locality from the applications perspective, covering a range of modeling methods.
+While the applications space itself is very large, the set of applications/applications experts included in the workshop do a fairly good job of spanning the range of basic algorithmic technology in majority of applications.
+They also represent the multi-physics applications that combine several different algorithmic technologies into one tightly coupled whole and therefore cover the biggest challenges faced by the applications.
+The representative set includes climate modeling \cite{cosmo},  molecular dynamics \cite{gromacs}, .... , applications with structured \cite{chombo} as well as unstructured \cite{}  mesh refinement, particle and mesh methods, and medical image processing.
+The represented problems also have varying degrees of arithmetic intensity and potential for data locality inherent to them.
+For example, Gromacs has a small working set size for (? short-range) .... therefore good data locality.
+And low enough resolution required for long range that the needed FFT's can be confined to a small subset of processes, thereby maintaining reasonable data locality.
+Whereas typical low order PDE solvers have low arithmetic intensity and multidimensional data, which poses a challege for exploiting data locality.
+Others fall somewhere in between.
+Multiphysics applications face issues with data locality in another important way because they have more than one model to solve and the memory access patterns are different from different models.
+Therefore increasing locality for one model can result in decreasing locality for another. 
 
-There are well known and valid concern among the applications
-communities about wise utilization of the scarcest of the resources,
-the developers time, and protecting the investment already made in the
-mature production codes of today. The most important consideration for
-the applications community, therefore, is the time-scales of change in
-paradigms in the platform architecture and major rewrites of their
-codes. A stable programming paradigm with a life-cycle that is several 
-times the development cycle of the code must emerge for sustainable
-science. The programming paradigm itself can take any of the forms
-under consideration, such as domain-specific languages, abstraction
-libraries or full languages, or some combination of these. 
+There are well known and valid concern among the applications communities about wise utilization of the scarcest of the resources, the developers time, and protecting the investment already made in the mature production codes of today.
+The most important consideration for the applications community, therefore, is the time-scales of change in paradigms in the platform architecture and major rewrites of their codes.
+A stable programming paradigm with a life-cycle that is several times the development cycle of the code must emerge for sustainable science.
+The programming paradigm itself can take any of the forms under consideration, such as domain-specific languages, abstraction libraries or full languages, or some combination of these. 
  
-Subsection 1. The State-of-the-Art
-* Those that don't have their heads in the sand are experimenting with
-   techniques under consideration for exascale
-   -Frank's DSL, OP2 for unstructured meshes, microblocking in AMR,
-     DSLs in Cosmo, SIMD for non-bonded interations or ensemble
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% T h e   S t a t e - o f - t h e - A r t
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The State-of-the-Art}
+\begin{itemize}
+  \item Those that don't have their heads in the sand are experimenting with techniques under consideration for exascale
+    \begin{itemize}
+      \item Frank's DSL, OP2 for unstructured meshes, microblocking in AMR, DSLs in Cosmo, SIMD for non-bonded interations or ensemble
      simulations in Gromacs 
-* Hampered in their efforts by not having a stable paradigm to program
-  to 
-   - Resorting to boutique solutions with varying degrees of success
-   - OK for the near term, but unsustainable for the long term
+    \end{itemize}
+  \item Hampered in their efforts by not having a stable paradigm to program to 
+    \begin{itemize}
+      \item Resorting to boutique solutions with varying degrees of success
+      \item OK for the near term, but unsustainable for the long term
+    \end{itemize}
+\end{itemize}
 
-Subsection 2. The Challenges
-* Applications are leery of adding dependencies
-   - Code transformation to another high level language may be
-      suboptimal, but maybe more attractive to apps
-   - Apps are less skeptical of forms of embedded notations (DSLs or
-      libraries) than full languages
-* Data models are often very clear for the application, but it is not
-  always possible to express them as a programming construct
-* Should be able to express locality in the data structure, something
-  that not only does not exist now, but also there is no theory for
-  it. In fact there is no theory for data movement. (I think this
-  point is extremely important)
-* Application development often locks in data structure before fully
-   fleshing out the algorithm. A formalism that imposes the discipline
-   of algorithm before the data-structure might result in more
-   opportunity for data locality in the app
-   - In general constraining semantics is desirable as long as the
-      users can override the constraints when they really need it
-   - Inling assembly in performance critical sections is still
-      practiced
-* The chicken-and-egg-problem of DSL/language design-is it possible to
-   create something general enough that can become its own open source
-   community ?
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% T h e   C h a l l e n g e s
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The Challenges}
+\begin{itemize}
+  \item Applications are leery of adding dependencies
+    \begin{itemize}
+      \item Code transformation to another high level language may be suboptimal, but maybe more attractive to apps
+      \item Apps are less skeptical of forms of embedded notations (DSLs or libraries) than full languages
+    \end{itemize}
+  \item Data models are often very clear for the application, but it is not always possible to express them as a programming construct
+  \item Should be able to express locality in the data structure, something that not only does not exist now, but also there is no theory for
+  it.
+    In fact there is no theory for data movement. (I think this point is extremely important)
+  \item Application development often locks in data structure before fully fleshing out the algorithm.
+    A formalism that imposes the discipline of algorithm before the data-structure might result in more opportunity for data locality in the app
+    \begin{itemize}
+      \item In general constraining semantics is desirable as long as the users can override the constraints when they really need it
+      \item Inling assembly in performance critical sections is still practiced
+    \end{itemize}
+  \item The chicken-and-egg-problem of DSL/language design-is it possible to create something general enough that can become its own open source
+   community?
+\end{itemize}
 
-Subsection 3. The Wish List
-* Non negotiable : a stable program paradigm with a life cycle that is
-   at least several times that of the development cycle for
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% T h e   W i s h   L i s t
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The Wish List}
+\begin{itemize}
+  \item Non negotiable: a stable program paradigm with a life cycle that is at least several times that of the development cycle for
    application codes
-* Should be able to express locality in the data structure, something
-  that not only does not exist now, but also there is no theory for
-  it. In fact there is no theory for data movement. (I think this
-  point is extremely important)
-* Tool-chain supporting the incremental migration to the new
-  programming paradigms are extremely important 
-  - In order to verify the correctness in the intermediate stages of
-     migration  
-  - Also in general 
+  \item Should be able to express locality in the data structure, something that not only does not exist now, but also there is no theory for
+  it.
+    In fact there is no theory for data movement.
+    (I think this point is extremely important)
+  \item Tool-chain supporting the incremental migration to the new programming paradigms are extremely important 
+    \begin{itemize}
+      \item In order to verify the correctness in the intermediate stages of migration
+      \item Also in general
+    \end{itemize}
+\end{itemize}
 
-
-Subsection 4. Research Areas
-* What should a multi-component application framework look like in
-   order to maximize data locality in view of diverse and conflicting
-   demands of data access patterns. 
-* If formalism existed for defining data movement, how can the apps
-   be configured to exploit it
-* Would scratch-pads be better than caches, or should catching be
-   both vertical and horizontal
-* What is the optimum level of abstraction (translate a PDE into a
-   solver, which is clearly intractable, or abstractions at the level
-   of a functional module (probably still too ambitious) or something
-   lower 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% R e s e a r c h   A r e a s
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Research Areas}
+\begin{itemize}
+  \item What should a multi-component application framework look like in order to maximize data locality in view of diverse and conflicting
+   demands of data access patterns.
+  \item If formalism existed for defining data movement, how can the apps be configured to exploit it
+  \item Would scratch-pads be better than caches, or should catching be both vertical and horizontal
+  \item What is the optimum level of abstraction (translate a PDE into a solver, which is clearly intractable, or abstractions at the level of a functional module (probably still too ambitious) or something lower 
+\end{itemize}
