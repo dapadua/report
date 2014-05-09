@@ -7,27 +7,6 @@
 %  Describe key concepts that define your area or that were uncovered during the course of conversation
 %  A few examples of work in that area (can refer back to talks on website, but no need to recount entire talk)
 
-SCOPE
-\begin{itemize}
-\item In this chapter, we discuss the data locality support through data structures and data layout in a program. 
-\item Key concepts are data layout, data decomposition, data distribution, iteration space traversal (need to clearly define terminology)
-\item (im)mature solutions implemented in different langauges: Kokkos, TiDA, OpenMP extensions, GridTools, Dash, Array Extensions
-\end{itemize}
-
-
-TERMINOLOGY (define each of these up front)
-\begin{itemize}
-\item control space(use execution space?)
-\item binding  (or execution policy ?)
-\item memory spaces
-\item data layout
-\item polymorphic data layout
-\item data decomposition 
-\item data distribution 
-\item iteration space traversal (avoid using loop traversal, maybe use domain traversal?) 
-\item access type
-\end{itemize}
-
 %Findings:
 %■ Describe points/observations/discoveries/challenges/issues uncovered in the session
  %● Distill into summary (major discoveries)
@@ -42,34 +21,6 @@ TERMINOLOGY (define each of these up front)
 %■ Identify Gaps
  %● What is missing?
 
-AGREEMENTS
-\begin{itemize}
-\item separation of concerns: separate logical from physical 
-\item have a data model to assess the data locality: we have a model for parallelism but do not have a model for data locality
-\item easier to standardize high level concepts 
-\item low hanging fruit: 
-  1) multidimensional array support (in C and C++) 
-  2) polymorphic data layout: 
-  ideally change the layout in runtime, 
-  alternatively at compile time without requiring a lot of code modifications, 
-  support layout in the type system 
-\item declaration about data vs declaration about control (I didn't understand this)
-\item there is a pragmatic reason to use C++ metaprogramming
-\item lambdas for domain traversal (or iteration space traversal)
-\end{itemize}
-
-DISAGREEMENTS
-\begin{itemize}
-  \item Binding 
-  \item support for memory spaces: can be hidden from the programmer or exposed 
-\end{itemize}
-
-GAPS (what is missing? not covered at the workshop)
-\begin{itemize}
-  \item a data model for which data layout is more suitable for which algorithm? or metric for locality
-\end{itemize}
-
-
 %Recommendations
 %■ Opportunities for standardization of mature technologies where the is substantial agreement or commonality
  %● Have we met the necessary conditions for standardization (is the area well enough understood, are the elements of existing implementations sufficiently similar, are the benefits clearly demonstrated, is there a user community?)
@@ -82,3 +33,61 @@ GAPS (what is missing? not covered at the workshop)
  %● What needs to be prioritized?
  %● What resources would be required (estimate size/complexity ofthe problem if you can)
 %■ How do we create a user community? (bonus question)
+
+HIGHLIGHTS
+\begin{itemize}
+\item SCOPE
+  \begin{itemize}
+  \item In this chapter, we discuss the data locality support through data structures and data layout in a program. 
+  \item Key concepts are data layout, data decomposition, data distribution, iteration space traversal (need to clearly define terminology)
+  \item (im)mature solutions implemented in different langauges: Kokkos, TiDA, OpenMP extensions, GridTools, Dash, Array Extensions
+  \end{itemize}
+
+\item TERMINOLOGY (define each of these up front)
+  \begin{itemize}
+  \item control space(use execution space?)
+  \item binding  (or execution policy ?)
+  \item memory spaces
+  \item data layout
+  \item polymorphic data layout
+  \item data decomposition 
+  \item data distribution 
+  \item iteration space traversal (avoid using loop traversal, maybe use domain traversal?) 
+  \item access type
+  \end{itemize}
+
+
+\item AGREEMENTS
+  \begin{itemize}
+  \item Abstractions for performance portability are needed: Data layout, tile sizes, memory access patterns need to be tuned when application is moved between machines. 
+  \item Changes to tunable parameters should be invisible to the programmer (either minimal code modification or no modification at all)
+  \item separation of concerns: separate logical from physical 
+  \item have a data model to assess the data locality: we have a model for parallelism but do not have a model for data locality
+  \item easier to standardize high level concepts 
+  \item low hanging fruit: 
+    1) multidimensional array support (in C and C++) 
+    2) polymorphic data layout: 
+    ideally change the layout in runtime, 
+    alternatively at compile time without requiring a lot of code modifications, 
+    support layout in the type system 
+  \item declaration about data vs declaration about control (I didn't understand this)
+  \item there is a pragmatic reason to use C++ metaprogramming
+  \item lambdas for domain traversal (or iteration space traversal)
+  \end{itemize}
+  
+\item  DISAGREEMENTS
+  \begin{itemize}
+  \item Binding 
+  \item support for memory spaces: can be hidden from the programmer or exposed 
+  \end{itemize}
+
+\item GAPS (what is missing? not covered at the workshop)
+  \begin{itemize}
+  \item a data model for which data layout is more suitable for which algorithm? or metric for locality
+  \end{itemize}
+
+\item RESEARCH AGENDA
+
+\end{itemize}
+
+
