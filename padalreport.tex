@@ -3,6 +3,10 @@
 \usepackage{rotating}
 \usepackage{textcomp}
 
+% modern bibliography management
+\usepackage[backend=biber,style=numeric,sorting=nyt,hyperref,defernumbers=true,maxcitenames=4,mincitenames=4,maxbibnames=100,firstinits=true]{biblatex}
+\addbibresource[label=primary]{references.bib}
+
 %\usepackage{draftwatermark}
 %\SetWatermarkText{DRAFT}
 %\SetWatermarkScale{2}
@@ -60,8 +64,9 @@
     \providecommand*{\phantomsection}{}
     \phantomsection
     \addcontentsline{toc}{chapter}{References}
-    \bibliographystyle{plain}
-    \bibliography{references}
+%     \bibliographystyle{plain}
+%     \bibliography{references}
+    \printbibliography
 
     \PADALbackpage
 \end{document}

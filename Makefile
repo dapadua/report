@@ -1,7 +1,7 @@
 
 MAINTEX=padalreport
 LATEXENGINE=pdflatex
-BIBTEXENGINE=bibtex
+BIBTEXENGINE=biber
 OPEN=open
 
 ieee : 
