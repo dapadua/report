@@ -1,2 +1,352 @@
 \chapter{Language and Compiler Support for Data Locality}
 \label{ch:langcomp}
+
+%%% STRUCTURE:
+%%% At the start, in comment - Notes from the google doc we discussed at the meeting
+%%% At the end, in comment - Notes from the two scribes
+%%% Outline - modelled on what the datastructures group did
+
+%% NOTES FROM THE GOOGLE DOC WE DISCUSSED AT THE MEETING
+
+%Define your area
+% - create definiition
+%	To maximise portability we need the user-facing level to be … while 
+%	Differentiate languages/compilers/tools from models, libraries, active libraries, embedded DSLs
+%	Polyhedral?
+%	Identify and recognise that solutions operate at different levels of abstraction and automation (“multiresolution”)
+%	Principle: avoid losing information, premature lowering
+%	Principle: isolate cross-cutting locality concerns
+%	cf rank-independence
+% - key examples of work in the area
+%	HPF (and Brad’s blog) - vagueness - robust, well-defined, well-understand abstractions 
+%	UPC (need to have clear ambitions/capability beyond the low-hanging fruit)
+%	Research vehicles can be narrow but a basis for a standard has to have potential for beyond
+%	Titanium, Global arrays
+%Conflict between local-view vs global view (clarify the difference - 
+%* Findings
+% - agreement	
+%There’s a lot of consensus around multidimensional data/partitioning/slicing, and how to iterate over them (generators, iterators) - parameterisation of layouts.
+%There’s potential to expose polyhedral concepts to the programmer/IR, and to pass them down to the backend (eg Chapel’s domains, mappings)
+%The back-end model for the target for code geenration and implementation of models/compilers is “missing” - for portable implementation, for interoperability
+%While we can do a lot with libraries and template metaprogramming, there is a compelling case for a language-based approach
+% - differences
+%No consensus on the requirements on intermediate representations and runtime systems
+%Do what I say vs do what I mean
+%Compositional metadata vs explicit dependence/synchronisation/movement (Brad has words)
+%	
+%
+%* Recommendations:
+%  - Opportunities for standardisation of mature technologies
+%  - What is this standardisable low-hanging fruit?
+%  - how to influence standards?
+%  - define research agenda
+%Scope out the opportunities for JIT - plenty of compelling need for infrastructure (specialisation, autotuning, …) [[what’s the research agenda/challenge here?]]
+%  - how do we create a user community?
+%
+%* Seek input from key participants, esp speakers from our session
+%
+%Two-page exec summary, 30 page total.  So we’re talking about 3-5 pages.
+
+HIGHLIGHTS
+\begin{itemize}
+\item SCOPE
+  \begin{itemize}
+  \item In this chapter, we discuss language concepts for data locality, their delivery in general-purpose languages, domain-specific languages and active libraries, and the compiler technology to support them.
+  \end{itemize}
+
+\item KEY POINTS
+  \begin{itemize}
+  \item
+  \end{itemize}
+
+\item TERMINOLOGY (define each of these up front)
+  \begin{itemize}
+  \item
+  \end{itemize}
+
+\item AGREEMENTS
+  \begin{itemize}
+  \item
+  \end{itemize}
+
+\item  DISAGREEMENTS
+  \begin{itemize}
+   \item
+ \end{itemize}
+
+\item GAPS (what is missing? not covered at the workshop)
+  \begin{itemize}
+   \item
+ \end{itemize}
+
+\item RESEARCH AGENDA
+  \begin{itemize}
+  \item 
+  \end{itemize}
+
+\end{itemize}
+
+%%%% NOTES FROM THE SCRIBES
+%
+%Anshu:
+%
+%Q. Why a language rather than library, and paths to make it easier 
+%to make your language/library adopted
+%
+%- They are not mutually exclusive, despite long odds we need to keep striving
+%   for languages. 
+%- Practical reason - syntax matters, things like inferred type and optimization 
+%   opportunities better expressed
+%- The biggest challenge is getting adopted
+%- Academic languages have more challenge to adoption 
+%- Template meta programming covers a good percetage of what a language provides
+%- The two DSLs based on Python etc they are libraries developed at first by
+%    the domain people 
+%- Strategically led by applications, essential to maintain the engagement.
+%- In order to engage with users - one has to compete with 
+%   everything else available
+%- Common backend -- target backend c compiler and then provide
+%   an appropriate design, take it down to more explicit form 
+%- Source to source translator is preferable also for greater portability
+%
+%- Adoption problem - there is a real hunger for a new language so no excuse for
+%   not developing one
+%- CUDA- adoption - more than a million downloads, even with small changes
+%    timing is important, the real complaint is it only runs on nvidia 
+%- Complete rewrite is a red-herring
+%
+%- The whole tool chain is important,  and interoperability is the key 
+%
+%Q. What is missing from a common backend 
+%
+%- targetting C- as a good portable assemble language 
+%- 1D array limitation, there is a movement for 
+%    support of multi-dimension arrays in C++
+%- parallelization/vectorization information
+%- lack of any locality information C or C++ how to address it
+%- locality is useful even for exploiting memory hierarchy
+%- C++ standards committee- all volunteer -- you join ISO pay the fee
+%   and then you join the committee and then you attend a few meeting
+%   to earn the voting rights
+%
+%- Locality info is not just hierarchy or also adjacency (helpful for stencils)
+%- polyhedral - could be the intermediate information - but the info
+%- from the source is lost. How to get this information from the source
+%
+%- synergy between iteration spaces and domains in chapel, could that
+%   be exploited ?
+%- X10 is doing polyhedral optimizations, XL compilers are also using it
+%   if there is a possibility of closer cooperation
+%
+%- Polyhedral - parameterization of linearization, the problems that 
+%   are coming out are really really hard. You need an affine, most
+%   machines cannot be modeled, so then you need hacks. It is
+%  a nice mathematical model but not the panacea. 
+%- Limitations - Associavity 
+%
+%- discussion goes back to imperative Vs declarative 
+%   with polyhedral model - extracting the representation 
+%   from the source code, or you can write into a DSL and emit
+%  the source. Once you have lifted away from having to extract
+%  the model why constrain ?
+%
+%- This is because the community knows how to solve the convex
+%   optimization problems but not much as. 
+%- The other side is correctness, the limiting factor. 
+%
+%- Calculus of problem transformation, separate from the actual
+%  optimization. Which transformation to apply to what optimization
+%  not too many are optimizations are applied all at once.
+%- Restrictions imposed by the 
+%  polyhedral model, interesting cases is when the subscript case
+%  is indirection - is the meta-data becomes bigger than the data
+%  so it has to done at runtime
+%
+%- Automatic compiler techniques - have them for years auto-parallelization
+%   we gave up on it, so are we going back to it.
+%
+%- Data locality -- instead of expressing where the data is, but express
+%   implicitly the relation and hierarchy, sufficiently broad possibilities
+%   so that it can support a range of back-ends. 
+%- In stencil explicitly specify the shape of the stencil, sometimes 
+%   you can generate automatic parallelization
+%- Right container libraries or constructs will be helpful
+%
+%- Robustness--if you are counting on the compiler to do auto-parallelization
+% for you it needs to be robust. 
+%- Data movement implied by the parallelism,
+%  what the data access footprint of the loop is. If you break that, the compiler
+%  should be able to tell you. Column major Vs row major, if there is a transpose
+%  the profiler should point out. Anamoly detection.
+%- Expressing locality should be portable, pushing that from applications space
+%   to the runtime space. May be unrealistic to push it to the compiler space.
+%- Whether all the things should be visible in the syntax of the data structure
+%  nice for analysis, the flip side is lack of portability. Ability to reason about
+%  the locality in semantic ways is more important, ability to put in assertions
+%   and then tools. 
+%- Locality and profiler -- how much can a compiler do
+%
+%- whether your code expresses its belief about its performance characteristics
+%- semantic information conveyed to the system could be statically
+%   analyzed, the compiler may make the decision to utilize it.
+%- The ability to express in a language may be exploited first at the runtime,
+%   rather than the compiler.
+%- Compositionality - communication and the locality depends on the context.
+%
+%
+%Didem:
+%
+%Language and Compiler Support for Data Locality 
+%
+%Why a language rather than a library?
+%Brad: fully adapted, pursing lanauge. Keep trieving a lanaugeg because 
+%in the long term people want lanauge, syntax matters a lot 
+%hard to do in a library, optimization opportunies for compiler 
+%
+%Amir: Titanium, no one used it. Things are different when vendor supports. 
+%Users think that the language 
+%Language provides many opportunies 
+%Embedded DSL and metaprogramming is a good alternative. 
+%We can get most of the lanauge provides. 
+%
+%Paul: both his DSL are libraries. not language 
+%strategically he has to engage with app ppl. It is important to work the app ppl. 
+%I am agnostic about how it is deliver to you(compiler). How you get it 
+%it is not important. Delay execution
+%
+%Armind: barrier to adopting a new language is hard 
+%syntax extensions are possible 
+%
+%Cj: go after users? if you want to be portable
+%John: if you don't have a common back 
+%
+%Amir: src-to-src translators address that
+%
+%Naoya: compiler doesn't mean all the way from high to asembly 
+%but to some intermediate form 
+%final output is left to the vendor compiler 
+%
+%Brad: there is a true hunger in users. Users do not have a choice 
+%because it is hard because it is no user group, we shouldn't develop a new langa
+%that's wrong , that's a dissoppioiting excuse.
+%
+%Peter: about CUDA, we have 1M downloads. Few syntactic changes, and people 
+%are complaining. wondering about timing 
+%
+%Brad: why java and python are new language and they got adopted. 
+%great interoperability 
+%
+%Didem: complaint about CUDA is not the extension but optimizations 
+%because it requires a lot of rewrite of the code 
+%
+%Carter: entire tool chain change required for CUDA
+%
+%Anshu: interoperatability is important for a new language because 
+%you have to rewrite entire your code 
+%
+%Brad: he agress interoperatbility. 
+%
+%John: DSL and lang targetting LLVM  
+%is the question what is missing in common backend to inhibits your locality optimizations?
+%what is missing in LLVM? or IR?
+%
+%Brad: targetting C, it is portable assembly 
+%multidimensional arrays are missing. C++ next standard is targetting multidim 
+%arrays, that will be great. 
+%
+%Amir: targetting C and C++, lack of any locality information are missing 
+%C++11 has some model for parallelism. 
+%
+%Didem: How to influence C++ committee to address HPC needs?
+%
+%Carter: join ISO first. pay C++17 ISO join fee
+%certain number of meetings to earn voting 
+%
+%....
+%
+%...
+%
+%Armid: annotation and better langauge can provide more info to polyhedral
+%LLVM is too low level close to assembly with type info 
+%
+%...
+%
+%Kathy: IBM is now working with polyhedral and it is actually XL compiler 
+%
+%John: algebraic model, data model theory?
+%
+%Torsten: only applicable to DSL, to fine domain. 
+%parameterized integer programming is not pragtical.
+%it not a panacea
+%
+%Thomas: users need something different than imperative langauge 
+%python 
+%pollyhedral models fall back into 
+%
+%Torsten: you can extract the poly representation from the source, that source can be 
+%anything. convex optimizations, affine functions are easier to solve in the compiler. 
+%So it is good that ployhedral constrains your source 
+%
+%Armind: preserve the correctness of the program, that's the limiting factor 
+%the user shouldn't see what's going on 
+%
+%Padua: optimization process is different that poly 
+%
+%Armind: objective function 
+%we apply opitmizations in order, first parallelization, then locality and then tiling etc. 
+%
+%...
+%
+%Paul: people are talking about restrictions of ploy. that's actually great 
+%indirection is interesting, metadata that charactizing the iteration space 
+%that has to be done in runtime 
+%
+%
+%John: How do we make the data locality and data movement in a program robustly evident in the code?
+%what additional information do you need from programmer (model)?
+%We gave up on auto parallelization and auto data locality.
+%
+%Peter: explicitly declared the proximity of the data in Pylaxn
+%
+%Naoya: in a stencil case, explicitly define stencil shape. COmpiler can generate optimized code.
+%even for distributed memory. 
+%
+%Armind: right data structure 
+%
+%Paul: 
+%1) robustness: in a good day, it gives good performance but always but you need robustness. 
+%When the user breaks he knows. 
+%
+%2) Data movement: how data is distributed
+%data access footprint 
+%sometimes you need to even declare it 
+%
+%3) loop 1 and loop 2 : between the two, all to all broadcast. 
+%suddenly, it
+%profiler should tell you about this bottleneck
+%
+%Amir: data locality in a portable manner 
+%Peter had the right idea. push it from the application to runtime. 
+%Pushing to the compiler is too hard. Runtime can do better job. 
+%
+%Brad: Making the movement explicit 
+%it doesn't need to be syntactically 
+%all the communication is exploict in the langauge. 
+%It had a drawback. because it is portable
+%Syntaxtically in Chapel we avoided that. 
+%Semantically expressing data locatity is the way to go not syntaxtically 
+%
+%Padua: how much can compiler do? 
+%it is temporaily in the language until the compiler 
+%
+%Paul: performance properties of your code. If I break your assumptions, 
+%I want to 
+%compiler fails without an explanation. 
+%
+%Satoshi: semantic info can convey should be something should 
+%be dynamic, hand to the runtime. Some of them can be statically analzyed in the compiler. 
+%
+%JOhn: HPF had the mistake that putting everything to the compiler. 
+%
+%Paul: composition: locality depends on the context 
+
