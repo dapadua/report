@@ -52,36 +52,83 @@ HIGHLIGHTS
 \item SCOPE
   \begin{itemize}
   \item In this chapter, we discuss language concepts for data locality, their delivery in general-purpose languages, domain-specific languages and active libraries, and the compiler technology to support them.
+  \item We explore the proposition that management of locality in parallel programming is a \emph{language} problem.
+  \item Language-based solutions may come in the form of new, general-purpose parallel programming languages.  As well as supporting intuitive syntax, doing so creates the scope for ambitious compilation techniques, sophisticated use of type systems, and compile-time checking of important program properties.  
+  \item Language concepts for locality can also be delivered within existing languages, supported in libraries, through metaprogramming in C++, and in ``active libraries" with library-specific analysis and optimizations.
+  \item Locality is about data, and locality abstractions refer to abstract data types.  Multidimensional arrays are a crucial starting point.  Many more complex domains can be characterized by the abstract, distributed data structure on which parallel computation occurs.  Domain-specific tools are often focussed on particular data structures - graphs, meshes, octtrees, structured adaptive-mesh multigrids etc.  While Chapter~\ref{ch:datastructures} tackles particular data stuctures, in this chapter we look at how to build tools to support programmers who build such abstractions.
   \end{itemize}
 
 \item KEY POINTS
   \begin{itemize}
-  \item
+  \item We need to distinguish between different levels of abstraction, and automation - we need solutions for explicit programmer control over locality and data movement, and we need tools to support composition of parallel components in a way that allows locality and communication to be handled automatically.
+  \item We need locality and communication to be robustly evident in the source code, so that programmers have a clear model of execution costs that can be supported by profiling tools.
+  \item Language-concepts can support programmers in thinking cleanly about locality (such as distinguishing between local-view and global-view).
   \end{itemize}
 
 \item TERMINOLOGY (define each of these up front)
   \begin{itemize}
-  \item
+  \item \emph{Active library:} a library which comes with a mechanism for delivering library-specific optimizations~\cite{DBLP:journals/corr/math-NA-9810022}.  Active library technologies differ in how this is achieved - examples include template metaprogramming in C++, Lightweight Modular Staging in Scala~\cite{DBLP:journals/cacm/RompfO12}, source-to-source transformation (for example using tools like ROSE~\cite{DBLP:conf/lcpc/YiQ04}), and run-time code generation, driven either by delayed evaluation of library calls~\cite{DBLP:journals/scp/RussellMKB11}, or explicit run-time construction of problem representations or data flow graphs.
+  \item \emph{Embedded domain-specific language:} a technique for delivering a language-based solution within a host, general-purpose language~\cite{Hudak96buildingdomain-specific}.  Active libraries often achieve this to some extent, commonly by overloading to capture expression structure.  Truly syntactic embedding is also possible with more ambitious tool support~\cite{Erdweg:2011:SLS:2076021.2048099}.
+  \item \emph{Directive-based language extensions:}
+
+  \end{itemize}
+
+\item EXAMPLES OF KEY WORK IN THE AREA
+  \begin{itemize}
+  \item HPF (and Brad’s blog) - vagueness - robust, well-defined, well-understand abstractions 
+  \item UPC (need to have clear ambitions/capability beyond the low-hanging fruit)
+  \item Research vehicles can be narrow but a basis for a standard has to have potential for beyond
+  \item Titanium, Global arrays
   \end{itemize}
 
 \item AGREEMENTS
   \begin{itemize}
-  \item
+  \item PRINCIPLES
+     \begin{itemize}
+     \item Avoid losing information through premature ``lowering" of the program representation.
+     \item Isolate cross-cutting locality concerns.  Locality --- data layout and distribution --- is fundamentally more difficult than parallelization because it affects all the code that touches the data.   
+  \end{itemize}
+  \item SOLUTIONS
+     \begin{itemize}
+     \item There is a lot of consensus around multidimensional data/partitioning/slicing, and how to iterate over them (generators, iterators) - parameterisation of layouts.
+     \item There is potential to expose polyhedral concepts to the programmer/IR, and to pass them down to the backend (eg Chapel’s domains, mappings)
+     \item The back-end model for the target for code generation and implementation of models/compilers is “missing” - for portable implementation, for interoperability
+    \item While we can do a lot with libraries and template metaprogramming, there is a compelling case for a language-based approach
+     \end{itemize}
   \end{itemize}
 
 \item  DISAGREEMENTS
   \begin{itemize}
-   \item
- \end{itemize}
+   \item No consensus on the requirements on intermediate representations and runtime systems
+   \item Do what I say vs do what I mean [[PK: I thnk this is \emph{agreement} on the need for "multiresolution" solutions, see earlier]]
+   \item Compositional metadata vs explicit dependence/synchronisation/movement (Brad has words)
+  \end{itemize}
+
 
 \item GAPS (what is missing? not covered at the workshop)
   \begin{itemize}
    \item
  \end{itemize}
 
+\item STANDARDS
+  \begin{itemize}
+  \item Opportunities for standardisation of mature technologies
+  \item What is this standardisable low-hanging fruit?
+  \item how to influence standards?
+  \end{itemize}
+
 \item RESEARCH AGENDA
   \begin{itemize}
-  \item 
+  \item Scope out the opportunities for JIT - plenty of compelling need for infrastructure (specialisation, autotuning, …) [[what’s the research agenda/challenge here?]]
+  \item How do we create a user community?
+  \end{itemize}
+
+\item CONCLUSION - RECOMMENDATIONS
+  \begin{itemize}
+  \item Opportunities for standardisation of mature technologies
+  \item What is this standardisable low-hanging fruit?
+  \item How to influence standards?
+  \item Define research agenda
   \end{itemize}
 
 \end{itemize}
