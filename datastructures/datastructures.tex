@@ -138,7 +138,7 @@ HIGHLIGHTS
   
 \item  DISAGREEMENTS
   \begin{itemize}
-  \item Binding [could someone flesh out the opposing points of view?]
+  \item Binding [could someone flesh out the opposing points of view?] Depending on the level at which a language/library stands (single thread, multicore chip, parallel distributed system) the binding is responsibility of the user or the system. I don't think we agree on what the level of abstraction is right, so we could not agree in the binding, I guess.
   \item support for memory spaces: can be hidden from the programmer or exposed [could someone flesh out the opposing points of view?]
   \item Choice of language interfaces
     \begin{itemize}
@@ -151,8 +151,8 @@ HIGHLIGHTS
 
 \item GAPS (what is missing? not covered at the workshop)
   \begin{itemize}
-  \item a data model for which data layout is more suitable for which algorithm? or metric for locality
-  \item The mentioned distinction between WHAT and HOW is subtle. I think every developer is concerned with WHAT. As library/language developers we want our users to be concerned by certain WHAT that we turn into HOW by stating some lower level WHATs. I can use a PGAS approach (in which locality is expressed as a here-or-there) underneat but hide it altogether to my user. I think we disagree at what level our users should express their programs. We agree that there must be a separation of concerns.
+  \item A data model for which data layout is more suitable for which algorithm? or metric for locality
+  \item The mentioned distinction between WHAT and HOW is subtle. I think every developer is concerned with WHAT. As library/language developers we want our users to be concerned by certain WHAT that we turn into HOW by stating some lower level WHATs. In my work I can use a PGAS approach (in which locality is expressed as a here-or-there) underneat but hide it altogether to my user. I think we disagree at what level our users should express their programs. We agree that there must be a separation of concerns but not where the separation should be.
   \end{itemize}
 
 \item RESEARCH AGENDA
