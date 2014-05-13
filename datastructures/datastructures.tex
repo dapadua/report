@@ -43,9 +43,6 @@ HIGHLIGHTS
 \item KEY POINTS
   \begin{itemize}
   \item What are the {\em easy} and the {\em complex} parts of algorithm design? I think the {\em easy} should include parallelism. From the implementation point of view this may be different, but compared with the challenges of locality, parallelism should be considered easy and high level. What is the level of ``algorithmic locality'' that we want to be able to specify? Is local/non-local distinction sufficient?
-    %% \begin{itemize}
-    %% \item I think the reason why we make the distinction between data-structures and layouts in the title is because, in our separation between semantic specification and physical implementation, we want to leave hardware features, like bus widths and caches (spatial and temporal localities), out of the former. I think we want the programmer to be concerned with the easy parts of programming, that is up to parallelism, which she/he can specify using language constructs such as keywords, and leave the details to the performance tuners (humans or compilers). I think this is a point of debate and disagreement: some want to hide these details and some want to make them (at least partially) explicit. In Gridtools we want to hide it, but in DASH they need to make locality explicit. Am I right?
-    %%    \end{itemize}
   \item From the requirements of the applications (and scalability) we focus on data-parallel algorithms (even though we may use task oriented abstractions and runtimes).
   \item The lack of a single abstract machine (programming model) to program for performance impose the choice of data-structure specific constructs and specific implementations of those for different platforms (for now this is an empirical observation)
   \item The diversity of the architectures also forces these constructs to work at level of {\em means of combination/composition} (it's not sufficient to provide very efficient primitive operations, like BLAS).
@@ -60,16 +57,6 @@ HIGHLIGHTS
   \item Some (im)mature solutions implemented in different langauges include: Kokkos, TiDA, OpenMP extensions, GridTools, Dash, Array Extensions
 
 
-
-  \item {\em FREE THOUGHTS: There is a relation between semantic specification and physical implementation. Example: given a problem to solve, a Cilk specification of an algorithm (parallel divide and conquer) is not the same as a PRAM (so basically a work/depth approach) specification. There are several questions to which I think the answers have been poor so far:}
-    \begin{itemize}
-    \item {\em FREE THOUGHTS: Is there an approach that is the always optimal? I guess not, otherwise we would not be here talking about this.}
-    \item {\em FREE THOUGHTS: So far the focus have been to demonstrate that certain classes of algorithms can be mapped better to one or the other specification method (and often the claims of universality were speculations to fill the future work section of the papers ;) ), but: can it be shown that either different models are not (performance-wise) equivalent, or find that there is one which is universally efficient (at least to the class of architectures that are reasonable)? (If I'm not mistaken, some research has been done here, for instance in comparing, by cross simulation, the BSP and LogP models. Is there other?)}
-    \item {\em FREE THOUGHTS: If they are equivalent how easy is it to develop a mechanism to translate the specification of the algorithms in one approach to low level efficient implementation? If this tool is very complex, we may want to revert to data-structure specific language constructs of this section, anyway.}
-    \item {\em FREE THOUGHTS: If they are not equivalent, where should we focus? I think The only solution is the data-structure specific language constructs of this section. The effect of this would be that no single effort could be considered universal by any mean.}
-    \end{itemize}
-  \item {\em FREE THOUGHTS: Should we make the distinction between decomposing and aggregating. If parallelism is expressed it is easier to aggregate instead of splitting, even though, as in the case of scan, it may be not so true, but if the algorithm is ``work preserving'' or ``easily parallelizable'' then I think the claim is correct.}
-  \end{itemize}
 
 \item TERMINOLOGY (define each of these up front)
   \begin{itemize}
