@@ -42,15 +42,33 @@ HIGHLIGHTS
   \end{itemize}
 \item KEY POINTS
   \begin{itemize}
+  \item What are the {\em easy} and the {\em complex} parts of algorithm design? I think the {\em easy} should include parallelism. From the implementation point of view this may be different, but compared with the challenges of locality, parallelism should be considered easy and high level. What is the level of ``algorithmic locality'' that we want to be able to specify? Is local/non-local distinction sufficient?
+    %% \begin{itemize}
+    %% \item I think the reason why we make the distinction between data-structures and layouts in the title is because, in our separation between semantic specification and physical implementation, we want to leave hardware features, like bus widths and caches (spatial and temporal localities), out of the former. I think we want the programmer to be concerned with the easy parts of programming, that is up to parallelism, which she/he can specify using language constructs such as keywords, and leave the details to the performance tuners (humans or compilers). I think this is a point of debate and disagreement: some want to hide these details and some want to make them (at least partially) explicit. In Gridtools we want to hide it, but in DASH they need to make locality explicit. Am I right?
+    %%    \end{itemize}
+  \item From the requirements of the applications (and scalability) we focus on data-parallel algorithms (even though we may use task oriented abstractions and runtimes).
+  \item The lack of a single abstract machine (programming model) to program for performance impose the choice of data-structure specific constructs and specific implementations of those for different platforms (for now this is an empirical observation)
+  \item The diversity of the architectures also forces these constructs to work at level of {\em means of combination/composition} (it's not sufficient to provide very efficient primitive operations, like BLAS).
   \item Separation of concerns is important to maximize expressivity and optimize performance.  That principle is applied to the distinction between a logical, semantic specification, and lower-level controls over the physical implementation.
   \item At the semantic level, scalar work is mapped onto parallel data collections, using logical abstractions of data layout which best promote productivity.  Domain experts can also expose semantic characteristics like rerence patterns that can inform trade-offs made by tools.
   \item Performance tuners, who may be distinct from the domain experts, may exercise control over performance with a set of interfaces which can be distinct from those that specify semantics.  Through these interfaces, they may 
-  \begin{itemize}
-  \item decompose, disribute and map parallel data collections onto efficient physical layouts with specialized characteristics, 
-  \item map parallel work onto underlying hardware mechanisms for supporting parallelism, and 
-  \item exercise control over temporal sequencing of work and movement of data for locality.
-  \end{itemize}
+    \begin{itemize}
+    \item decompose, disribute and map parallel data collections onto efficient physical layouts with specialized characteristics, 
+    \item map parallel work onto underlying hardware mechanisms for supporting parallelism, and 
+    \item exercise control over temporal sequencing of work and movement of data for locality.
+    \end{itemize}
   \item Some (im)mature solutions implemented in different langauges include: Kokkos, TiDA, OpenMP extensions, GridTools, Dash, Array Extensions
+
+
+
+  \item {\em FREE THOUGHTS: There is a relation between semantic specification and physical implementation. Example: given a problem to solve, a Cilk specification of an algorithm (parallel divide and conquer) is not the same as a PRAM (so basically a work/depth approach) specification. There are several questions to which I think the answers have been poor so far:}
+    \begin{itemize}
+    \item {\em FREE THOUGHTS: Is there an approach that is the always optimal? I guess not, otherwise we would not be here talking about this.}
+    \item {\em FREE THOUGHTS: So far the focus have been to demonstrate that certain classes of algorithms can be mapped better to one or the other specification method (and often the claims of universality were speculations to fill the future work section of the papers ;) ), but: can it be shown that either different models are not (performance-wise) equivalent, or find that there is one which is universally efficient (at least to the class of architectures that are reasonable)? (If I'm not mistaken, some research has been done here, for instance in comparing, by cross simulation, the BSP and LogP models. Is there other?)}
+    \item {\em FREE THOUGHTS: If they are equivalent how easy is it to develop a mechanism to translate the specification of the algorithms in one approach to low level efficient implementation? If this tool is very complex, we may want to revert to data-structure specific language constructs of this section, anyway.}
+    \item {\em FREE THOUGHTS: If they are not equivalent, where should we focus? I think The only solution is the data-structure specific language constructs of this section. The effect of this would be that no single effort could be considered universal by any mean.}
+    \end{itemize}
+  \item {\em FREE THOUGHTS: Should we make the distinction between decomposing and aggregating. If parallelism is expressed it is easier to aggregate instead of splitting, even though, as in the case of scan, it may be not so true, but if the algorithm is ``work preserving'' or ``easily parallelizable'' then I think the claim is correct.}
   \end{itemize}
 
 \item TERMINOLOGY (define each of these up front)
@@ -59,9 +77,10 @@ HIGHLIGHTS
   \item Physical, performance level: CONTROL over HOW, so as to meet performance goals; may be implementation specific
   \item Polymorphic: may take different forms, depending on the abstraction layer or optimization target
   \item Language interface: a spec or API used by a programmer, which may be part of the base language, a compiler-interpreted directive, or a library API [this may need work] 
+  \item Language construct: something that can be identified as a {\em keyword} in a language interface and the grammar rules that applies to it.
   \item Execution policy: mapping of work onto data collections [in line with C++ committee]
   \item Binding: mapping from the logical to physical domain, e.g. for storage
-  \item \em{What follows should be either filled in or dropped}
+  \item {\em What follows should be either filled in or dropped}
   \item control space(use execution space?)
   \item binding  (or execution policy ?)
   \item memory spaces
@@ -69,7 +88,7 @@ HIGHLIGHTS
   \item polymorphic data layout
   \item data decomposition 
   \item data distribution 
-  \item iteration space traversal (avoid using loop traversal, maybe use domain traversal?) 
+  \item iteration space traversal (avoid using loop traversal, maybe use domain traversal?) maybe : {\em iteration patterns} to be paired with {\em access patterns}?
   \item access type
   \end{itemize}
 
@@ -78,53 +97,53 @@ HIGHLIGHTS
   \begin{itemize}
   \item Abstractions for performance portability are needed: Data layout, tile sizes, memory access patterns need to be tuned when application is moved between machines. [We may want to tweak that list.]
   \item The separation of logical from physical concerns enables:
-  \begin{itemize}
-  \item Separation of concerns between domain experts and performance tuning experts
-  \item Maximal exposure of opportunity, vs. hard coding a particular trade-off
-  \item Getting free of enslavement to restrictions or suboptimalities imposed at the logical level
-  \item Minimizing, or at least localizing, code modification for control over performance
-  \item Polymorphism across targets and abstraction layers
-  \end{itemize}
+    \begin{itemize}
+    \item Separation of concerns between domain experts and performance tuning experts
+    \item Maximal exposure of opportunity, vs. hard coding a particular trade-off
+    \item Getting free of enslavement to restrictions or suboptimalities imposed at the logical level
+    \item Minimizing, or at least localizing, code modification for control over performance
+    \item Polymorphism across targets and abstraction layers
+    \end{itemize}
   \item We need a data model to assess the data locality
-  \begin{itemize}
-  \item We have a model for parallelism but do not have a model for data locality
-  \item Optimal trade-offs may shift over time and across target systems.  
-  \item Models need to take into account the capabilities and capacities of computational elements, memory structures, and the network fabric 
-  \item Models should reflect the consequences of various controls, such as the placement of work near data
-  \end{itemize}
+    \begin{itemize}
+    \item We have a model for parallelism but do not have a model for data locality
+    \item Optimal trade-offs may shift over time and across target systems.  
+    \item Models need to take into account the capabilities and capacities of computational elements, memory structures, and the network fabric 
+    \item Models should reflect the consequences of various controls, such as the placement of work near data
+    \end{itemize}
   \item It's easier to standardize high-level concepts, suggesting that
-  \begin{itemize}
-  \item Extensions for controls over how parallel work and data are managed may best be targeted at libraries and language interfaces, rather than base languages.  There's greater freedom for diversity there.
-  \item Base languages are a good longer-term target for semantically exposing opportuniteis for parallelism
-  \end{itemize}
+    \begin{itemize}
+    \item Extensions for controls over how parallel work and data are managed may best be targeted at libraries and language interfaces, rather than base languages.  There's greater freedom for diversity there.
+    \item Base languages are a good longer-term target for semantically exposing opportuniteis for parallelism (and locality?)
+    \end{itemize}
   \item Low hanging fruit: 
     1) multidimensional array support (in C and C++) 
     2) polymorphic data layout: 
-    ideally change the layout in runtime, 
+    ideally change the layout in runtime (it should always be clear when an operation has performance costs),
     alternatively at compile time without requiring a lot of code modifications, 
     support layout in the type system 
   \item Performance-related controls pertain to data and to execution policy.  These may vary in their scope and granularity.
-  \begin{itemize}
-  \item Data controls may be used to manage:
-  \begin{itemize} 
-  \item Decomposition, which tends to be either trivial (parameterizable and automatic) or not (explicit)
-  \item Binding to storage: to a particular type of memory (e.g. read only, streaming), to a phase-dependent depth in the memory hierarchy (prefetching, marking non-temporal), or to memory structures which support different kinds of sharing (SW managed, cached)
-  \item Mechanisms for, and timing of, distribution to data space/locality bindings
-  \item Data layout
-  \end{itemize}
-  \item Execution policy controls may be used to manage
-  \begin{itemize} 
-  \item Decomposition of work, e.g. iterations, hierarchical tasks
-  \item Ordering of work, e.g. recursive subdivision, work stealing
-  \item Association of work with data, e.g. moving work to data, binding to hierarchical domains like a node, thread or a SIMD lane
-  \end{itemize}
-  \item These controls may be applied at different scopes and granularities through a varity of mechanisms
-  \begin{itemize} 
-  \item Data types - global, fine-grained, can vary by call site
-  \item Function or construct modifiers - local coarse-grained, can vary within a scope
-  \item Environmental variable controls - global policies
-  \end{itemize}
-  \end{itemize}
+    \begin{itemize}
+    \item Data controls may be used to manage:
+      \begin{itemize} 
+      \item Decomposition, which tends to be either trivial (parameterizable and automatic) or not (explicit)
+      \item Binding to storage: to a particular type of memory (e.g. read only, streaming), to a phase-dependent depth in the memory hierarchy (prefetching, marking non-temporal), or to memory structures which support different kinds of sharing (SW managed, cached)
+      \item Mechanisms for, and timing of, distribution to data space/locality bindings
+      \item Data layout
+      \end{itemize}
+    \item Execution policy controls may be used to manage
+      \begin{itemize} 
+      \item Decomposition of work, e.g. iterations, hierarchical tasks
+      \item Ordering of work, e.g. recursive subdivision, work stealing
+      \item Association of work with data, e.g. moving work to data, binding to hierarchical domains like a node, thread or a SIMD lane
+      \end{itemize}
+    \item These controls may be applied at different scopes and granularities through a varity of mechanisms
+      \begin{itemize} 
+      \item Data types - global, fine-grained, can vary by call site
+      \item Function or construct modifiers - local coarse-grained, can vary within a scope
+      \item Environmental variable controls - global policies
+      \end{itemize}
+    \end{itemize}
   \item lambdas for domain traversal (or iteration space traversal) [is this now adequately covered below?]
   \end{itemize}
   
@@ -133,17 +152,18 @@ HIGHLIGHTS
   \item Binding [could someone flesh out the opposing points of view?]
   \item support for memory spaces: can be hidden from the programmer or exposed [could someone flesh out the opposing points of view?]
   \item Choice of language interfaces
-  \begin{itemize}
-  \item Some prefer standard languages, in order to maximize impact and market breadth.  Wherever profitable, there can be a push to ``redeem'' existing languages by amending or extending them, e.g. via changes to the spec or by introducing new ABIs.
-  \item Others believe that specialized languages are required, e.g. to ``get us to exascale.''  Different language rules may be requied to overcome limitations imposed by current languages.  For example, C exposes physical data layout, and limits a compiler's ability to re-layout data.  Source to source translators are still subject to language rules, whereas new languages may remove such limitations through abstraction.
-  \item There's some agreement that C++ metaprogramming can cover a significant fraction of the desired capabilities, and that it's a middle road for being able to implement DSLs that are embedded within standard languages.  Specialization can be hidden in template implementation and controlled by template parameters.
-  \item There's some concern about Fortran's lack of extensibility, e.g. in the direction of lambdas, templates and metaprogramming
-  \end{itemize}
+    \begin{itemize}
+    \item Some prefer standard languages, in order to maximize impact and market breadth.  Wherever profitable, there can be a push to ``redeem'' existing languages by amending or extending them, e.g. via changes to the spec or by introducing new ABIs.
+    \item Others believe that specialized languages are required, e.g. to ``get us to exascale.''  Different language rules may be requied to overcome limitations imposed by current languages.  For example, C exposes physical data layout, and limits a compiler's ability to re-layout data.  Source to source translators are still subject to language rules, whereas new languages may remove such limitations through abstraction.
+    \item There's some agreement that C++ metaprogramming can cover a significant fraction of the desired capabilities, and that it's a middle road for being able to implement DSLs that are embedded within standard languages.  Specialization can be hidden in template implementation and controlled by template parameters.
+    \item There's some concern about Fortran's lack of extensibility, e.g. in the direction of lambdas, templates and metaprogramming
+    \end{itemize}
   \end{itemize}
 
 \item GAPS (what is missing? not covered at the workshop)
   \begin{itemize}
   \item a data model for which data layout is more suitable for which algorithm? or metric for locality
+  \item The mentioned distinction between WHAT and HOW is subtle. I think every developer is concerned with WHAT. As library/language developers we want our users to be concerned by certain WHAT that we turn into HOW by stating some lower level WHATs. I can use a PGAS approach (in which locality is expressed as a here-or-there) underneat but hide it altogether to my user. I think we disagree at what level our users should express their programs. We agree that there must be a separation of concerns.
   \end{itemize}
 
 \item RESEARCH AGENDA
@@ -152,6 +172,7 @@ HIGHLIGHTS
   \item Compare/contrast available options for specifying those controls
   \item Identify gaps and prescribe steps toward closure of those gaps
   \item Converge on a minimally set of (semi-standard) solutions that provide adequate coverage
+  \item Prove or disprove that an portable efficiency can be achieved with a single language (in order to prove or disprove that data-structure specific approaches are the only beign possible)
   \end{itemize}
 
 \end{itemize}
