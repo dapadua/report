@@ -38,6 +38,7 @@ performance
     vertically (from node to storage) and horizontally (e.g. between compute
     nodes)
 \item need of model of application (same reason as above)
+\item validation of models
 \item \ldots
 \end{itemize}
 
@@ -45,6 +46,7 @@ RELATED WORK:
 
 \begin{itemize}
 \item Topology mapping: TreeMatch, Libtopomap, MPIPP? scotch, metis  
+\item Geometric mapping: Zoltan2
 \item Storage: parallel file system (???)
 \item resource management: queuing systems 'SLURM, LSF, PBS, etc.)
 \item machine models: HWLOC, NETLOC, etc. 
@@ -56,6 +58,7 @@ CHALLENGES:
 \item scalability and management of the hierarchy
 \item globality (tackle the problem system wide)
 \item interaction between different layers
+\item validation of models
 \item \ldots
 \end{itemize}
 
@@ -65,20 +68,20 @@ CHALLENGES:
  
 
 Parallel computers are becoming more and more complex. 
-Indeed, they feature hundreds of thousand of cores, a deep memory hierarchy with 
+Indeed, they feature hundreds of thousands of cores, a deep memory hierarchy with 
 several cache layers, non-uniform memory access with  several levels of memory (flash,
 non-volatile, RAM, etc), elaborate topologies (both at the
 shared-memory level and at the distributed-memory one with state-of-the-art
-interconnection network) and advanced parallel storage systems and resource
+interconnection networks) and advanced parallel storage systems and resource
 management tools.
 
 Nowadays it is already more challenging to write an application that efficiently
-access its data than efficiently process the data. In other words bytes 
-feature more issues issues than flops. As it is expected that the memory
-per core will decrease in the coming years this problematic will become even
+accesses its data than efficiently processes the data. In other words bytes 
+feature more issues than flops. As it is expected that the memory
+per core will decrease in the coming years this problem will become even
 more important. 
 
-To address the data locality issue system-wide, one approach consists in
+To address the data locality issue system-wide, one approach consists of
 working on the application ecosystem and how the application executed (interaction
 with the batch-scheduler and the storage, optimization on the way the
 application uses the resources, interaction with the topology, etc.). 
