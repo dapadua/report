@@ -60,6 +60,22 @@ HIGHLIGHTS
 
 \item TERMINOLOGY (define each of these up front)
   \begin{itemize}
+
+  \item Data structure: A organized collection of data in a computer. 
+    
+  \item Layout (of data structure):
+    A particular way of storing a data structure, typically with the intention that it can be used efficiently. 
+    
+    Example: A 2D matrix of size 100x100 holding integers is a data structure: a semantic/logical entity in which a programmer thinks. Storing and processing the matrix in a computer requires a layout that maps the 2d matrix onto the 1d address space of the computer in some way. The mapping could be a simple linearization or it could be a more complex blocked (tiled) scheme.
+
+  \item Distributed data structure / parallel data structure: not sure we should use either of those terms, but if we do we should make sure what we mean: is the data distributed over multiple nodes/address spaces? is there concurrent access to the same data structure? 
+    
+  \item  Locality: [I can't think of a direct definition that doesn't require a whole lot of other definitions up front, so how about the following phenomenological definition?]
+
+  \item A data structure (-layout) has good locality (-behavior) [with respect to an algorithm] if operations on the data structure can be executed efficiently in terms of run-time and/or energy consumption. So locality is not a property of the data structure or layout alone, there is an execution/code component that determines if locality behavior is good.
+
+  \item Algorithmic locality vs. actual/implementation locality: Not sure I would know how to define these terms. What is algorithmic locality of matrix multiplication? 
+
   \item Logical, semantic level: programmer expresses the WHAT, exposes OPPORTUNITY in a natural expression; portable
   \item Portable efficiency
   \item Algorithmic locality vs. actual locality or implementation locality
