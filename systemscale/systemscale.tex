@@ -1,2 +1,89 @@
 \chapter{System-Scale Data Locality Management}
 \label{ch:systemscale}
+%% EJ : Here is what I remember we decided at the meeting: 
+%% There are 3 points : 
+%% 1) Topology-mapping
+%% 2) storage and data
+%% 3) Resource management and batch scheduler
+
+
+%% This section should contain an overview of the different problematics and a
+%% description of existing solutions and open problems. 
+
+
+
+
+
+SCOPE:
+
+\begin{itemize}
+\item topology mapping
+\item storage and data
+\item Resource management and batch scheduler
+\end{itemize}
+
+KEY POINTS:
+\begin{itemize}
+\item Whatever the application is written and optimize, the way it is executed
+  has a huge impact on its performance
+ \item Mapping of application to resources is important even in the case of
+   contiguous allocation. But joint allocation and mapping  (application
+   expresses its need and the batch scheduler tries to fulfill it) provides
+   better optimization
+\item there is a need of models of the machine at different scales (cache, node,
+memory, network, etc.) Such models are necessary to design algorithms to enhance
+performance
+  \item Usually, each part of the application ecosystem (storage, runtime, batch
+    scheduler, etc.) act independently. There is a need for joint decisions both
+    vertically (from node to storage) and horizontally (e.g. between compute
+    nodes)
+\item need of model of application (same reason as above)
+\item \ldots
+\end{itemize}
+
+RELATED WORK: 
+
+\begin{itemize}
+\item Topology mapping: TreeMatch, Libtopomap, MPIPP? scotch, metis  
+\item Storage: parallel file system (???)
+\item resource management: queuing systems 'SLURM, LSF, PBS, etc.)
+\item machine models: HWLOC, NETLOC, 
+\item building app model: profilers (scalasca), compilers, runtime monitoring (openMPI), etc. 
+\end{itemize}
+
+CHALLENGES:
+\begin{itemize}
+\item scalability and management of the hierarchy
+\item globality (tackle the problem system wide)
+\item interaction between different layers
+\item \ldots
+\end{itemize}
+
+
+\section{Introduction}
+%% An idea of the presentation 
+ 
+
+Parallel computers are becoming more and more complex. 
+Indeed, they feature hundreds of thousand of cores, a deep memory hierarchy with 
+several cache layers, non-uniform memory access with  several levels of memory (flash,
+non-volatile, RAM, etc), elaborate topologies (both at the
+shared-memory level and at the distributed-memory one with state-of-the-art
+interconnection network) and advanced parallel storage systems and resource
+management tools.
+
+Nowadays it is already more challenging to write an application that efficiently
+access its data than efficiently process the data. In other words bytes 
+feature more issues issues than flops. As it is expected that the memory
+per core will decrease in the coming years this problematic will become even
+more important. 
+
+To address the data locality issue system-wide, one approach consists in
+working on the application ecosystem and how the application executed (interaction
+with the batch-scheduler and the storage, optimization on the way the
+application uses the resources, interaction with the topology, etc.). 
+
+More precisely, the important issues lies in the strong need for new models and algorithms, new 
+mechanisms and tools for improving (1) topology-aware data accesses, (2) data 
+movements across the various software layers, (3) data locality and transfers for 
+applications. 
