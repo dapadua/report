@@ -44,10 +44,10 @@ HIGHLIGHTS
   \begin{itemize}
   \item What are the {\em easy} and the {\em complex} parts of algorithm design? I think the {\em easy} should include parallelism. From the implementation point of view this may be different, but compared with the challenges of locality, parallelism should be considered easy and high level. What is the level of ``algorithmic locality'' that we want to be able to specify? Is local/non-local distinction sufficient?
   \item From the requirements of the applications (and scalability) we focus on data-parallel algorithms (even though we may use task oriented abstractions and runtimes).
-  \item The lack of a single abstract machine (programming model) to program for performance impose the choice of data-structure specific constructs and specific implementations of those for different platforms (for now this is an empirical observation)
+  \item The lack of a single abstract machine (programming model) to program for performance imposes the choice of data-structure specific constructs and specific implementations of those for different platforms (for now this is an empirical observation)
   \item The diversity of the architectures also forces these constructs to work at level of {\em means of combination/composition} (it's not sufficient to provide very efficient primitive operations, like BLAS).
   \item Separation of concerns is important to maximize expressivity and optimize performance.  That principle is applied to the distinction between a logical, semantic specification, and lower-level controls over the physical implementation.
-  \item At the semantic level, scalar work is mapped onto parallel data collections, using logical abstractions of data layout which best promote productivity.  Domain experts can also expose semantic characteristics like rerence patterns that can inform trade-offs made by tools.
+  \item At the semantic level, scalar work is mapped onto parallel data collections, using logical abstractions of data layout which best promote productivity.  Domain experts can also expose semantic characteristics like reference patterns that can inform trade-offs made by tools.
   \item Performance tuners, who may be distinct from the domain experts, may exercise control over performance with a set of interfaces which can be distinct from those that specify semantics.  Through these interfaces, they may 
     \begin{itemize}
     \item decompose, disribute and map parallel data collections onto efficient physical layouts with specialized characteristics, 
@@ -152,7 +152,7 @@ HIGHLIGHTS
 \item GAPS (what is missing? not covered at the workshop)
   \begin{itemize}
   \item A data model for which data layout is more suitable for which algorithm? or metric for locality
-  \item The mentioned distinction between WHAT and HOW is subtle. I think every developer is concerned with WHAT. As library/language developers we want our users to be concerned by certain WHAT that we turn into HOW by stating some lower level WHATs. In my work I can use a PGAS approach (in which locality is expressed as a here-or-there) underneat but hide it altogether to my user. I think we disagree at what level our users should express their programs. We agree that there must be a separation of concerns but not where the separation should be.
+  \item The mentioned distinction between WHAT and HOW is subtle. I think every developer is concerned with WHAT. As library/language developers we want our users to be concerned by certain WHAT that we turn into HOW by stating some lower level WHATs. In my work I can use a PGAS approach (in which locality is expressed as a here-or-there) underneath but hide it altogether to my user. I think we disagree at what level our users should express their programs. We agree that there must be a separation of concerns but not where the separation should be.
   \end{itemize}
 
 \item RESEARCH AGENDA
