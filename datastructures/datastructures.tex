@@ -50,29 +50,39 @@ HIGHLIGHTS
   \item At the semantic level, scalar work is mapped onto parallel data collections, using logical abstractions of data layout which best promote productivity.  Domain experts can also expose semantic characteristics like reference patterns that can inform trade-offs made by tools.
   \item Performance tuners, who may be distinct from the domain experts, may exercise control over performance with a set of interfaces which can be distinct from those that specify semantics.  Through these interfaces, they may 
     \begin{itemize}
-    \item decompose, disribute and map parallel data collections onto efficient physical layouts with specialized characteristics, 
+    \item decompose, distribute and map parallel data collections onto efficient physical layouts with specialized characteristics, 
     \item map parallel work onto underlying hardware mechanisms for supporting parallelism, and 
     \item exercise control over temporal sequencing of work and movement of data for locality.
     \end{itemize}
-  \item Some (im)mature solutions implemented in different langauges include: Kokkos, TiDA, OpenMP extensions, GridTools, Dash, Array Extensions
+  \item Some (im)mature solutions implemented in different languages include: Kokkos, TiDA, OpenMP extensions, GridTools, Dash, Array Extensions
 \end{itemize}
 
 
 \item TERMINOLOGY (define each of these up front)
   \begin{itemize}
 
-  \item Data structure: A organized collection of data in a computer. 
-    
+  \item Memory space: A computer has multiple memory resources.  A single computer traditionally has main memory, one or more levels of hardware managed cache memory, and registers; where the main memory is the only memory space explicitly managed by a computation.  Advanced architectures have heterogeneous memory that, or performance, must be managed by computations.  Examples of these memory spaces include CPUs' non-uniform memory access (NUMA) regions, separate GPU memory, and GPU's on-chip shared memory.
+
+  \item Data structure: A organized collection of datum residing in one or more memory spaces. 
+
   \item Layout (of data structure):
-    A particular way of storing a data structure, typically with the intention that it can be used efficiently. 
-    
+    The mapping of a data structure into one or more memory spaces, typically with the intent of efficient and performant access by a collection of computations.
+
     Example: A 2D matrix of size 100x100 holding integers is a data structure: a semantic/logical entity in which a programmer thinks. Storing and processing the matrix in a computer requires a layout that maps the 2d matrix onto the 1d address space of the computer in some way. The mapping could be a simple linearization or it could be a more complex blocked (tiled) scheme.
 
   \item Distributed data structure / parallel data structure: not sure we should use either of those terms, but if we do we should make sure what we mean: is the data distributed over multiple nodes/address spaces? is there concurrent access to the same data structure? 
     
-  \item  Locality: [I can't think of a direct definition that doesn't require a whole lot of other definitions up front, so how about the following phenomenological definition?]
+  \item  Locality: A measure of distance between datum on a computer.  For example, do the datum reside in the same compute node of a cluster, in the same memory space, in the same cache line?  [I can't think of a direct definition that doesn't require a whole lot of other definitions up front, so how about the following phenomenological definition?]
 
-  \item A data structure (-layout) has good locality (-behavior) [with respect to an algorithm] if operations on the data structure can be executed efficiently in terms of run-time and/or energy consumption. So locality is not a property of the data structure or layout alone, there is an execution/code component that determines if locality behavior is good.
+  \item Memory access pattern: A computation accesses data structures according to its execution policy. 
+
+  \item Execution policy: How a computation's units of work are scheduled and mapped onto data collections [in line with C++ committee].
+
+  \item Memory access pattern: The memory access pattern of a computation is determined by the composition of the computation's algorithm, computation's execution policy, and layout of the computation's data structures.  The quality of a computation's memory access pattern is determined by the time or energy consumed accessing its datum.  
+
+  \item Polymorphic layout: The quality of a computation's memory access pattern may depend upon the architecture of the computer on which it executes.  A data structure has a polymorphic layout if the layout can be changed to improve the memory access pattern without modifying the source code of computations depending upon that data structure.
+
+  \item A data structure (-layout) has good locality (-behavior) with respect to an algorithm if operations on the data structure can be executed efficiently in terms of run-time and/or energy consumption. So locality is not a property of the data structure or layout alone, there is an execution/code component that determines if locality behavior is good.
 
   \item Algorithmic locality vs. actual/implementation locality: Not sure I would know how to define these terms. What is algorithmic locality of matrix multiplication? 
 
@@ -83,14 +93,12 @@ HIGHLIGHTS
   \item Polymorphic: may take different forms, depending on the abstraction layer or optimization target
   \item Language interface: a spec or API used by a programmer, which may be part of the base language, a compiler-interpreted directive, or a library API [this may need work] 
   \item Language construct: something that can be identified as a {\em keyword} in a language interface and the grammar rules that applies to it.
-  \item Execution policy: mapping of work onto data collections [in line with C++ committee]
+
   \item Binding: mapping from the logical to physical domain, e.g. for storage
   \item {\em What follows should be either filled in or dropped}
   \item control space(use execution space?)
   \item binding  (or execution policy ?)
-  \item memory spaces
   \item data layout
-  \item polymorphic data layout
   \item data decomposition 
   \item data distribution 
   \item iteration space traversal (avoid using loop traversal, maybe use domain traversal?) maybe : {\em iteration patterns} to be paired with {\em access patterns}?
@@ -122,10 +130,10 @@ HIGHLIGHTS
     \item Base languages are a good longer-term target for semantically exposing opportuniteis for parallelism (and locality?)
     \end{itemize}
   \item Low hanging fruit: 
-    1) multidimensional array support (in C and C++) 
-    2) polymorphic data layout: 
+    (1) multidimensional array support (in C and C++) 
+    (2) runtime polymorphic data layout: 
     ideally change the layout in runtime (it should always be clear when an operation has performance costs),
-    alternatively at compile time without requiring a lot of code modifications, 
+    (3) compile time polymorphic layout: change the layout at compile time with minimal code modifications, 
     support layout in the type system 
   \item Performance-related controls pertain to data and to execution policy.  These may vary in their scope and granularity.
     \begin{itemize}
@@ -155,11 +163,12 @@ HIGHLIGHTS
 \item  DISAGREEMENTS
   \begin{itemize}
   \item Binding [could someone flesh out the opposing points of view?] Depending on the level at which a language/library stands (single thread, multicore chip, parallel distributed system) the binding is responsibility of the user or the system. I don't think we agree on what the level of abstraction is right, so we could not agree in the binding, I guess.
-  \item support for memory spaces: can be hidden from the programmer or exposed [could someone flesh out the opposing points of view?]
+  \item support for memory spaces: can be hidden from the programmer or exposed [could someone flesh out the opposing points of view?]  Traditional architectures have hidden memory spaces within node through hardware supported movement of datum through a cache memory hierarchy.  This implicit memory space management strategy has been applied to distributed memory clusters through PGAS programming models and runtimes.  There has is not a consensus on PGAS versus explicit management of datum movement among clusters' compute nodes.  Advanced compute node architectures have heterogeneous memory spaces which must be managed for computational performance.  It is an open question as to whether a programming model can be deployed that implicitly manages these memory spaces and provides sufficient memory access quality.
+
   \item Choice of language interfaces
     \begin{itemize}
-    \item Some prefer standard languages, in order to maximize impact and market breadth.  Wherever profitable, there can be a push to ``redeem'' existing languages by amending or extending them, e.g. via changes to the spec or by introducing new ABIs.
-    \item Others believe that specialized languages are required, e.g. to ``get us to exascale.''  Different language rules may be requied to overcome limitations imposed by current languages.  For example, C exposes physical data layout, and limits a compiler's ability to re-layout data.  Source to source translators are still subject to language rules, whereas new languages may remove such limitations through abstraction.
+    \item Some prefer standard languages, in order to maximize impact and leverage market breadth of the supporting tool chain (e.g., compilers, debuggers, profilers).  Wherever profitable, there can be a push to ``redeem'' existing languages by amending or extending them, e.g. via changes to the spec or by introducing new ABIs.  It is noteworthy that the ISO C++ standardization committee intends to address performant, on-node parallelism in a future language standard.
+    \item Others believe that specialized languages are required, e.g. to ``get us to exascale.''  Different language rules may be required to overcome limitations imposed by current languages.  For example, C exposes physical data layout, and limits a compiler's ability to re-layout data.  Source to source translators are still subject to language rules, whereas new languages may remove such limitations through abstraction.
     \item There's some agreement that C++ metaprogramming can cover a significant fraction of the desired capabilities, and that it's a middle road for being able to implement DSLs that are embedded within standard languages.  Specialization can be hidden in template implementation and controlled by template parameters.
     \item There's some concern about Fortran's lack of extensibility, e.g. in the direction of lambdas, templates and metaprogramming
     \end{itemize}
