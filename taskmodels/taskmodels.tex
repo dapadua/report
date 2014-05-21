@@ -40,13 +40,13 @@ HIGHLIGHTS
 \begin{itemize}
 	
 	
-	\item SCOPE
+	\item SCOPE (\textbf{Jesus})
 	\begin{itemize}
 		\item Design of interfaces to express
 		      locality in a task-based programming model
 		\item Terminology: ``task-based'', ``interfaces'' (mostly to specify the levels of the interfaces)
 		\item task-based parallelism is the way to go for many applications (MPI+Task)
-		\item Fast prototyping
+		\item Fast prototyping / productivity
 		\item Redesigning numerical algorithms to express locality 
 		and how to express it (nested parallelism, divide and conquer, tree structure)
 		\item Interface betw app/rt/hw to support locality
@@ -56,7 +56,7 @@ HIGHLIGHTS
 	
 	
 	
-	\item RELATED WORK: a few examples of work in that area 
+	\item RELATED WORK: a few examples of work in that area  (\textbf{Hatem})
 	\begin{itemize}
 		\item OmpSs
 		\item Charm++
@@ -73,21 +73,21 @@ HIGHLIGHTS
 	\item DISCOVERIES/CHALLENGES
 	\begin{itemize}
 		\item Task granularity (flexibility) (\textbf{Miquel})
-		\item Scheduling overhead (\textbf{Jesus} and \textbf{Miquel})
+		\item Scheduling overhead (\textbf{Miquel})
 		\item Efficient debugging/tracing mechanisms/tools (\textbf{Jesus})
 		\item Nested parallelism (recursive formulation) (\textbf{Hatem})
-		\item Work stealing (\textbf{Jesus} and \textbf{Miquel})
+		\item Work stealing (\textbf{Miquel})
 		\item Scheduling priority, DAG critical path  (\textbf{Romain})
-		\item Socket-aware scheduling (\textbf{Jesus} and \textbf{Hatem})
+		\item Socket-aware scheduling (\textbf{Hatem})
 		\item Detection of overlapped memory-region (\textbf{Jesus})
 		\item API Standardization (\textbf{Romain})
 		\item DAG Composition (\textbf{Hatem})
-		\item Handling data locality in presence of co-processors and accelerators (\textbf{Jesus} and \textbf{Hatem})
+		\item Handling data locality in presence of co-processors and accelerators (\textbf{Jesus})
 	\end{itemize}
 			
 			
 			
-	\item AREAS OF AGREEMENT
+	\item AREAS OF AGREEMENT (\textbf{Romain})
 		  \begin{itemize}
 		  \item Static partitioning does not work for everything; we need to
 		      have a dynamic component.
@@ -104,7 +104,7 @@ HIGHLIGHTS
 	
 	
 	
-	\item AREAS OF DISAGREEMENT
+	\item AREAS OF DISAGREEMENT (\textbf{Romain})
 		  \begin{itemize}
 		  \item The level at which standardization should be done: task-based
 		      runtime API, languages, interface to hardware, ...
@@ -113,7 +113,7 @@ HIGHLIGHTS
 		  \end{itemize}
 
 
-	\item Identify Gaps / What is missing
+	\item Identify Gaps / What is missing  (\textbf{Miquel})
 	    \begin{itemize}
 		
 		\item Better understanding of the performance features of task-parallel
@@ -127,7 +127,7 @@ HIGHLIGHTS
 	  \end{itemize} 
 	 
 
-	\item APPLICATION DOMAINS
+	\item APPLICATION DOMAINS  (\textbf{Hatem})
 		\begin{itemize}
 			\item Dense linear algebra
 			\item Computational astronomy
