@@ -1,1 +1,41 @@
 Summary of feedbacks on other chapters
+
+From Romain:
+    - Langcomp
+        - Management of locality in parallel programming is indeed a language
+        problem but not only.
+        - Explicit programmer control over locality: they mention a bit later
+        that the expression of locality needs to be portable across
+        machines so this should stand out here too; I think it is important
+        to state that locality control is not about stating that a particular
+        task is mapped to a given core etc. (no machine portability).
+        - Strongly agree on the part about avoiding the loss of
+        information through premature lowering
+    - Datastructures
+        - Memory spaces: I would also explicitly call out scratchpads
+        in the taxonomy. Also, "one or more levels of cache" => "zero
+        or more levels of cache" (even today's GPUs for example
+        directly access some memory without going through cache I
+        think).
+        - Locality: the definition only covers spatial locality and it
+        also seems to restrict itself to distance between data
+        elements and not data and core. The definition of distance is
+        also probably not just a space-based thing.
+        - Execution policy: not sure I understand the definition. Work
+        is mapped onto data-collections? Shouldn't work be mapped to
+        computation resources (cores) and data collections mapped to
+        memory spaces.
+        - For the model to assess data-locality: is this model fully
+        exposed to the application user? It seems like the model
+        described is low-level enough ("computational elements",
+        "memory structures") that it is more for the expert or runtime
+        mapping.
+    - Systemscale
+        - over-decomposition model: I think I understand what is meant
+        here but a clear explanation might be nice because I don't
+        know if everyone agrees on the level of "over" in
+        "over-decomposition".
+    - Apps
+        - Definition of a "data-model" is missingbut it is used
+        frequently in the text.
+        - What would need to be in the "stable paradigm to program to"

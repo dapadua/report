@@ -38,8 +38,8 @@
 HIGHLIGHTS
 
 \begin{itemize}
-	
-	
+
+
 	\item SCOPE (\textbf{Jesus})
 	\begin{itemize}
 		\item Design of interfaces to express
@@ -47,15 +47,15 @@ HIGHLIGHTS
 		\item Terminology: ``task-based'', ``interfaces'' (mostly to specify the levels of the interfaces)
 		\item task-based parallelism is the way to go for many applications (MPI+Task)
 		\item Fast prototyping / productivity
-		\item Redesigning numerical algorithms to express locality 
+		\item Redesigning numerical algorithms to express locality
 		and how to express it (nested parallelism, divide and conquer, tree structure)
 		\item Interface betw app/rt/hw to support locality
 		\item Specific performance/debugging tools for task-based applications
 		\item Compiler technology RT Vs Library RT
 	\end{itemize}
-	
-	
-	
+
+
+
 	\item RELATED WORK: a few examples of work in that area  (\textbf{Hatem})
 	\begin{itemize}
 		\item OmpSs
@@ -84,48 +84,106 @@ HIGHLIGHTS
 		\item DAG Composition (\textbf{Hatem})
 		\item Handling data locality in presence of co-processors and accelerators (\textbf{Jesus})
 	\end{itemize}
-			
-			
-			
+
+
+
 	\item AREAS OF AGREEMENT (\textbf{Romain})
-		  \begin{itemize}
-		  \item Static partitioning does not work for everything; we need to
-		      have a dynamic component.
-		  \item A perfectly predictable hardware does not exist and, in the
-		      future will be even more far-fetched; we therefore cannot get
-		      away from some level of dynamism and task-based
-		      programming-models can make better use of this dynamism.
-		  \item Granularity is a key issue that needs to be addressed with
-		      respect to locality. There is agreement that a static
-		      partitioning/granularity will not work for future
-		      machines. Granularity needs to balance overheads and exposing
-		      parallelism.
-		  \end{itemize}
-	
-	
-	
+          \begin{itemize}
+          \item{
+              The performance and energy characteristics of today's
+hardware are difficult to predict; the unpredictability of a hit or
+miss in a cache, the variable latencies introduced by branch
+mis-predictions, etc.\ are only some of the factors that contribute to
+a very dynamic hardware behavior. This trend will only accelerate with
+future hardware as near threshold voltage (NTV) and aggressive energy
+management increase the level of hardware dynamism. [TODO: Maybe
+phrase it to say that the assembly interface does not guarantee
+anything in terms of performance and/or energy].
+
+              In light of this, toolchains will become more and more
+unable to statically partition and schedule code to efficiently
+utilize future parallel resources. Hardware characteristics will vary
+dynamically and we therefore cannot do without a dose of dynamism in
+the programming model: dynamic task based programming models need to
+be a part of the solution.
+            }
+          \item{
+              Task base programming models, however, rely on the
+computation and data being split into chunks (``tasks'' for the
+computation which implies a size of the data these tasks operate
+on). The size of these chunks (the granularity) is difficult to
+determine as it needs to balance the overheads of the task-based
+system with the need to expose sufficient parallelism to fully occupy
+the ever increasing number of parallel resources. A static granularity
+will be sub-optimal for future machines [TODO: Do I need to add more
+to this]
+            }
+          \end{itemize}
+% OLD STUFF
+		  % \begin{itemize}
+		  % \item Static partitioning does not work for everything; we need to
+		  %     have a dynamic component.
+		  % \item A perfectly predictable hardware does not exist and, in the
+		  %     future will be even more far-fetched; we therefore cannot get
+		  %     away from some level of dynamism and task-based
+		  %     programming-models can make better use of this dynamism.
+		  % \item Granularity is a key issue that needs to be addressed with
+		  %     respect to locality. There is agreement that a static
+		  %     partitioning/granularity will not work for future
+		  %     machines. Granularity needs to balance overheads and exposing
+		  %     parallelism.
+		  % \end{itemize}
+
+
+
 	\item AREAS OF DISAGREEMENT (\textbf{Romain})
-		  \begin{itemize}
-		  \item The level at which standardization should be done: task-based
-		      runtime API, languages, interface to hardware, ...
-		  \item What/who should have control of the granularity and how should
-		      it be expressed (is it easier to break-down or recompose?)
-		  \end{itemize}
+          \begin{itemize}
+            \item{
+                There is agreement on the fact that a standardization
+needs to happen for task based programming model but there is
+disagreement as to the level at which this standardization needs to
+happen. One option is to standardize the APIs at the runtime level in
+a way similar to the Open Community Runtime (OCR). Another option is
+to standardize what can be expressed by the user at the programming
+model level [TODO: Jesus, I would like to understand your position a
+bit more on this so I can clarify things a bit more].
+              }
+            \item{
+                Another area of disagreement is how best to deal with
+ the expression of granularity; specifically, is it better for the
+ programmer to break-down tasks and data and have a runtime system
+ re-assemble them if needed or is it preferable to have the programmer
+express coarse grained tasks and data and allow the runtime system to
+break them down further. The latter approach has been used
+successfully in runtimes targetted to problems that are recursively
+divisible. The former approach would require a sort of ``recipe'' for
+the runtime to be able to stich smaller tasks or chunks of data into
+larger ones. There is debate as to which approach is simpler and more
+likely to yield positive results.
+              }
+            \end{itemize}
+
+% OLD STUFF
+		  % \begin{itemize}
+		  % \item The level at which standardization should be done: task-based
+		  %     runtime API, languages, interface to hardware, ...
+		  % \item What/who should have control of the granularity and how should
+		  %     it be expressed (is it easier to break-down or recompose?)
+		  % \end{itemize}
 
 
 	\item Identify Gaps / What is missing  (\textbf{Miquel})
 	    \begin{itemize}
-		
 		\item Better understanding of the performance features of task-parallel
-		systems. Need to convince developers of the value of these systems. 
+		systems. Need to convince developers of the value of these systems.
 		\begin{itemize}
 		  \item Better performance tools. Better understanding of the impact of locality
 		  \item Case studies that show performance benefit in certain conditions (eg,
 		    in the presence of faults?). Focus on data aspects, i.e. show that
-		a good management can be done even when there are a lot of work steals. 
-	      \end{itemize}  
-	  \end{itemize} 
-	 
+		a good management can be done even when there are a lot of work steals.
+	      \end{itemize}
+	  \end{itemize}
+
 
 	\item APPLICATION DOMAINS  (\textbf{Hatem})
 		\begin{itemize}
@@ -139,5 +197,3 @@ HIGHLIGHTS
 		\end{itemize}
 
 \end{itemize}
-
-
