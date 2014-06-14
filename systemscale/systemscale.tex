@@ -99,9 +99,164 @@ more important.
 To address the data locality issue system-wide, one approach consists of
 working on the application ecosystem and how the application executed (interaction
 with the batch-scheduler and the storage, optimization on the way the
-application uses the resources, interaction with the topology, etc.). 
+application uses the resources, its relation with the topology, the interaction
+with other executing application, etc.). 
 
 More precisely, the important issues lies in the strong need for new models and algorithms, new 
 mechanisms and tools for improving (1) topology-aware data accesses, (2) data 
 movements across the various software layers, (3) data locality and transfers for 
 applications. 
+
+
+\section{Key points}
+In the literature there are tremendous efforts for optimizing an application
+statically (better data layout, compilation optimization, parallelism
+structuration, etc.). However, once an application is written and compiled there
+are several factors that play an important role, that could not be known before
+the execution and have a dramatic impact on its performance. Among these
+factors, we have: 
+\begin{itemize}
+\item The allocated resources for the specific run and their interconnection,
+\item the other running applications and the network traffic they induce,   
+\item the topology of the target machine,
+\item the data accessed by the application and their location on the storage
+  system,
+\item dependencies of the input on the execution,
+\item \ldots
+\end{itemize}
+
+It is important to remark that these runtime factors are orthogonal to the
+static optimizations that can be perform. In other words, whatever, the
+application is written and optimized the way it is executed and it interacts
+with its ecosystem have a huge impact on its behavior. For instance, it has been
+shown that  the way resources are allocated to application plays a crucial role in the
+ performance of the execution. Recent work~\cite{cui2013accelerating,kramer13}
+ have demonstrated that a non-contiguous allocation
+ can slowdown the performance by more than 30\%. However, a batch scheduler cannot
+ always provide a contiguous allocation and even in the case of such allocation
+ the way processes are mapped to the allocated resources have a big impact on
+ the performance~\cite{DBLP:conf/ics/ChenCHRK06,jm10}. The reason is that the
+ topology of a HPC machine is hierarchical and that the process affinity is not
+ uniform (some pairs of processes exchange more data than some other
+ pairs). 
+
+
+In order to optimize system-scale application execution we need models
+of the machine at different scales, models of the application and algorithms
+and tools to optimize its execution with its whole ecosystem. 
+The literature provides a lot of models and abstraction on how to write a
+parallel code. However, even with a huge parallelism, future applications will
+not scale due to the data traffic and coherence management. Current models and
+abstraction are geared towards computations and ignore the cost incurred by data
+movement, topology and synchronization.  It is important to procide new hardware
+models to account for these phenomena as well as abstractions to enable the
+design of efficient topology-aware algorithms and tools. 
+
+A hardware model is needed to control locality.  Modeling the future large-scale
+parallel machines will require to work in the following directions: (1) better
+describe the memory hierarchy (2) provide an integrated view with the nodes and
+the network (3) exhibit qualitative knowledge and, (4) provide ways to express
+the multi-scale properties of the machine.
+
+Application models require abstractions on how to express its behavior and its
+requirement in terms of data access, locality and communication.  It is require
+to define metrics to capture the notions of data access, affinity, network
+traffic, etc. 
+
+To optimize execution at system scale, it is required to provide mechanisms,
+tools and algorithms that are based on the environment (given by the network
+model) and the application requirements (given by application models and
+abstractions). Based on that, several optimizations can be performed such as:
+improving storage access, mapping processes onto resources based on their
+affinity~\cite{hjm14,DBLP:conf/ics/HoeflerS11,Navauxandal2009}, selecting
+resources according to the application communication pattern and the pattern of
+the currently running applications. It is also possible to couple allocation and
+mapping
+
+{\bf TODO:}  
+\begin{itemize}
+\item shift in application communication models from BSP to over-decomposition model
+\item graph-based analytic applications
+\item applications using stencil communication patterns
+\item applications using transpose communication patterns
+\end{itemize}
+
+
+\section{Related Work}
+Concerning topology mapping TreeMatch~\cite{jmt14b}, provides mapping
+of processes onto computing resources in the case of a tree topology (such as
+current NUMA nodes and fattree
+network). LibTopoMap~\cite{DBLP:conf/ics/HoeflerS11} addresses the same problem as
+TreeMatch but for arbitrary topology such as torus, grid,
+etc. Zoltan~\cite{zoltan2,drl+14} is a tool chain where processors are first
+allocated to the application and then processes are mapped to the allocated
+resources depending on the geometry of the target machine and process
+affinity. Topology mapping is basically a graph embedding problem where a
+application graph is embedded into a machine graph.  Therefore, graph partitioners
+such as Scotch~\cite{scotch-man} or ParMetis~\cite{karypis2003parmetis} can address the
+problem even though they might require more precise information than specific
+tools and do not always provide good solutions~\cite{jmt14b}.
+
+
+Hardware Locality (HWLOC)~\cite{hwloc} is a library and a set of tools aiming at
+discovering and exposing the hardware topology of machines, including
+processors, cores, threads, shared caches, NUMA memory nodes and I/O devices.
+NETLOC~\cite{netloc} is network model extension of HWLOC to account for locality
+requirements of the network. For instance, the network bandwidth and the way
+contention is managed may change the way the distance within the network is
+expressed or measured. 
+
+Modeling the data-movement requirements of an application in terms of
+network traffic and I/O can be supported through performance-analysis tools
+such as Scalasca~\cite{geimer_ea:2010:scalascaarchitecture}. It can also be done
+by tracing data exchange at the runtime level by, for instance monitoring the
+messages transferred between MPI processes. Moreover, compilers, by analyzing
+the code and the way the array are accessed can, in some cases, determine the
+behavior of the application regarding this aspect. 
+
+Resource managers or job scheduler, such as SLURM~\cite{yoo2003slurm},
+OAR~\cite{capit2005batch,}, LSF~\cite{zhou1992lsf}
+or PBS~\cite{henderson1995job} have the role to allocate resources for executing the
+application. They feature technical differences but basically they offer the
+same set of services: reserving nodes, confining application, executing
+application in batch mode, etc. However, none of them is able to match the
+application requirements in terms of communication with the topology of the
+machine and the constraints incurred by already mapped applications. 
+
+
+{\bf TODO:}  
+\begin{itemize}
+\item Storage (e.g. parallel file system (???)), etc. 
+\end{itemize}
+
+\section{challenges}
+To address the locality problem at system scale, several challenges are required
+to be solved. 
+
+First, scalability is a very important cross-cutting issue since the targets are
+very large-scale, high-performance computers. On one hand, applications
+scalability will mostly depends on the way data is accessed and locality is
+manage and, on the other hand, the proposed solutions and mechanisms have to run
+at the same scale of the application and their inner decision time must
+therefore be very short.
+
+Second, it is important to tackle the problem for the whole system: taking into account
+the whole ecosystem of the application (storage, resource manager, etc.) and the
+whole architecture (i.e. from cores to network). It is important to investigate
+novel approaches to control data locality system-wide, by integrating
+cross-layer I/O stack mechanisms  with cross-node topology-aware mechanisms. 
+
+Third, most of the time, each layer of the software stack is optimized
+independently to address the locality problem. However, some optimizations can
+be conflicting. It is required to identify how the different approaches interact
+with each-other and propose integrated solutions that provide a global
+optimizations crossing the different layers.
+
+
+{\bf TODO:}  
+\begin{itemize}
+\item alternative node architectures
+\item alternative topologies, bottlenecks
+\item validation of models
+\item \ldots
+\end{itemize}
