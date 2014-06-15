@@ -192,14 +192,14 @@ of processes onto computing resources in the case of a tree topology (such as
 current NUMA nodes and fattree
 network). LibTopoMap~\cite{DBLP:conf/ics/HoeflerS11} addresses the same problem as
 TreeMatch but for arbitrary topology such as torus, grid,
-etc. Zoltan~\cite{zoltan2,drl+14} is a tool chain where processors are first
-allocated to the application and then processes are mapped to the allocated
-resources depending on the geometry of the target machine and process
-affinity. Topology mapping is basically a graph embedding problem where a
-application graph is embedded into a machine graph.  Therefore, graph partitioners
+etc. Topology mapping is basically a graph embedding problem 
+where an application graph is embedded into a machine graph.  Therefore, graph partitioners 
 such as Scotch~\cite{scotch-man} or ParMetis~\cite{karypis2003parmetis} can address the
 problem even though they might require more precise information than specific
-tools and do not always provide good solutions~\cite{jmt14b}.
+tools and do not always provide good solutions~\cite{jmt14b}.  
+After processes are allocated to an application, Zoltan2~\cite{zoltan2,drl+14} is a 
+toolkit that can map processes to the allocated resources depending on the geometry of the 
+target machine and process affinity.
 
 
 Hardware Locality (HWLOC)~\cite{hwloc} is a library and a set of tools aiming at
