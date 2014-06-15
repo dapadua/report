@@ -140,6 +140,18 @@ shown that  the way resources are allocated to application plays a crucial role 
  uniform (some pairs of processes exchange more data than some other
  pairs). 
 
+Futhermore, energy constraints imposed by exascale goals are altering the balance of 
+inteconnect capabilities, reducing the bandwidth to compute ratio while increasing injection 
+rates.  This shift is causing fundamental reconsideration of the BSP programming model and 
+interconnect design.  A leading contender for a new interconnect is a multi-level direct 
+network such as Dragonfly.  Such networks are formed from highly-connected parts, placing every 
+node within a few hops of all others.  This may benefit unstructured communications and graph 
+algorithms, but limited connections between parts can be bottlenecks for structured 
+communication patterns and the network topology is not fully specified.  At the node level, a 
+promising approach for fully utilizing higher core counts on next-generation architectures is 
+over-decomposed task parallelism, which will stress the interconnect in ways different from the 
+traditional BSP model.
+
 
 In order to optimize system-scale application execution we need models
 of the machine at different scales, models of the application and algorithms
@@ -171,15 +183,7 @@ improving storage access, mapping processes onto resources based on their
 affinity~\cite{hjm14,DBLP:conf/ics/HoeflerS11,Navauxandal2009}, selecting
 resources according to the application communication pattern and the pattern of
 the currently running applications. It is also possible to couple allocation and
-mapping
-
-{\bf TODO:}  
-\begin{itemize}
-\item shift in application communication models from BSP to over-decomposition model
-\item graph-based analytic applications
-\item applications using stencil communication patterns
-\item applications using transpose communication patterns
-\end{itemize}
+mapping.
 
 
 \section{Related Work}
