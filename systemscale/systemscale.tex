@@ -146,7 +146,8 @@ the balance of interconnect capabilities, reducing the bandwidth to
 compute ratio while increasing injection rates.  This shift is causing
 fundamental reconsideration of the BSP programming model and
 interconnect design.  A leading contender for a new interconnect is a
-multi-level direct network such as Dragonfly.  Such networks are formed
+multi-level direct network such as
+Dragonfly~\cite{4556717,ibm-percs-network}.  Such networks are formed
 from highly-connected parts, placing every node within a few hops of all
 others.  This may benefit unstructured communications that often occur
 in graph
@@ -177,7 +178,11 @@ the multi-scale properties of the machine.
 Applications need abstractions allowing them to express their behavior
 and requirement in terms of data access, locality and communication.
 For this, we need to define metrics to capture the notions of data
-access, affinity, network traffic, etc.. 
+access, affinity, network traffic, etc.. The MPI standard offers the
+process topology interface that allows an application to specify the
+dataflow between processes~\cite{hoefler-mpi-2.2-scal-topo}. However,
+while this interface is a good first step, it is essentially limited to
+BSP-style applications.
 %
 To optimize execution at system scale, we need to provide mechanisms,
 tools and algorithms that are based on the environment (given by the
