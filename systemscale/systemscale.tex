@@ -82,39 +82,39 @@ miniApps, etc.
 %% An idea of the presentation 
  
 
-Parallel computers are becoming more and more complex. 
-Indeed, they feature hundreds of thousands of cores, a deep memory hierarchy with 
-several cache layers, non-uniform memory access with  several levels of memory (flash,
-non-volatile, RAM, etc), elaborate topologies (both at the
-shared-memory level and at the distributed-memory one with state-of-the-art
-interconnection networks) and advanced parallel storage systems and resource
-management tools.
+Parallel computers are becoming more and more complex.  Indeed, they
+feature hundreds of thousands of cores, a deep memory hierarchy with
+several cache layers, non-uniform memory access with  several levels of
+memory (flash, non-volatile, RAM, etc), elaborate topologies (both at
+the shared-memory level and at the distributed-memory level using
+state-of-the-art interconnection networks) and advanced parallel storage
+systems and resource management tools.
 
-Nowadays it is already more challenging to write an application that efficiently
-accesses its data than efficiently processes the data. In other words bytes 
-feature more issues than flops. As it is expected that the memory
-per core will decrease in the coming years this problem will become even
-more important. 
+Nowadays it is already more challenging to write an application that
+efficiently accesses its data than one that efficiently processes the
+data. In other words arranging bytes is more complex than computing
+flops. As it is expected that the memory per core will decrease in the
+coming years this problem will become even more important. 
 
 To address the data locality issue system-wide, one approach consists of
-working on the application ecosystem and how the application executed (interaction
-with the batch-scheduler and the storage, optimization on the way the
-application uses the resources, its relation with the topology, the interaction
-with other executing application, etc.). 
+working on the application ecosystem and how the application is executed
+(interaction with the batch-scheduler and the storage, optimization on
+the way the application uses the resources, its relation with the
+topology, the interaction with other executing application, etc.). 
 
-More precisely, the important issues lies in the strong need for new models and algorithms, new 
-mechanisms and tools for improving (1) topology-aware data accesses, (2) data 
-movements across the various software layers, (3) data locality and transfers for 
-applications. 
+More precisely, the important issue lies in the strong need for new
+models and algorithms, new mechanisms and tools for improving (1)
+topology-aware data accesses, (2) data movements across the various
+software layers, (3) data locality and transfers for applications. 
 
 
 \section{Key points}
 In the literature there are tremendous efforts for optimizing an application
 statically (better data layout, compilation optimization, parallelism
-structuration, etc.). However, once an application is written and compiled there
+structuring, etc.). However, once an application is written and compiled there
 are several factors that play an important role, that could not be known before
 the execution and have a dramatic impact on its performance. Among these
-factors, we have: 
+factors are:
 \begin{itemize}
 \item The allocated resources for the specific run and their interconnection,
 \item the other running applications and the network traffic they induce,   
@@ -122,35 +122,39 @@ factors, we have:
 \item the data accessed by the application and their location on the storage
   system,
 \item dependencies of the input on the execution,
-\item \ldots
 \end{itemize}
+and many more.
 
-It is important to remark that these runtime factors are orthogonal to the
-static optimizations that can be perform. In other words, whatever, the
-application is written and optimized the way it is executed and it interacts
-with its ecosystem have a huge impact on its behavior. For instance, it has been
-shown that  the way resources are allocated to application plays a crucial role in the
- performance of the execution. Recent work~\cite{cui2013accelerating,kramer13}
- have demonstrated that a non-contiguous allocation
- can slowdown the performance by more than 30\%. However, a batch scheduler cannot
- always provide a contiguous allocation and even in the case of such allocation
- the way processes are mapped to the allocated resources have a big impact on
- the performance~\cite{DBLP:conf/ics/ChenCHRK06,jm10}. The reason is that the
- topology of a HPC machine is hierarchical and that the process affinity is not
- uniform (some pairs of processes exchange more data than some other
- pairs). 
+It is important to remark that these runtime factors are orthogonal to
+the static optimizations that can be performed. In other words, no
+matter how the application is written and optimized, the way it is
+executed and the interaction with its ecosystem have a huge impact on its
+behavior. For instance, it has been shown that  the way resources are
+allocated to an application plays a crucial role in the performance of the
+execution.  Recent works~\cite{cui2013accelerating,kramer13} have
+demonstrated that a non-contiguous allocation can slowdown the
+performance by more than 30\%. However, a batch scheduler cannot always
+provide a contiguous allocation and even in the case of such allocation
+the way processes are mapped to the allocated resources have a big
+impact on the performance~\cite{DBLP:conf/ics/ChenCHRK06,jm10}. The
+reason is often the complex network and memory topology of modern HPC
+systems and that some pairs of processes exchange more data than some
+other pairs. 
 
-Futhermore, energy constraints imposed by exascale goals are altering the balance of 
-inteconnect capabilities, reducing the bandwidth to compute ratio while increasing injection 
-rates.  This shift is causing fundamental reconsideration of the BSP programming model and 
-interconnect design.  A leading contender for a new interconnect is a multi-level direct 
-network such as Dragonfly.  Such networks are formed from highly-connected parts, placing every 
-node within a few hops of all others.  This may benefit unstructured communications and graph 
-algorithms, but limited connections between parts can be bottlenecks for structured 
-communication patterns and the network topology is not fully specified.  At the node level, a 
-promising approach for fully utilizing higher core counts on next-generation architectures is 
-over-decomposed task parallelism, which will stress the interconnect in ways different from the 
-traditional BSP model.
+Futhermore, energy constraints imposed by exascale goals are altering
+the balance of interconnect capabilities, reducing the bandwidth to
+compute ratio while increasing injection rates.  This shift is causing
+fundamental reconsideration of the BSP programming model and
+interconnect design.  A leading contender for a new interconnect is a
+multi-level direct network such as Dragonfly.  Such networks are formed
+from highly-connected parts, placing every node within a few hops of all
+others.  This may benefit unstructured communications that often occur
+in graph
+algorithms, but limited connections between parts can be bottlenecks for
+structured communication patterns.  At the node level, a promising approach for fully utilizing
+higher core counts on next-generation architectures is over-decomposed
+task parallelism, which will stress the interconnect in ways different
+from the traditional BSP model.
 
 
 In order to optimize system-scale application execution we need models
@@ -160,7 +164,7 @@ The literature provides a lot of models and abstraction on how to write a
 parallel code. However, even with a huge parallelism, future applications will
 not scale due to the data traffic and coherence management. Current models and
 abstraction are geared towards computations and ignore the cost incurred by data
-movement, topology and synchronization.  It is important to procide new hardware
+movement, topology and synchronization.  It is important to provide new hardware
 models to account for these phenomena as well as abstractions to enable the
 design of efficient topology-aware algorithms and tools. 
 
@@ -170,20 +174,21 @@ describe the memory hierarchy (2) provide an integrated view with the nodes and
 the network (3) exhibit qualitative knowledge and, (4) provide ways to express
 the multi-scale properties of the machine.
 
-Application models require abstractions on how to express its behavior and its
-requirement in terms of data access, locality and communication.  It is require
-to define metrics to capture the notions of data access, affinity, network
-traffic, etc. 
-
-To optimize execution at system scale, it is required to provide mechanisms,
-tools and algorithms that are based on the environment (given by the network
-model) and the application requirements (given by application models and
-abstractions). Based on that, several optimizations can be performed such as:
-improving storage access, mapping processes onto resources based on their
-affinity~\cite{hjm14,DBLP:conf/ics/HoeflerS11,Navauxandal2009}, selecting
-resources according to the application communication pattern and the pattern of
-the currently running applications. It is also possible to couple allocation and
-mapping.
+Applications need abstractions allowing them to express their behavior
+and requirement in terms of data access, locality and communication.
+For this, we need to define metrics to capture the notions of data
+access, affinity, network traffic, etc.. 
+%
+To optimize execution at system scale, we need to provide mechanisms,
+tools and algorithms that are based on the environment (given by the
+network model) and the application requirements (given by application
+models and abstractions). Based on that, several optimizations can be
+performed such as: improving storage access, mapping processes onto
+resources based on their
+affinity~\cite{hjm14,DBLP:conf/ics/HoeflerS11,Navauxandal2009},
+selecting resources according to the application communication pattern
+and the pattern of the currently running applications. It is also
+possible to couple allocation and mapping.
 
 
 \section{Related Work}
@@ -191,8 +196,7 @@ Concerning topology mapping TreeMatch~\cite{jmt14b}, provides mapping
 of processes onto computing resources in the case of a tree topology (such as
 current NUMA nodes and fattree
 network). LibTopoMap~\cite{DBLP:conf/ics/HoeflerS11} addresses the same problem as
-TreeMatch but for arbitrary topology such as torus, grid,
-etc. Topology mapping is basically a graph embedding problem 
+TreeMatch but for arbitrary topology such as torus, grid, and others. Topology mapping is basically a graph embedding problem 
 where an application graph is embedded into a machine graph.  Therefore, graph partitioners 
 such as Scotch~\cite{scotch-man} or ParMetis~\cite{karypis2003parmetis} can address the
 problem even though they might require more precise information than specific
@@ -246,7 +250,7 @@ therefore be very short.
 
 Second, it is important to tackle the problem for the whole system: taking into account
 the whole ecosystem of the application (storage, resource manager, etc.) and the
-whole architecture (i.e. from cores to network). It is important to investigate
+whole architecture (i.e., from cores to network). It is important to investigate
 novel approaches to control data locality system-wide, by integrating
 cross-layer I/O stack mechanisms  with cross-node topology-aware mechanisms. 
 
