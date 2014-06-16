@@ -28,6 +28,7 @@ Report Class for PADAL]
 
 \renewcommand\normalsize{\fontsize{10pt}{12pt}\selectfont}
 
+
 \def\PADALabstract#1{\def\@PADALabstract{#1}}
 \PADALabstract{}
 
@@ -86,19 +87,19 @@ Report Class for PADAL]
 	\setcounter{page}{1}%
 	}
 
-\newcommand\PADALtitlepage{
+\newcommand\PADALfrontpage{
 	\vskip 30em%
 	\AddToShipoutPicture*{\PADALBackgroundPic}%
 	\thispagestyle{empty}%
 	{\raggedleft \vspace*{9cm} \par}%
-	{\raggedleft \huge \sffamily \textbf{ \@PADALtitle } \par}%
+%	{\raggedleft \huge \sffamily \textbf{ \@PADALtitle } \par}%
 	\vskip 3em%
-	{\raggedleft \small \sffamily \@PADALauthorshort \par}%
+%	{\raggedleft \small \sffamily \@PADALauthorshort \par}%
 	\vskip 3em%
-	{\raggedleft \small \sffamily \@PADALInstitutionOneShort \par}%
-	{\raggedleft \small \sffamily \@PADALInstitutionTwoShort \par}%
+%	{\raggedleft \small \sffamily \@PADALInstitutionOneShort \par}%
+%	{\raggedleft \small \sffamily \@PADALInstitutionTwoShort \par}%
 	\vskip 3em
-	{\raggedleft \large \sffamily \@date \par}
+%	{\raggedleft \large \sffamily \@date \par}
 	\newpage%
 	\thispagestyle{empty}%
 	\vspace*{1cm}%
@@ -111,6 +112,14 @@ Report Class for PADAL]
 	\cleardoublepage%
 	\includepdf[pages={1}]{figures/padalbackpage}
 	}
+
+\newcommand\note[1] {
+  {\color{blue}{#1}}
+}
+
+\newcommand\mv[1] {
+  {\color{purple}{#1}}
+}
 
 \thispagestyle{plain}
 \pagenumbering{arabic}

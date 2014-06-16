@@ -1,3 +1,4 @@
+% !TEX root = ../padalreport.tex
 \chapter{Data Structures and Layout Abstractions}
 \label{ch:datastructures}
 
@@ -35,6 +36,7 @@
 %‚ñ† How do we create a user community? (bonus question)
 
 HIGHLIGHTS
+
 \begin{itemize}
 \item SCOPE
   \begin{itemize}
@@ -42,10 +44,10 @@ HIGHLIGHTS
   \end{itemize}
 \item KEY POINTS
   \begin{itemize}
-  \item What are the {\em easy} and the {\em complex} parts of algorithm design? I think the {\em easy} should include parallelism. From the implementation point of view this may be different, but compared with the challenges of locality, parallelism should be considered easy and high level. What is the level of ``algorithmic locality'' that we want to be able to specify? Is local/non-local distinction sufficient?
+  \item \note{Didem: I think this should appear in the introduction of the entire report.}What are the {\em easy} and the {\em complex} parts of algorithm design? I think the {\em easy} should include parallelism. From the implementation point of view this may be different, but compared with the challenges of locality, parallelism should be considered easy and high level. What is the level of ``algorithmic locality'' that we want to be able to specify? Is local/non-local distinction sufficient?
   \item From the requirements of the applications (and scalability) we focus on data-parallel algorithms (even though we may use task oriented abstractions and runtimes).
   \item The lack of a single abstract machine (programming model) to program for performance imposes the choice of data-structure specific constructs and specific implementations of those for different platforms (for now this is an empirical observation)
-  \item The diversity of the architectures also forces these constructs to work at level of {\em means of combination/composition} (it's not sufficient to provide very efficient primitive operations, like BLAS).
+  \item \note{not sure I got this item, it seems similar to the item right above}The diversity of the architectures also forces these constructs to work at level of {\em means of combination/composition} (it's not sufficient to provide very efficient primitive operations, like BLAS).
   \item Separation of concerns is important to maximize expressivity and optimize performance.  That principle is applied to the distinction between a logical, semantic specification, and lower-level controls over the physical implementation.
   \item At the semantic level, scalar work is mapped onto parallel data collections, using logical abstractions of data layout which best promote productivity.  Domain experts can also expose semantic characteristics like reference patterns that can inform trade-offs made by tools.
   \item Performance tuners, who may be distinct from the domain experts, may exercise control over performance with a set of interfaces which can be distinct from those that specify semantics.  Through these interfaces, they may 
@@ -61,22 +63,22 @@ HIGHLIGHTS
 \item TERMINOLOGY (define each of these up front)
   \begin{itemize}
 
-  \item Memory space: A computer has multiple memory resources.  A single computer traditionally has main memory, one or more levels of hardware managed cache memory, and registers; where the main memory is the only memory space explicitly managed by a computation.  Advanced architectures have heterogeneous memory that, or performance, must be managed by computations.  Examples of these memory spaces include CPUs' non-uniform memory access (NUMA) regions, separate GPU memory, and GPU's on-chip shared memory.
+  \item Memory space: A computer has multiple memory resources.  A single computer traditionally has main memory, one or more levels of hardware managed cache memory, and registers; where the main memory is the only memory space explicitly managed by a program.  Advanced architectures have heterogeneous memory for performance that must be managed by computations.  Examples of these memory spaces include CPUs' non-uniform memory access (NUMA) regions, separate GPU memory, and software-managed on-chip memory.
 
   \item Data structure: A organized collection of datum residing in one or more memory spaces. 
 
   \item Layout (of data structure):
     The mapping of a data structure into one or more memory spaces, typically with the intent of efficient and performant access by a collection of computations.
 
-    Example: A 2D matrix of size 100x100 holding integers is a data structure: a semantic/logical entity in which a programmer thinks. Storing and processing the matrix in a computer requires a layout that maps the 2d matrix onto the 1d address space of the computer in some way. The mapping could be a simple linearization or it could be a more complex blocked (tiled) scheme.
+    Example: A 2D matrix of size 100x100 holding integers is a data structure: a semantic/logical entity in which a programmer thinks. Storing and processing the matrix in a computer requires a layout that maps the 2D matrix onto the 1D address space of the computer in some way. The mapping could be a simple linearization or it could be a more complex blocked (tiled) scheme.
 
-  \item Distributed data structure / parallel data structure: not sure we should use either of those terms, but if we do we should make sure what we mean: is the data distributed over multiple nodes/address spaces? is there concurrent access to the same data structure? 
+  \item Distributed data structure / parallel data structure: not sure we should use either of those terms, but if we do we should make sure what we mean: is the data distributed over multiple nodes/address spaces? is there concurrent access to the same data structure? \note{Didem: I am removing this unless the chapter refers to it.}
     
-  \item  Locality: A measure of distance between datum on a computer.  For example, do the datum reside in the same compute node of a cluster, in the same memory space, in the same cache line?  [I can't think of a direct definition that doesn't require a whole lot of other definitions up front, so how about the following phenomenological definition?]
+  \item \note{Didem: should be part of the report intro} Locality: A measure of distance between datum on a computer.  For example, do the datum reside in the same compute node of a cluster, in the same memory space, in the same cache line?  [I can't think of a direct definition that doesn't require a whole lot of other definitions up front, so how about the following phenomenological definition?]
+
+  \item Execution policy: How a computation's units of work are scheduled and mapped onto data collections. \note{is this the same thing as thread binding?}
 
   \item Memory access pattern: A computation accesses data structures according to its execution policy. 
-
-  \item Execution policy: How a computation's units of work are scheduled and mapped onto data collections [in line with C++ committee].
 
   \item Memory access pattern: The memory access pattern of a computation is determined by the composition of the computation's algorithm, computation's execution policy, and layout of the computation's data structures.  The quality of a computation's memory access pattern is determined by the time or energy consumed accessing its datum.  
 
@@ -195,5 +197,54 @@ HIGHLIGHTS
 
 \end{itemize}
 
+\section{Introduction}
+In this chapter, we discuss emerging language and library interfaces that help manage 
+data structure and layout abstractions for data locality. We
+focus on data-parallel algorithms and leave the discussion on tasks oriented abstractions to
+Chapter~\ref{ch:taskmodels}.
 
+Before going into further discussions, let us define terminology. 
+\note{Didem: we have way too many terms to define here. need to leave some out. Alternatively, we can create an appendix 
+for the terminology. I am leaning towards adding an appendix. We can ask others to add their vocabulary to there as well }
+
+
+\section{Key Points}
+The lack of a single abstract machine model  due to the diversity of the architectures 
+requires the programmer to support various implementations of the same program to achieve high performance
+on different platforms. Recently, a number of programming interfaces such as Kokkos, TiDA, OpenMPextensions, GridTools, Dash, Array Extensions \cite{all}
+ have arise to give developers more control over 
+ data layout and to abstract the data layout itself from the application. Through these interfaces, developers may
+  \begin{itemize}
+    \item decompose, distribute and map parallel data collections onto efficient physical layouts with specialized characteristics,
+    \note{Didem: can someone explain how distribute and map differ? Cj, did you write that?}
+    \note{Didem: What is specialized characteristics, here? } 
+    \item map parallel work onto underlying hardware mechanisms for supporting parallelism, and 
+    \item exercise control over temporal sequencing of work and movement of data for locality.
+    \end{itemize}
+
+While supporting the mentioned interfaces, separation of concerns is important to maximize expressibility and optimize performance. \note{need to be more specific here, 
+what concerns are separated?}
+That principle is applied to the distinction between a logical, semantic specification, and lower-level controls over the physical implementation. \note{an example would help here} For example, we will discuss the proposed abstractions agnostics about 
+the base language that they are implemented on. – At the semantic level, scalar work is mapped onto parallel data collections, using logical abstrac- tions of data layout which best promote productivity. Domain experts can also expose semantic characteristics like reference patterns that can inform trade-offs made by tools.– Performance tuners, who may be distinct from the domain experts, may exercise control over performance with a set of interfaces which can be distinct from those that specify semantics. 
+
+This is a positive shift towards a more data-centric programming. 
+
+
+\section{Emerging Approaches}
+Here we may want to discuss Kokkos, TiDA, GridTools etc a little bit (few sentences for each)
+
+\section{Discussions or Challenges ?}
+
+Libraries? 
+Flavors of functional programming ?
+
+The choice of base language to implement the mentioned abstractions varies among different groups. Some prefer standard languages such as Fortran, C/C++ in order to maximize impact and leverage market breadth of the supporting tool chain (e.g., compilers, debuggers, profilers). Wherever profitable, there can be a push to “redeem” existing languages by amending or extending them, e.g. via changes to the specifications or by introducing new ABIs. It is noteworthy that the ISO C++ standardization committee intends to address performant, on-node parallelism in a future language standard.
+C++ metaprogramming can cover a significant fraction of the desired capabilities, and that it’s a middle road for being able to implement DSLs that are embedded within standard languages. Specialization can be hidden in template implementation and controlled by template parameters. Even though there are a huge number of applications implemented in Fortran, 
+there is a concern about Fortran's lack of extensibility in terms of lambdas and templates. Others believe that specialized languages are required, e.g. to “get us to exascale.” Different language rules may be required to overcome limitations imposed by current languages. For example, C exposes physical data layout, and limits a compiler’s ability to re-layout data. Source to source translators are still subject to language rules, whereas new languages may remove such limitations through abstraction.
+In conclusion, there is no single language  to physically implement the layout abstractions 
+
+
+\section{Research Areas}
+
+We need a data model to assess the data locality? We have a model for parallelism but do not have a model for data locality? Optimal trade-offs may shift over time and across target systems.? Models need to take into account the capabilities and capacities of computational elements,memory structures, and the network fabric? Models should reflect the consequences of various controls, such as the placement of worknear data
 

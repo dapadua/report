@@ -2,21 +2,25 @@
 
 \usepackage{rotating}
 \usepackage{textcomp}
-
+\usepackage{color}
 % modern bibliography management
 \usepackage[backend=biber,style=numeric,sorting=nyt,hyperref,defernumbers=true,maxcitenames=4,mincitenames=4,maxbibnames=100,firstinits=true]{biblatex}
+
+
+
+
 \addbibresource[label=primary]{references.bib}
 
 %\usepackage{draftwatermark}
 %\SetWatermarkText{DRAFT}
 %\SetWatermarkScale{2}
 
+
 \input{misc/preamble}
 
 \input{misc/title}
 
-\date{\today}           % Leave this here but empty
-
+\date{}           % Leave this here but empty
 
 \input{misc/authors}
 
@@ -28,7 +32,7 @@
 
 % Start the document
 \begin{document}
-    \PADALtitlepage
+    \PADALfrontpage
 
     \input{misc/abstract}
     \maketitle
@@ -49,11 +53,11 @@
         \input{intro/introduction}
         \input{background/background}
         \input{apps/applications}
-        \input{datastructures/datastructures}
-        \input{langcomp/langcomp}
+       \input{datastructures/datastructures}
+       \input{langcomp/langcomp}
         \input{taskmodels/taskmodels}
-        \input{systemscale/systemscale}
-        \input{conclusion/conclusion}
+       \input{systemscale/systemscale}
+       \input{conclusion/conclusion}
 
     % ---------------------------------------------------------------------- %
     % References
