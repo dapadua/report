@@ -222,8 +222,8 @@ on different platforms. Recently, a number of programming interfaces such as Kok
     \item exercise control over temporal sequencing of work and movement of data for locality.
     \end{itemize}
 
-While supporting the mentioned interfaces, separation of concerns is important to maximize expressibility and optimize performance. \note{need to be more specific here, 
-what concerns are separated?}
+While supporting the mentioned interfaces, separation of concerns
+between application developers and perfromance tuners is important to maximize expressibility and optimize performance. 
 That principle is applied to the distinction between a logical, semantic specification, and lower-level controls over the physical implementation. \note{an example would help here} For example, we will discuss the proposed abstractions agnostics about 
 the base language that they are implemented on. Ð At the semantic level, scalar work is mapped onto parallel data collections, using logical abstrac- tions of data layout which best promote productivity. Domain experts can also expose semantic characteristics like reference patterns that can inform trade-offs made by tools.Ð Performance tuners, who may be distinct from the domain experts, may exercise control over performance with a set of interfaces which can be distinct from those that specify semantics. 
 
