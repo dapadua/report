@@ -73,12 +73,61 @@ We consider the following design principles as important and desired by the appl
 \item Through these interfaces, they may decompose, distribute and map parallel data collections onto efficient physical layouts with specialized characteristics,
 \end{itemize}
 
-The key point of separation of concerns is of offering, to the user of the interface, an architecture agnostic abstract machine. An {\em abstract machine} (AM) is necessary to express an algorithm, being this abstraxt mechine a functional language or a Turing machine. An algorithm written for an AM must be translated into  program for a {\em physical machine} (PM), which can be closely related to AM or completely different. The translation effort depends on the distance between the AM and the PM. Since there are many different PMs, and the lifetime of applications should be much longer that the lifetime of an architecture, the usual request is that an algorithm for an AM should be executed efficiently in the widest possible class of PMs. This is the well know problem of {\em portable efficiency}. From this perspective an AM should be distant from PMs for two reasons: first it gives th user auniform view of the prgramming space, often at a much higher level of abstraction than any specific PM; second, the hope is that by being equidistant from any PM the translation can lead to equally efficient implementations with similar effort.
+\note{Move the following to discussion?}
+The key point of separation of concerns is of offering, to the user of
+the interface, an architecture agnostic {\em abstract machine}
+(AM). An AM is necessary to express an algorithm, being it a
+functional language or a Turing machine. An algorithm written for an
+AM must be translated into program for a {\em physical machine} (PM),
+which can be closely related to AM or completely different. The
+translation effort depends on the ``distance'' between the AM and the
+PM. Since there are many different PMs, and the lifetime of
+applications should be much longer that the lifetime of an
+architecture, the usual request is that an algorithm for an AM should
+be executed efficiently in the widest possible class of forseeable
+PMs. This is the well know problem of {\em portable efficiency}. From
+this perspective an AM should be distant from PMs for two reasons:
+first it gives the user an uniform view of the porgramming space,
+often at a much higher level of abstraction than any specific
+programming model for a PM; second, the hope is that by being
+equidistant from any PM the translation can lead to equally efficient
+implementations with similar effort.
 
-The interfaces the Authors of this report, the already cited Kokkos, TiDA, OpenMP
-extensions, GridTools, Dash, Array Extensions, provide AMs at widely different abstraction levels. Some as DASH provide a PGAS abstraction in C++, so that DASH AM is basically an universal parallel machine with the concept of (two levels: local and remote) locality made explicit. GridTools provides a set of libraries for expressing distributed memory implementations of regular grid applications, like stencils. It is not meant to be universal, in the sense that non regular grid applications should not be expressed using Gridtools libraries. Since the constructs provided by GridTools are high level and semi-functional, locality issues are taken into account at the level of performance tuners and not by application programmers. Kokkos is a library for expressing multidimensional arrays in C++, in which the layout can be decided at compile time. An algorithm written with Kokkos uses the AM of C++ with the data access provided by the interface of Kokkos arrays. Locality is managed by matching the data layout with the algorithm logical locality. \note{Not sure what to say about the others}. As can be seen there is not a single way of treating locality concerns, and there is not consensus on which one is the best. Each of these approaces are appealing to different scenarious that depends on the scope of the particular projects. In the case of C++ libraries, anyway, there is the possibility of building higher level interfaces using lower level ones, for instance a DASH multidimensional array could be implemented using Kokkos arrays, and GridTools parallel algoritmhs could use DASH library, and Kokkos arrays for storage, etc. There is a potential benefit from interoprability that arises from using a commom language empowered with generic programming capabilities, as C++.
+The interfaces the Authors of this report are developing, the already
+cited Kokkos, TiDA, OpenMP extensions, GridTools, Dash, Array
+Extensions, provide AMs at widely different abstraction levels. Some
+as DASH provide a PGAS abstraction in C++, so that DASH AM is
+basically an universal parallel machine with the concept of (two
+levels: local and remote) locality made explicit. GridTools provides a
+set of libraries for expressing distributed memory implementations of
+regular grid applications, like stencils. It is not meant to be
+universal, in the sense that non regular grid applications should not
+be expressed using Gridtools libraries, even though possible in
+principle, for performance reasons. Since the constructs provided by
+GridTools are high level and semi-functional, locality issues are
+taken into account at the level of performance tuners and not by
+application programmers. At user level the locality is take into
+consideration onlyh implicitly. Kokkos is a library for expressing
+multidimensional arrays in C++, in which the layout can be decided at
+compile time. An algorithm written with Kokkos uses the AM of C++ with
+the data specification and access provided by the interface of Kokkos
+arrays. Locality is managed explicitly by matching the data layout
+with the algorithm logical locality. \note{Not sure what to say about
+  the others}. As can be seen, there is not a single way of treating
+locality concerns, and there is not consensus on which one is the
+best. Each of these approaces are appealing to different scenarios
+that depends on the scope of the particular projects. In the case of
+C++ libraries, anyway, there is the possibility of naturally building
+higher level interfaces using lower level ones, for instance a DASH
+multidimensional array could be implemented using Kokkos arrays, and
+GridTools parallel algoritmhs could use DASH library, and Kokkos
+arrays for storage, etc. This is a potential benefit from
+interoprability that arises from using a commom language provided with
+generic programming capabilities, as C++.
 
-\note{The followings were used to be in the terminology but I think we center the discussion around them}
+\note{The followings were used to be in the terminology but I think we
+  center the discussion around them. Mauro: I think they should be
+  moved to the terminology section.}
 
 \begin{itemize}
  \item Memory access pattern: The memory access pattern of a computation is determined by the composition of the computation's algorithm, computation's execution policy, and layout of the computation's data structures.  The quality of a computation's memory access pattern is determined by the time or energy consumed accessing its datum.  
