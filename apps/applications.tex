@@ -4,6 +4,13 @@
 % define command for HIPAcc acronym
 \newcommand{\hipacc}{\textsf{HIPA\nolinebreak[4]\hspace{-0.1em}\textsuperscript{cc}}}
 
+
+\marginparsep 7pt % restore marginpar sep
+\marginparwidth 5.5pc % restore marginpar width
+\colorlet{fhcolor}{ProcessBlue}
+\newcommand{\TODO}[3]{\todo[#1]{\sffamily\footnotesize\textbf{\textcolor{black}{#2:\,}}\textcolor{black}{#3}}\xspace}
+\newcommand{\fh}[2][]{\TODO{color=fhcolor!40,#1}{Frank}{#2}}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % S U M M A R Y   P O I N T S
@@ -80,7 +87,7 @@ scientific phenomena. While the
 applications space itself is very large, the set of
 applications/applications experts included in the workshop were fairly 
 representative of the numerical algorithms and techniques used in
-majority of state-of-the-art application codes (i.e. \cite{cosmo},
+majority of state-of-the-art application codes (i.e.\ \cite{cosmo},
 \cite{gromacs}, \cite{Hydra, op2}, \cite{chombo}, \cite{vis}.
 Additionally, among the included applications were those that model
 multi-physics phenomena combining several different numerical and
@@ -91,7 +98,7 @@ multiple and heterogeneous solvers.  Because of the presence of many
 tightly coupled solvers these applications also
 highlight the importance of interoperability among solvers and
 libraries by implication. The science domain which rely on multiphysics modeling
-include many physical, biological and chemical systems, e.g. climate
+include many physical, biological and chemical systems, e.g.\ climate
 modeling, combustion, star formation, cosmology, blood flow, protein
 folding to name only a few. The numerical algorithms and solvers
 technologies on which these very diverse fields rely include
@@ -127,7 +134,7 @@ programming paradigm with a life-cycle that is several times the
 development cycle of the code must emerge for sustainable science. The
 programming paradigm itself can take any of the forms under
 consideration, such as domain-specific languages, abstraction
-libraries or full languages, or some combination of these.  The
+libraries or full languages, or some combination of these. The
 critical aspects are the longevity, robustness and the reliability of
 tools available to make the transition. 
  
@@ -175,14 +182,22 @@ solutions because of a lack of a stable paradigm that they can adopt.
 
 The research communities that have been engaged in the discussions
 about peta- and exa-scale computing are well informed about the
-challenges they face. Many have started to experiment with approaches
-recommended by the researchers in the compilers, programming
-abstractions and runtime systems in order to be better prepared for
-the platform heterogeneity. At the workshop examples of many such
-efforts were presented.  For example (\hipacc~\cite{MHTKE12a}),
-OP2~\cite{}, and Stella \cite{} represented the use of embedded domain
-specific languages being used to good effect in their target science
-domains. Other efforts such as use of tiling within patches in AMR for
+challenges they face.
+\textcolor{fhcolor}{Many have started to experiment with approaches
+recommended by the researchers from the compilers, programming
+abstractions and runtime systems communities in order to be better
+prepared for the platform heterogeneity.}\fh{Sentences that I
+changed / added, are marked in blue.}
+
+At the workshop examples of many such efforts were presented.
+\textcolor{fhcolor}{These efforts can be mainly classified into two
+classes: (1) Approaches based on Domain-Specific programming Languages
+(DSL) and (2) library-based methods.}
+
+\textcolor{fhcolor}{For example \hipacc~\cite{MHTKE12a}, OP2~\cite{}\fh{I think OP2 is an active library for solving unstructured mesh-based applications, and PyOP2 is the DSL on top of it---I'll check and refine}, and Stella~\cite{} represented the use of
+\emph{embedded domain-specific languages} (\textbf{$<$reference to appropriate place in Ch.~4 ``Language \ldots''$>$}) being used to good effect in their target science
+domains.}
+Other efforts such as use of tiling within patches in AMR for
 exposing greater parallelism rely on a library based approach. Still
 others such as Gromacs using SIMD operations for non-bonded iterations
 or doing ensemble simulations are targeted at utilizing vectorization
@@ -227,7 +242,7 @@ term. Often the developers will opt for a suboptimal or custom built
 solution that does not get in the way of being able to run their
 simulations. For this reason embedded DSLs, or code transformation
 technologies are more attractive to the applications. These
-techniques, because they are not all-or-none solution,s have the added
+techniques, because they are not all-or-none solutions, have the added
 advantage of providing an incremental path for transition. The trade-off
 is the possibly of missing out on some compiler level optimizations.  
 
@@ -315,7 +330,7 @@ demands of data movement. The questions to be addressed include: (1)
 what methodology should be used to determine what constitutes a
 component, (2) what degree of locality awareness is appropriate in a
 component, (3) what is the optimum level abstraction in the component
-based design, i.e. who is aware of spatial decomposition, and who is
+based design, i.e.\ who is aware of spatial decomposition, and who is
 aware of functional decomposition it it exists, (4) how to design so that
 numerical complexity does not interleave with the complexity arising
 out of locality management, and (4) how to account for concerns other

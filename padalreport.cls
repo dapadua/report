@@ -16,9 +16,9 @@ Report Class for PADAL]
 \RequirePackage{enumerate}
 \RequirePackage{xspace}
 \RequirePackage{ifthen}
-\RequirePackage[usenames,dvipsnames]{color}
+\RequirePackage[usenames,dvipsnames]{xcolor}
 \RequirePackage{subfigure}
-\RequirePackage{xcolor}
+%\RequirePackage{xcolor}
 \RequirePackage{titlesec}
 \RequirePackage{pifont}
 \RequirePackage{pdfpages}
