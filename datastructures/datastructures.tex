@@ -48,18 +48,36 @@ extensions, GridTools, Dash, Array Extensions \cite{all} have arise to give deve
  solutions, and potential research areas. Here, we focus on  locality management on data-parallel algorithms 
  and leave the discussion on task-oriented abstractions to Chapter~\ref{ch:taskmodels}.
 
-Before going into further discussions, let us define relevant terminology. \note{I sent an email 
-for discussion, will update this section based on the responses.}
-We consider {\em data structure} as an organized collection of 
-datum residing in one or more memory spaces (e.g. main memory, local storage).
-{\em Data decomposition} is partitioning of data collection into smaller chunks with the intent of fitting small chunks into certain memory space or introducing more parallelism. 
-{\em Data placement} maps each partition of data collection onto memory spaces. 
-{\em Data access pattern} is the access order to the data by the computation's algorithm and its execution policy and might be different than storage pattern.
-{\em Execution policy (Thread Binding?)} determines how tasks are scheduled and mapped onto data collections. 
-{\em Data layout} refers to the policy that decomposes data, uses a certain storage pattern and determines placement of data onto memory spaces, 
-typically with the intent of efficient and performant access by a collection of computation.  
 
-\note{There is also data distribution. I am not sure how this is different than data placement. }
+
+Before going into further discussions, we define relevant terminology. 
+%
+% \note{I sent an email for discussion, will update this section based on the responses.}
+%
+A {\em data structure} is an organized collection of datum residing in one or more {\em memory spaces}.
+%
+HPC systems with multiple CPU+GPU compute nodes have many memory spaces; e.g., each node's main memory and each GPU's on-package memory defines a different memory space.
+%
+{\em Data decomposition} is the partitioning of a data structure's datum into smaller chunks with the intent of assigning each chunks to a memory space or introducing parallelism across chunks. 
+%
+{\em Data placement} is the mapping of decomposed data structure's chunks to memory spaces.
+%
+%\note{Data distribution is the composition of data decomposition and data placement.}
+%
+{\em Data layout} is the mapping of a data structure's chunk to the physical linear addressing scheme of the assigned memory space.
+%
+A computation accesses memory according to a {\em data access pattern} which is determined by the composition of (1) how the computation's parallel tasks traverse the data structure,
+(2) how the computation's tasks are scheduled (i.e., the {\em execution policy}), 
+(3) data layout,
+(4) data placement, and
+(5) data decomposition.
+%
+Performance is constrained by the cost (time and energy) of moving datum in service of the computation, which is directly impacted by the computation's data access pattern.
+%
+{\em Data locality} is a proxy measure for the relative cost of moving different datum to/from a given task as it executes; smaller ``distance'' implies smaller cost.
+%
+Locality has both spatial (memory space) and temporal (execution scheduling) considerations.
+
   
   
 \section{Key Points}
@@ -67,10 +85,18 @@ It is encouraging that there is a shift towards a more data-centric programming 
 We consider the following design principles as important and desired by the application programmers.
 
 \begin{itemize}
+\item We seek to improve performance by controlling the separate components (traversal, execution policy, data layout, data placement, and data decomposition) whose composition determines a computation's data access pattern. 
+%
 \item Separation of concerns is important to maximize expressivity and optimize performance. That principle is applied to the distinction between a logical, semantic specification, and lower-level controls over the physical implementation.
  At the semantic level, scalar work is mapped onto parallel data collections, using logical abstractions of data layout which best promote productivity. Domain experts can also expose semantic characteristics like reference patterns that can inform trade-offs made by tools.
+%
+\item A computation's algorithm is expressed in terms of operations on certain abstract data types, such as matrices, trees, etc. The code usually expresses data traversal patterns at high level, such as accessing the parent node in a tree, or the elements in a row of a matrix. This expresses the {\em algorithmic locality} of the data, which may be not related to the {\em actual} locality of the data access.  The actual locality is obtained when the algorithm's traversals, tasks, and data structures are mapped to the physical architecture. \
+%
+\item The efficiency of a computation's on-node data access pattern may depend upon the architecture of the computer on which it executes.  Performance may be improved by choosing a data layout appropriate for the architecture.  This choice can be made without modifying the computations source code if the data structure has a {\em polymorphic data layout}.
+%
 \item Performance tuners, who may be distinct from the domain experts, may exercise control over performance with a set of interfaces which can be distinct from those that specify semantics. 
-\item Through these interfaces, they may decompose, distribute and map parallel data collections onto efficient physical layouts with specialized characteristics,
+%
+\item Through these interfaces, they may decompose, distribute and map parallel data collections onto efficient physical layouts with specialized characteristics.
 \end{itemize}
 
 \note{Move the following to discussion?}
@@ -87,7 +113,7 @@ architecture, the usual request is that an algorithm for an AM should
 be executed efficiently in the widest possible class of forseeable
 PMs. This is the well know problem of {\em portable efficiency}. From
 this perspective an AM should be distant from PMs for two reasons:
-first it gives the user an uniform view of the porgramming space,
+first it gives the user an uniform view of the programming space,
 often at a much higher level of abstraction than any specific
 programming model for a PM; second, the hope is that by being
 equidistant from any PM the translation can lead to equally efficient
@@ -107,15 +133,15 @@ principle, for performance reasons. Since the constructs provided by
 GridTools are high level and semi-functional, locality issues are
 taken into account at the level of performance tuners and not by
 application programmers. At user level the locality is take into
-consideration onlyh implicitly. Kokkos is a library for expressing
-multidimensional arrays in C++, in which the layout can be decided at
+consideration only implicitly. The Kokkos library supports expressing
+multidimensional arrays in C++, in which the polymorphic layout can be decided at
 compile time. An algorithm written with Kokkos uses the AM of C++ with
 the data specification and access provided by the interface of Kokkos
 arrays. Locality is managed explicitly by matching the data layout
 with the algorithm logical locality. \note{Not sure what to say about
   the others}. As can be seen, there is not a single way of treating
 locality concerns, and there is not consensus on which one is the
-best. Each of these approaces are appealing to different scenarios
+best. Each of these approaches are appealing to different scenarios
 that depends on the scope of the particular projects. In the case of
 C++ libraries, anyway, there is the possibility of naturally building
 higher level interfaces using lower level ones, for instance a DASH
@@ -125,19 +151,23 @@ arrays for storage, etc. This is a potential benefit from
 interoprability that arises from using a commom language provided with
 generic programming capabilities, as C++.
 
-\note{The followings were used to be in the terminology but I think we
-  center the discussion around them. Mauro: I think they should be
-  moved to the terminology section.}
-
-\begin{itemize}
- \item Memory access pattern: The memory access pattern of a computation is determined by the composition of the computation's algorithm, computation's execution policy, and layout of the computation's data structures.  The quality of a computation's memory access pattern is determined by the time or energy consumed accessing its datum.  
-
-  \item Polymorphic layout: The quality of a computation's memory access pattern may depend upon the architecture of the computer on which it executes.  A data structure has a polymorphic layout if the layout can be changed to improve the memory access pattern without modifying the source code of computations depending upon that data structure.
-
-  \item A data structure (-layout) has good locality (-behavior) with respect to an algorithm if operations on the data structure can be executed efficiently in terms of run-time and/or energy consumption. So locality is not a property of the data structure or layout alone, there is an execution/code component that determines if locality behavior is good.
-
-  \item Algorithmic locality vs. actual/implementation locality: An algorithm is expressed in terms of operations on certain abstract data types, such as matrices, trees, etc. The algorithm code usually express access patterns to the data at high level, such as accessing the parent node in a tree, or the elements in a row of a matrix. This express a {\em logical locality}, that we refer to {\em algorithmic locality}, since it may be not related to the {\em actual} or {\em implementation} locality, that express the locality characteristics of locality of the code obtained by mapping the algorithm (maybe through a compiler) to the physical architecture. \note{Mauro: tried to clarify this. Does it work?}
- \end{itemize}
+%\note{The followings were used to be in the terminology but I think we
+%  center the discussion around them. Mauro: I think they should be
+%  moved to the terminology section.}
+%
+%\begin{itemize}
+% \item Memory access pattern: The memory access pattern of a computation is determined by the composition of the computation's algorithm, computation's execution policy, and layout of the computation's data structures.  The quality of a computation's memory access pattern is determined by the time or energy consumed accessing its datum. 
+% \note{This is now covered in the terminology .} 
+%
+%  \item Polymorphic layout: The quality of a computation's memory access pattern may depend upon the architecture of the computer on which it executes.  A data structure has a polymorphic layout if the layout can be changed to improve the memory access pattern without modifying the source code of computations depending upon that data structure.
+%  \note{This is now covered in the key points.}
+%
+%  \item A data structure (-layout) has good locality (-behavior) with respect to an algorithm if operations on the data structure can be executed efficiently in terms of run-time and/or energy consumption. So locality is not a property of the data structure or layout alone, there is an execution/code component that determines if locality behavior is good.
+%  \note{This may be adequately covered in the terminology.}
+%
+%  \item Algorithmic locality vs. actual/implementation locality: An algorithm is expressed in terms of operations on certain abstract data types, such as matrices, trees, etc. The algorithm code usually express access patterns to the data at high level, such as accessing the parent node in a tree, or the elements in a row of a matrix. This express a {\em logical locality}, that we refer to {\em algorithmic locality}, since it may be not related to the {\em actual} or {\em implementation} locality, that express the locality characteristics of locality of the code obtained by mapping the algorithm (maybe through a compiler) to the physical architecture. \note{Mauro: tried to clarify this. Does it work?}
+%  \note{Tightened wording and moved to key points}
+% \end{itemize}
 
 \section{Emerging Approaches}
 Here we may want to discuss Kokkos, TiDA, GridTools etc a little bit (few sentences for each)
@@ -148,10 +178,12 @@ Libraries?
 Flavors of functional programming ?
 
 The choice of base language to implement the mentioned abstractions varies among different groups. 
-Some prefer standard languages such as Fortran, C/C++ in order to maximize impact and leverage market breadth of the supporting tool chain (e.g., compilers, debuggers, profilers). Wherever profitable, there can be a push to “redeem” existing languages by amending or extending them, e.g. via changes to the specifications or by introducing new ABIs. It is noteworthy that the ISO C++ standardization committee intends to address performant, on-node parallelism in a future language standard.
-C++ meta-programming can cover a significant fraction of the desired capabilities, and that it’s a middle road for being able to implement DSLs that are embedded within standard languages. Specialization can be hidden in template implementation and controlled by template parameters. Even though there are a huge number of applications implemented in Fortran, 
-there is a concern about Fortran's lack of extensibility in terms of lambdas and templates. Others believe that specialized languages are required, e.g. to “get us to exascale.” Different language rules may be required to overcome limitations imposed by current languages. For example, C exposes physical data layout, and limits a compiler’s ability to re-layout data. Source to source translators are still subject to language rules, whereas new languages may remove such limitations through abstraction.
-In conclusion, there is no single language  to physically implement the layout abstractions 
+Some prefer standard languages such as Fortran, C/C++ in order to maximize impact and leverage market breadth of the supporting tool chain (e.g., compilers, debuggers, profilers). Wherever profitable, there can be a push to ``redeem'' existing languages by amending or extending them, e.g. via changes to the specifications or by introducing new ABIs. It is noteworthy that the ISO C++ standardization committee is addressing performant, on-node parallelism for a future standard (e.g., C++17).
+C++ meta-programming can cover a significant fraction of the desired capabilities (e.g., polymorphic data layout and execution policy), and that it's a middle road for being able to implement DSLs that are embedded within standard languages. Specialization can be hidden in template implementation and controlled by template parameters. 
+
+Even though there are a huge number of applications implemented in Fortran, 
+there is a concern about Fortran's lack of extensibility in terms of lambdas and templates. Others believe that specialized languages are required, e.g. to ``get us to exascale.'' Different language rules may be required to overcome limitations imposed by current languages. For example, C exposes physical data layout, and limits a compiler's ability to modify the data layout. Source to source translators are still subject to language rules, whereas new languages may remove such limitations through abstraction.
+In conclusion, there is no single language  to physically implement the layout abstractions.
 
 
 \section{Research Areas}
