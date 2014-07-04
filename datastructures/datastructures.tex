@@ -171,25 +171,150 @@ generic programming capabilities, as C++.
 % \end{itemize}
 
 \section{Emerging Approaches}
-Here we may want to discuss Kokkos, TiDA, GridTools etc a little bit (few sentences for each)
 
-\section{Discussions or Challenges ?}
+High performance computing presents scientists and performance tuners
+with two key challenges: exposing parallelism and effectively
+harvesting that parallelism.  A natural separation of concerns arises
+from those two efforts, whereby the scope of effort for each of domain
+experts and performance tuning experts can be limited, and the two may
+be decoupled without overly restricting each other.  Charting a solid
+path forward toward a clean separation of concerns, defining
+appropriate levels of abstraction, and highlighting properties of
+language interfaces that will be effective at managing data
+abstractions are the subject of this effort.
+
+Domain experts specify the work to be accomplished and they map that
+work onto parallel data collections.  They want the freedom to use a
+representation of data that is natural to them.  They don't want to be
+concerned with performance-related details.  Performance tuning
+experts want full control over performance, without having to become
+domain experts.  So they want domain experts to fully expose
+opportunities for parallelism, without overspecifying how that
+parallelism is to be harvested.  This leads to a natural separation of
+concerns between a logical abstraction layer at which semantics are
+specified, and a lower, physical abstraction layer, at which
+performance is tuned and the harvesting of parallelism on a particular
+target machine is controled.  This separation of concerns allows code
+modifications to be localized.  The use of abstraction allows
+high-level expressions to be polymorphic across a variety of low-level
+trade-offs at the physical implementation layer.  Several interfaces
+are now emerging that maintain the discipline of this separation of
+concerns, and that offer alternative ways of mapping between the
+logical and physical abstraction layers.  Among these are Kokkos, TiDA,
+and GridTools.
+
+\section{Discussion}
+
+This chapter of the report focuses on performance controls that are
+used to manage data to achieve performance, rather than on how
+parallelism is exposed at the semantic layer.  We address language
+interface issues and provide a taxonomy of performance controls.
+\note {It would also be good to highlight issues that can impact productivity, 
+performance, and performance portability.  } We have identified some
+areas of agreement on where to start in this overall effort.
+
+In the area of language interfaces, some consensus was reached on
+several points.  Differences in the objectives of domain experts and
+performance tuning experts shape the set of language interface
+attributes that are best suited for each.
+
+At the semantic layer, language interfaces should be high level,
+minimalist, and standardized.  Because the diversity of target
+platforms, performance factors, and implementation details are
+abstracted away at this level, the opportunity for simplicity and
+consistency is greater.  Base languages can be a good long-term target
+for providing ways for the user to expose parallelism and to describe
+characteristics of how data is to be used.
+
+There is greater innovation and less standardization in the area of
+performance controls.  This suggests that they be implemented using
+library interfaces.  This reduces the dependence on commercial
+compilers, enables greater variety, and eases deployment where
+target-specific optimizations are made.
+
+C++ seems to provide some of the greatest opportunity for enabling
+data layout abstraction in a base language.  By contrast, Fortran is
+relatively inflexible, and scripting languages' polymorphic types
+provide lots of flexibility to users, but have so little structure
+that optimization is difficult.
+\note {we need a much better articulation of that.}  
+
+The choice of base language to express abstraction varies among
+different groups. Some prefer standard languages such as Fortran and
+C/C++ in order to maximize impact and leverage market breadth of the
+supporting tool chain (e.g., compilers, debuggers, profilers).
+Wherever profitable, there can be a push to ``redeem'' existing
+languages by amending or extending them, e.g. via changes to the
+specifications or by introducing new ABIs. 
+
+C++ meta-programming can cover a significant fraction of the desired
+capabilities, e.g. polymorphic data layout and execution policy.
+Specialization can be hidden in template implementation and controlled
+by template parameters.  For example, C++ templates enable users to
+express data accesses in the body of the code in ways that are natural
+and convenient, and manage the mapping from that logical abstraction
+to an underlying layout which may be much better for performance in
+the template definition.  In efforts like Kokkos, Arrow Street and
+SIMD Building Blocks, \note {add references} compilers have
+demonstrated an ability to ``see through'' those abstractions to
+effectively harvest parallelism.  In the latter two efforts, the user
+is required to explicitly provide a bidrectional mapping between
+abstractions, which can be burdensome and error prone.  Efforts to
+augment the C++ standard with better support for introspection appear
+to be a promising path for easing that burden.  The ISO C++
+standardization committee is addressing performant, on-node
+parallelism for a future standard (e.g., C++17).  Even though a huge
+number of applications are implemented in Fortran, there is a concern
+about Fortran's lack of extensibility in terms of lambdas and
+templates.
+
+There's a concern that features that are needed to ``get us to
+exascale'' are lacking in existing, standard languages.  There are at
+least three options for mitigating that: extend standard languages,
+augment standard languages with embedded domain-specific languages, or
+depart from standards with specialized languages.  Different language
+rules may be required to overcome limitations imposed by current
+languages. For example, C exposes physical data layout, and limits a
+compiler's ability to modify the data layout. Source to source
+translators are still subject to language rules, whereas new languages
+may remove such limitations through abstraction.  In conclusion, there
+is no single language to physically implement the layout abstractions.
+
+Performance-related controls pertain to data and to execution policy.  These may vary in their function, scope and granularity.
+    \begin{itemize}
+    \item Data controls may be used to manage:
+      \begin{itemize} 
+      \item Decomposition, which tends to be either trivial (parameterizable and automatic) or not (explicit)
+      \item Binding to storage: to a particular type of memory (e.g. read only, streaming), to a phase-dependent depth in the memory hierarchy (prefetching, marking non-temporal), or to memory structures which support different kinds of sharing (SW managed, cached)
+      \item Mechanisms for, and timing of, distribution to data space/locality bindings
+      \item Data layout
+      \end{itemize}
+    \item Execution policy controls may be used to manage
+      \begin{itemize} 
+      \item Decomposition of work, e.g. iterations, hierarchical tasks
+      \item Ordering of work, e.g. recursive subdivision, work stealing
+      \item Association of work with data, e.g. moving work to data, binding to hierarchical domains like a node, thread or a SIMD lane
+      \end{itemize}
+    \item These controls may be applied at different scopes and granularities through a varity of mechanisms
+      \begin{itemize} 
+      \item Data types - global, fine-grained, can vary by call site
+      \item Function or construct modifiers - local coarse-grained, can vary within a scope
+      \item Environmental variable controls - global policies
+      \end{itemize}
+
+
+<Summarize areas of low-hanging fruit.>
 
 Libraries? 
 Flavors of functional programming ?
 
-The choice of base language to implement the mentioned abstractions varies among different groups. 
-Some prefer standard languages such as Fortran, C/C++ in order to maximize impact and leverage market breadth of the supporting tool chain (e.g., compilers, debuggers, profilers). Wherever profitable, there can be a push to ``redeem'' existing languages by amending or extending them, e.g. via changes to the specifications or by introducing new ABIs. It is noteworthy that the ISO C++ standardization committee is addressing performant, on-node parallelism for a future standard (e.g., C++17).
-C++ meta-programming can cover a significant fraction of the desired capabilities (e.g., polymorphic data layout and execution policy), and that it's a middle road for being able to implement DSLs that are embedded within standard languages. Specialization can be hidden in template implementation and controlled by template parameters. 
-
-Even though there are a huge number of applications implemented in Fortran, 
-there is a concern about Fortran's lack of extensibility in terms of lambdas and templates. Others believe that specialized languages are required, e.g. to ``get us to exascale.'' Different language rules may be required to overcome limitations imposed by current languages. For example, C exposes physical data layout, and limits a compiler's ability to modify the data layout. Source to source translators are still subject to language rules, whereas new languages may remove such limitations through abstraction.
-In conclusion, there is no single language  to physically implement the layout abstractions.
-
-
 \section{Research Areas}
 
+<Discuss data model: motivation, value, issues.>
 
+<removing barriers to freedom of abstraction>
+
+<portable efficiency>
 
 \section{OUTLINE}
 
