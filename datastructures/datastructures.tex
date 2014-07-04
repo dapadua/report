@@ -38,10 +38,9 @@
 \section{Introduction}
 \note{Scroll down to see the original outline}
 
+There is a diversity of ways to organize and represent data structures.  One source of diversity is among users, based on what they find to be convenient, intuitive and expressive.  A second source is differences between what is natural to users and what leads to efficient performance on target architectures.  A third source of diversity arises from differences among target architectures in what organizations and representations are most efficient.  Rarely does a single abstraction effectively span these three kinds of diversity.  Our goals are to enable a range of abstractions, to converge on ways to specify abstractions and map among them, and to enable those abstractions to be freely and effectively layered without undue restriction.
 
-Lack of a single abstract machine model  due to the diversity of the architectures 
-requires the programmer to support various implementations of the same program to achieve high performance
-on different platforms. Recently, a number of programming interfaces such as Kokkos, TiDA, OpenMP
+Recently, a number of programming interfaces such as Kokkos, TiDA, OpenMP
 extensions, GridTools, Dash, Array Extensions \cite{all} have arise to give developers more control over 
  data layout and to abstract the data layout itself from the application. 
  In this chapter, we discuss the key points when designing such abstractions, emerging approaches with (im)mature
@@ -54,17 +53,19 @@ Before going into further discussions, we define relevant terminology.
 %
 % \note{I sent an email for discussion, will update this section based on the responses.}
 %
-A {\em data structure} is an organized collection of datum residing in one or more {\em memory spaces}.
+A {\em data structure} is an organized collection of data residing in one or more {\em memory spaces}.
 %
-HPC systems with multiple CPU+GPU compute nodes have many memory spaces; e.g., each node's main memory and each GPU's on-package memory defines a different memory space.
+Memory spaces may have different access characteristics, e.g. NUMA nodes of different latencies; different coherence domains associated with subsets of CPUs, GPUs or co-processors; or different types of memories, e.g. cached, software-managed or persistent.
 %
-{\em Data decomposition} is the partitioning of a data structure's datum into smaller chunks with the intent of assigning each chunks to a memory space or introducing parallelism across chunks. 
+{\em Data decomposition} is the partitioning of a data structure's data into smaller chunks with the intent of assigning each chunk to a memory space or introducing parallelism across chunks. 
 %
-{\em Data placement} is the mapping of decomposed data structure's chunks to memory spaces.
+{\em Data placement} is the mapping of decomposed data structures' chunks to memory spaces.
 %
 %\note{Data distribution is the composition of data decomposition and data placement.}
 %
-{\em Data layout} is the mapping of a data structure's chunk to the physical linear addressing scheme of the assigned memory space.
+%
+%\note{It is too narrow to say that {\em Data layout} is the mapping of a data structure's chunk to the physical addressing scheme of the assigned memory space.}
+{\em Data layout} is the arrangement of a data structure according to the addressing scheme used by a given abstraction layer.  But there may be multiple {\em abstraction layers}, which together serve a diversity of objectives, as outlined above.  For example, users may prefer to refer to struct members of an array (AoS), whereas an array of structures of arrays (AoSoA) layout may be more profitable at the physical storage level.  Physical layout may differ between a software-managed memory that uses Hilbert curves, and a hardware-managed cache, for example.  There must be a mapping among the data layouts in the various abstraction layers, and potentially in each of the memory spaces.
 %
 A computation accesses memory according to a {\em data access pattern} which is determined by the composition of (1) how the computation's parallel tasks traverse the data structure,
 (2) how the computation's tasks are scheduled (i.e., the {\em execution policy}), 
@@ -72,9 +73,9 @@ A computation accesses memory according to a {\em data access pattern} which is 
 (4) data placement, and
 (5) data decomposition.
 %
-Performance is constrained by the cost (time and energy) of moving datum in service of the computation, which is directly impacted by the computation's data access pattern.
+Performance is constrained by the cost (time and energy) of moving data in service of the computation, which is directly impacted by the computation's data access pattern.
 %
-{\em Data locality} is a proxy measure for the relative cost of moving different datum to/from a given task as it executes; smaller ``distance'' implies smaller cost.
+{\em Data locality} is a proxy measure for the relative cost of moving different data to/from a given task as it executes; smaller ``distance'' implies smaller cost.
 %
 Locality has both spatial (memory space) and temporal (execution scheduling) considerations.
 
@@ -156,7 +157,7 @@ generic programming capabilities, as C++.
 %  moved to the terminology section.}
 %
 %\begin{itemize}
-% \item Memory access pattern: The memory access pattern of a computation is determined by the composition of the computation's algorithm, computation's execution policy, and layout of the computation's data structures.  The quality of a computation's memory access pattern is determined by the time or energy consumed accessing its datum. 
+% \item Memory access pattern: The memory access pattern of a computation is determined by the composition of the computation's algorithm, computation's execution policy, and layout of the computation's data structures.  The quality of a computation's memory access pattern is determined by the time or energy consumed accessing its data. 
 % \note{This is now covered in the terminology .} 
 %
 %  \item Polymorphic layout: The quality of a computation's memory access pattern may depend upon the architecture of the computer on which it executes.  A data structure has a polymorphic layout if the layout can be changed to improve the memory access pattern without modifying the source code of computations depending upon that data structure.
@@ -220,7 +221,7 @@ HIGHLIGHTS
 \item TERMINOLOGY (define each of these up front)
   \begin{itemize}
 
- \item Data structure: A organized collection of datum residing in one or more memory spaces. 
+ \item Data structure: A organized collection of data residing in one or more memory spaces. 
 
   \item Layout (of data structure):
     The mapping of a data structure into one or more memory spaces, typically with the intent of efficient and performant access by a collection of computations.
@@ -232,13 +233,13 @@ HIGHLIGHTS
  
   \item Distributed data structure / parallel data structure: not sure we should use either of those terms, but if we do we should make sure what we mean: is the data distributed over multiple nodes/address spaces? is there concurrent access to the same data structure? 
       
-  \item \note{Didem: should be part of the report intro} Locality: A measure of distance between datum on a computer.  For example, do the datum reside in the same compute node of a cluster, in the same memory space, in the same cache line?  [I can't think of a direct definition that doesn't require a whole lot of other definitions up front, so how about the following phenomenological definition?]
+  \item \note{Didem: should be part of the report intro} Locality: A measure of distance between data on a computer.  For example, do the data reside in the same compute node of a cluster, in the same memory space, in the same cache line?  [I can't think of a direct definition that doesn't require a whole lot of other definitions up front, so how about the following phenomenological definition?]
 
   \item Execution policy: How a computation's units of work are scheduled and mapped onto data collections. \note{is this the same thing as thread binding?}
 
   \item Memory access pattern: A computation accesses data structures according to its execution policy. 
 
-  \item Memory access pattern: The memory access pattern of a computation is determined by the composition of the computation's algorithm, computation's execution policy, and layout of the computation's data structures.  The quality of a computation's memory access pattern is determined by the time or energy consumed accessing its datum.  
+  \item Memory access pattern: The memory access pattern of a computation is determined by the composition of the computation's algorithm, computation's execution policy, and layout of the computation's data structures.  The quality of a computation's memory access pattern is determined by the time or energy consumed accessing its data.  
 
   \item Polymorphic layout: The quality of a computation's memory access pattern may depend upon the architecture of the computer on which it executes.  A data structure has a polymorphic layout if the layout can be changed to improve the memory access pattern without modifying the source code of computations depending upon that data structure.
 
@@ -323,7 +324,7 @@ HIGHLIGHTS
 \item  DISAGREEMENTS
   \begin{itemize}
   \item Binding [could someone flesh out the opposing points of view?] Depending on the level at which a language/library stands (single thread, multicore chip, parallel distributed system) the binding is responsibility of the user or the system. I don't think we agree on what the level of abstraction is right, so we could not agree in the binding, I guess.
-  \item support for memory spaces: can be hidden from the programmer or exposed [could someone flesh out the opposing points of view?]  Traditional architectures have hidden memory spaces within node through hardware supported movement of datum through a cache memory hierarchy.  This implicit memory space management strategy has been applied to distributed memory clusters through PGAS programming models and runtimes.  There has is not a consensus on PGAS versus explicit management of datum movement among clusters' compute nodes.  Advanced compute node architectures have heterogeneous memory spaces which must be managed for computational performance.  It is an open question as to whether a programming model can be deployed that implicitly manages these memory spaces and provides sufficient memory access quality.
+  \item support for memory spaces: can be hidden from the programmer or exposed [could someone flesh out the opposing points of view?]  Traditional architectures have hidden memory spaces within node through hardware supported movement of data through a cache memory hierarchy.  This implicit memory space management strategy has been applied to distributed memory clusters through PGAS programming models and runtimes.  There has is not a consensus on PGAS versus explicit management of data movement among clusters' compute nodes.  Advanced compute node architectures have heterogeneous memory spaces which must be managed for computational performance.  It is an open question as to whether a programming model can be deployed that implicitly manages these memory spaces and provides sufficient memory access quality.
 
   \item Choice of language interfaces
     \begin{itemize}
