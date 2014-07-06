@@ -36,12 +36,8 @@
 %■ How do we create a user community? (bonus question)
 
 \section{Introduction}
-\note{Scroll down to see the original outline}
 
-There is a diversity of ways to organize and represent data structures.  One source of diversity is among users, based on what they find to be convenient, intuitive and expressive.  A second source is differences between what is natural to users and what leads to efficient performance on target architectures.  A third source of diversity arises from differences among target architectures in what organizations and representations are most efficient.  Rarely does a single abstraction effectively span these three kinds of diversity.  Our goals are to enable a range of abstractions, to converge on ways to specify abstractions and map among them, and to enable those abstractions to be freely and effectively layered without undue restriction.
-
-Recently, a number of programming interfaces such as Kokkos, TiDA, OpenMP
-extensions, GridTools, Dash, Array Extensions \cite{all} have arise to give developers more control over 
+There is a diversity of ways to organize and represent data structures.  One source of diversity is among users, based on what they find to be convenient, intuitive and expressive.  A second source is differences between what is natural to users and what leads to efficient performance on target architectures.  A third source of diversity arises from differences among target architectures in what organizations and representations are most efficient.  Rarely does a single abstraction effectively span these three kinds of diversity.  Our goals are to enable a range of abstractions, to converge on ways to specify abstractions and map among them, and to enable those abstractions to be freely and effectively layered without undue restriction. Recently, a number of programming interfaces such as Kokkos, TiDA, OpenMP extensions, GridTools, Dash, Array Extensions \cite{all} have arise to give developers more control over 
  data layout and to abstract the data layout itself from the application. 
  In this chapter, we discuss the key points when designing such abstractions, emerging approaches with (im)mature
  solutions, and potential research areas. Here, we focus on  locality management on data-parallel algorithms 
@@ -82,8 +78,13 @@ Locality has both spatial (memory space) and temporal (execution scheduling) con
   
   
 \section{Key Points}
-It is encouraging that there is a shift towards a more data-centric programming in the research community. 
-We consider the following design principles as important and desired by the application programmers.
+The research communities have been developing  data structure abstractions for several years to improve expressiveness in
+ parallel applications. However only recently there is a shift towards a more data centric programing to provide locality abstractions for data structures because locality has become one of the most important design objectives. During the PADAL workshop, we identified the following design principles as important and desired by the application programmers. 
+
+%key points when designing such abstractions, emerging approaches with (im)mature solutions, and potential research areas.
+%
+%It is encouraging that there is a shift towards a more data-centric programming in the research community. 
+%We consider the following design principles as important and desired by the application programmers.
 
 \begin{itemize}
 \item We seek to improve performance by controlling the separate components (traversal, execution policy, data layout, data placement, and data decomposition) whose composition determines a computation's data access pattern. 
@@ -96,11 +97,9 @@ We consider the following design principles as important and desired by the appl
 \item The efficiency of a computation's on-node data access pattern may depend upon the architecture of the computer on which it executes.  Performance may be improved by choosing a data layout appropriate for the architecture.  This choice can be made without modifying the computations source code if the data structure has a {\em polymorphic data layout}.
 %
 \item Performance tuners, who may be distinct from the domain experts, may exercise control over performance with a set of interfaces which can be distinct from those that specify semantics. 
-%
-\item Through these interfaces, they may decompose, distribute and map parallel data collections onto efficient physical layouts with specialized characteristics.
+Through these interfaces, they may decompose, distribute and map parallel data collections onto efficient physical layouts with specialized characteristics.
 \end{itemize}
 
-\note{Move the following to discussion?}
 The key point of separation of concerns is of offering, to the user of
 the interface, an architecture agnostic {\em abstract machine}
 (AM). An AM is necessary to express an algorithm, being it a
@@ -120,37 +119,6 @@ programming model for a PM; second, the hope is that by being
 equidistant from any PM the translation can lead to equally efficient
 implementations with similar effort.
 
-The interfaces the Authors of this report are developing, the already
-cited Kokkos, TiDA, OpenMP extensions, GridTools, Dash, Array
-Extensions, provide AMs at widely different abstraction levels. Some
-as DASH provide a PGAS abstraction in C++, so that DASH AM is
-basically an universal parallel machine with the concept of (two
-levels: local and remote) locality made explicit. GridTools provides a
-set of libraries for expressing distributed memory implementations of
-regular grid applications, like stencils. It is not meant to be
-universal, in the sense that non regular grid applications should not
-be expressed using Gridtools libraries, even though possible in
-principle, for performance reasons. Since the constructs provided by
-GridTools are high level and semi-functional, locality issues are
-taken into account at the level of performance tuners and not by
-application programmers. At user level the locality is take into
-consideration only implicitly. The Kokkos library supports expressing
-multidimensional arrays in C++, in which the polymorphic layout can be decided at
-compile time. An algorithm written with Kokkos uses the AM of C++ with
-the data specification and access provided by the interface of Kokkos
-arrays. Locality is managed explicitly by matching the data layout
-with the algorithm logical locality. \note{Not sure what to say about
-  the others}. As can be seen, there is not a single way of treating
-locality concerns, and there is not consensus on which one is the
-best. Each of these approaches are appealing to different scenarios
-that depends on the scope of the particular projects. In the case of
-C++ libraries, anyway, there is the possibility of naturally building
-higher level interfaces using lower level ones, for instance a DASH
-multidimensional array could be implemented using Kokkos arrays, and
-GridTools parallel algoritmhs could use DASH library, and Kokkos
-arrays for storage, etc. This is a potential benefit from
-interoprability that arises from using a commom language provided with
-generic programming capabilities, as C++.
 
 %\note{The followings were used to be in the terminology but I think we
 %  center the discussion around them. Mauro: I think they should be
@@ -170,22 +138,10 @@ generic programming capabilities, as C++.
 %  \note{Tightened wording and moved to key points}
 % \end{itemize}
 
-\section{Emerging Approaches}
-
-High performance computing presents scientists and performance tuners
-with two key challenges: exposing parallelism and effectively
-harvesting that parallelism.  A natural separation of concerns arises
-from those two efforts, whereby the scope of effort for each of domain
-experts and performance tuning experts can be limited, and the two may
-be decoupled without overly restricting each other.  Charting a solid
-path forward toward a clean separation of concerns, defining
-appropriate levels of abstraction, and highlighting properties of
-language interfaces that will be effective at managing data
-abstractions are the subject of this effort.
-
+\section{State of the Art}
 Domain experts specify the work to be accomplished and they map that
 work onto parallel data collections.  They want the freedom to use a
-representation of data that is natural to them.  They don't want to be
+representation of data that is natural to them and do not prefer to be
 concerned with performance-related details.  Performance tuning
 experts want full control over performance, without having to become
 domain experts.  So they want domain experts to fully expose
@@ -194,14 +150,67 @@ parallelism is to be harvested.  This leads to a natural separation of
 concerns between a logical abstraction layer at which semantics are
 specified, and a lower, physical abstraction layer, at which
 performance is tuned and the harvesting of parallelism on a particular
-target machine is controled.  This separation of concerns allows code
+target machine is controlled.  This separation of concerns allows code
 modifications to be localized.  The use of abstraction allows
 high-level expressions to be polymorphic across a variety of low-level
 trade-offs at the physical implementation layer.  Several interfaces
 are now emerging that maintain the discipline of this separation of
 concerns, and that offer alternative ways of mapping between the
-logical and physical abstraction layers.  Among these are Kokkos, TiDA,
-and GridTools.
+logical and physical abstraction layers. 
+
+The interfaces the authors of this report are developing, the already
+cited Kokkos, TiDA, OpenMP extensions, GridTools, DASH, Array
+Extensions, provide AMs at widely different abstraction levels. 
+The {\bf Kokkos} library supports expressing
+multidimensional arrays in C++, in which the polymorphic layout can be decided at
+compile time. An algorithm written with Kokkos uses the AM of C++ with
+the data specification and access provided by the interface of Kokkos
+arrays. Locality is managed explicitly by matching the data layout
+with the algorithm logical locality. 
+{\bf TiDA} allows the programmer to express data locality and layout  at the array construction. 
+ Under TiDA, each array is extended with metadata that describes its layout and tiling policy and topological affinity for an intelligent mapping on cores.  This metadata follows the array through the program so that a different configuration in layout or tiling strategy do not require any of the loop nests to be modified. Various layout scenarios are supported to enable multidimensional decomposition of data on NUMA  and cache coherence domains. 
+% In order to convert the existing application codes to TiDA, the programmer replaces the default array allocator with a TiDA array allocator that embeds additional metadata about the array layout into the array handle. 
+TiDA is currently packaged as a fortran library, and is minimally invasive to Fortran codes.  It provides a tiling traversal interface, which can hide complicated loop traversals, parallelization or execution strategies. 
+{\bf DASH} provides a PGAS abstraction in C++, so that DASH AM is
+basically an universal parallel machine with the concept of (two
+levels: local and remote) locality made explicit. {\bf GridTools} provides a
+set of libraries for expressing distributed memory implementations of
+regular grid applications, like stencils. It is not meant to be
+universal, in the sense that non regular grid applications should not
+be expressed using Gridtools libraries, even though possible in
+principle, for performance reasons. Since the constructs provided by
+GridTools are high level and semi-functional, locality issues are
+taken into account at the level of performance tuners and not by
+application programmers. At user level the locality is taken into
+consideration only implicitly. \note{Not sure what to say about
+  the others}. 
+  
+  As can be seen, there is not a single way of treating
+locality concerns, and there is not consensus on which one is the
+best. Each of these approaches are appealing to different scenarios
+that depends on the scope of the particular application domain. In the case of
+C++ libraries, there is the possibility of naturally building
+higher level interfaces using lower level ones, for instance a DASH
+multidimensional array could be implemented using Kokkos arrays, and
+GridTools parallel algorithms could use DASH library, and Kokkos
+arrays for storage, etc. This is a potential benefit from
+interoperability that arises from using a common language provided with
+generic programming capabilities, as C++.
+
+
+%note{the following paragraph didn't fit here}
+%High performance computing presents scientists and performance tuners
+%with two key challenges: exposing parallelism and effectively
+%harvesting that parallelism.  A natural separation of concerns arises
+%from those two efforts, whereby the scope of effort for each of domain
+%experts and performance tuning experts can be limited, and the two may
+%be decoupled without overly restricting each other.  
+%Charting a solid
+%path forward toward a clean separation of concerns, defining
+%appropriate levels of abstraction, and highlighting properties of
+%language interfaces that will be effective at managing data
+%abstractions are the subject of this effort.
+
 
 \section{Discussion}
 
@@ -308,7 +317,7 @@ Performance-related controls pertain to data and to execution policy.  These may
 Libraries? 
 Flavors of functional programming ?
 
-\section{Research Areas}
+\section{Research Plan}
 
 <Discuss data model: motivation, value, issues.>
 
