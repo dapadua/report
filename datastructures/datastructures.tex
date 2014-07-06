@@ -424,24 +424,24 @@ HIGHLIGHTS
   \item Performance-related controls pertain to data and to execution policy.  These may vary in their scope and granularity.
     \begin{itemize}
     \item Data controls may be used to manage:
-      \begin{itemize} 
+    \note{these are under a new itemize}
       \item Decomposition, which tends to be either trivial (parameterizable and automatic) or not (explicit)
       \item Binding to storage: to a particular type of memory (e.g. read only, streaming), to a phase-dependent depth in the memory hierarchy (prefetching, marking non-temporal), or to memory structures which support different kinds of sharing (SW managed, cached)
       \item Mechanisms for, and timing of, distribution to data space/locality bindings
       \item Data layout
-      \end{itemize}
+ \note{end itemize}
     \item Execution policy controls may be used to manage
-      \begin{itemize} 
+     \note{begin new itemize}
       \item Decomposition of work, e.g. iterations, hierarchical tasks
       \item Ordering of work, e.g. recursive subdivision, work stealing
       \item Association of work with data, e.g. moving work to data, binding to hierarchical domains like a node, thread or a SIMD lane
-      \end{itemize}
+   \note{end itemize}
     \item These controls may be applied at different scopes and granularities through a varity of mechanisms
-      \begin{itemize} 
+     \note{begin new itemize}
       \item Data types - global, fine-grained, can vary by call site
       \item Function or construct modifiers - local coarse-grained, can vary within a scope
       \item Environmental variable controls - global policies
-      \end{itemize}
+     \note{end itemize}
     \end{itemize}
   \item lambdas for domain traversal (or iteration space traversal) [is this now adequately covered below?]
   \end{itemize}
@@ -480,6 +480,6 @@ HIGHLIGHTS
   \end{itemize}
 
 \end{itemize}
-
+\end{itemize}
 
 
