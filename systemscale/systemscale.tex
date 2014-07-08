@@ -152,7 +152,9 @@ from highly-connected parts, placing every node within a few hops of all
 others.  This may benefit unstructured communications that often occur
 in graph
 algorithms, but limited connections between parts can be bottlenecks for
-structured communication patterns.  At the node level, a promising approach for fully utilizing
+structured communication patterns and the network topologies have not been 
+completely specified.  
+At the node level, a promising approach for fully utilizing
 higher core counts on next-generation architectures is over-decomposed
 task parallelism, which will stress the interconnect in ways different
 from the traditional BSP model.
@@ -178,7 +180,7 @@ the multi-scale properties of the machine.
 Applications need abstractions allowing them to express their behavior
 and requirement in terms of data access, locality and communication.
 For this, we need to define metrics to capture the notions of data
-access, affinity, network traffic, etc.. The MPI standard offers the
+access, affinity, network traffic, etc. The MPI standard offers the
 process topology interface that allows an application to specify the
 dataflow between processes~\cite{hoefler-mpi-2.2-scal-topo}. However,
 while this interface is a good first step, it is essentially limited to
@@ -269,3 +271,12 @@ Ultimately, the validation of the models and solutions to the key points and cha
 will be a key challenge.
 
 \section{Research Plan}
+
+To solve the above problems, we propose co-design between application 
+communication models, specific network structures, and algorithms for 
+allocation and task mapping.
+We will determine the effect of over-decomposition on application 
+communication.
+To benefit structured communication patterns on multi-level networks, we will 
+complete the topology (specifying pairs of nodes to be connected) and 
+techniques to optimize allocations and task mappings.
