@@ -81,14 +81,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 $ $\\
 \noindent
-Discussion of data locality from the applications perspective implies
+Discussion of data locality from the perspective of applications implies
 consideration of the range of modeling methods used for exploring
 scientific phenomena. While the  
 applications space itself is very large, the set of
 applications/applications experts included in the workshop were fairly 
 representative of the numerical algorithms and techniques used in
-majority of state-of-the-art application codes (i.e.\ \cite{cosmo},
-\cite{gromacs}, \cite{Hydra, op2}, \cite{chombo}, \cite{vis}.
+majority of state-of-the-art application codes (i.e.\ COSMO\cite{cosmo},
+GROMACS\cite{gromacs4,gromacs4.5,gromacs-exascale}, Hydra \& OP2\cite{Hydra, op2}, CHOMBO\cite{chombo}, VIS\cite{vis}.
 Additionally, among the included applications were those that model
 multi-physics phenomena combining several different numerical and
 algorithmic technologies into one tightly coupled whole. These
@@ -106,26 +106,42 @@ structured and unstructured mesh based methods, particle methods,
 combined particle and mesh methods, molecular dynamics,  and many
 specialized 0-dimensional solvers specific to the domain. 
 
-The highly used algorithms in scientific computing have varying
-degrees of arithmetic intensity and potential for data locality
-inherent to them. For example, Gromacs has a small working set size
-for (? short-range) .... therefore benefits from easily obtained data
-locality. Where modeling needs to consider global effects, the
-required resolution is low enough that a judicious decomposition and
-mapping of the work load can confine these spatially long range
-computations to a small subset of processes, thereby retaining 
-reasonable data locality. By contrast typical low order partial
+Algorithms for scientific computing vary in their degree of
+arithmetic intensity and inherent potential for exploiting data locality.
+\begin{itemize}
+\item For example, GROMACS short-ranged non-bonded kernels treat
+all pairwise interactions within a group of particles, performing
+large quantities of floating-point operations on small amounts of
+heavily-reused data, normally remaining within lowest-level cache.
+% MJA - we can lose ``, normally... cache.'' if this is too long
+Exploiting data locality is almost free here, yet the higher-level
+operation of constructing and distributing the particle groups
+to execution sites, and the lower-level operation of scheduling
+the re-used data into registers, require tremendous care and
+quantities of code in order to benefit from data locality at those
+levels.
+% MJA - happy to lose these next sentences
+The long-ranged global component can work at a low resolution,
+such that a judicious decomposition and mapping confines
+a fairly small amount of computation to a small subset
+of processes. This retains reasonable data locality, which
+greatly reduces communication cost.
+\item By contrast, typical low-order partial
 differential equation solvers with structured mesh or particles
 typically have very few operations per data item and therefore
 struggle with achieving a high degree of data reuse. Unstructured
 meshes have an additional layer of indirection that exacerbates this
-problem.  Others fall somewhere in between. Multiphysics applications
+problem.  Others fall somewhere in between.
+\item Multiphysics applications
 further add a dimension  in  the data locality challenge; that of the
 different data access patterns in different solvers. Here, increasing
 locality for one solver can decrease it for another, thereby
-necessitating carefully considered trade-offs. There are well known
-and valid concern among the applications communities about wise
-utilization of the scarcest of the resources, the developers time, and
+necessitating carefully considered trade-offs.
+\end{itemize}
+
+There is well known
+and valid concern in the applications communities about wise
+utilization of the scarcest of the resources, the developers' time, and
 protecting the investment already made in the mature production codes
 of today. The most important consideration for the applications
 community, therefore, is the time-scale of change in paradigms in the
@@ -156,22 +172,22 @@ tools available to make the transition.
 % \end{itemize}
 
 Among the domain science communities relying on modeling and
-simulation to obtain results there is huge variance in awareness and
+simulation to obtain results, there is huge variation in awareness and
 preparedness for the ongoing hardware platform architecture
-revolution. This huge variance also exists in the need that different
-research groups have to be prepared. A great deal of useful science is
-still done with very limited scope prototype level software in
-use by a small research group. Like all other software, these too will
+revolution. Different research groups vary in the extent to which they
+need to prepare. A great deal of useful science is still done by a
+small research group with prototype-level software of very limited scope.
+Like all other software, these too will
 need to be refactored or rewritten for different platforms, but being
-small, they are unlikely to be enough of drain on resources to warrant
+small, they are unlikely to be enough of a drain on resources to warrant
 looking for general portable solutions. Those research efforts were
-not the focus of the workshop even though they too will gain from more
+not the focus of the workshop, even though they too will gain from more
 stability. Instead, the purpose of the workshop was to consider those
-computation based science and engineering research efforts that rely
+computation-based science and engineering research efforts that rely
 upon larger codes with many moving parts that also  demand more
-resources to compute one single model. Many times the process of
+resources to compute one single model. Many times, the process of
 scientific discovery requires exploration of the parameter space with
-a corresponding need to compute several models. For such applications
+a corresponding need to compute several models. For such applications,
 efficient, sustainable and portable scientific software is an absolute
 necessity, though not all practitioners in these communities are
 cognizant of either the extent or urgency of the need for rethinking
@@ -194,20 +210,37 @@ At the workshop examples of many such efforts were presented.
 classes: (1) Approaches based on Domain-Specific programming Languages
 (DSL) and (2) library-based methods.}
 
-\textcolor{fhcolor}{For example \hipacc~\cite{MHTKE12a}, OP2~\cite{}\fh{I think OP2 is an active library for solving unstructured mesh-based applications, and PyOP2 is the DSL on top of it---I'll check and refine}, and Stella~\cite{} represented the use of
+\textcolor{fhcolor}{For example \hipacc~\cite{MHTKE12a}, OP2~\cite{}\fh{I think OP2 is an active library for solving unstructured mesh-based applications, and PyOP2 is the DSL on top of it---I'll check and refine}, and Stella~\cite{} showed
 \emph{embedded domain-specific languages} (\textbf{$<$reference to appropriate place in Ch.~4 ``Language \ldots''$>$}) being used to good effect in their target science
 domains.}
-Other efforts such as use of tiling within patches in AMR for
-exposing greater parallelism rely on a library based approach. Still
-others such as Gromacs using SIMD operations for non-bonded iterations
-or doing ensemble simulations are targeted at utilizing vectorization
-possibilities presented by the accelerators. Many of these efforts
+Other efforts, such as use of tiling within patches in AMR for
+exposing greater parallelism rely on a library-based approach.
+Many of these efforts
 have met with some degree of success. Some are in effect a usable
 component of an overall solution to be found in future, while others
 are experiments that are far more informative about how to rethink the
 data and algorithmic layout of the core solvers. None of them provide
 a complete stable solution that applications can use for their
 transition to long term viability. 
+
+% MJA - happy to trim this if we think it's too much detail for an example
+Viewed on a multi-year time-scale, GROMACS has re-implemented
+all of its high-performance code several times, always to make
+better use of data locality,\cite{gromacs4,gromacs4.5,gromacs-exascale}
+and almost never able to make any use of existing portable high-performance
+external libraries or DSLs. Many of those internal efforts have since been
+duplicated by third parties with general-purpose, re-usable code,
+that GROMACS could have used if they been available at the time.
+The latest such efforts in GROMACS have moved the code from
+hand-tuned, inflexible assembly CPU kernels to a form implemented
+in a compiler- and hardware-portable SIMD intrinsics layer developed
+internally, for which the code is generated automatically for a wide
+range of model physics and hardware, including accelerators.
+In effect, this is an embedded DSL for high-performance short-ranged
+particle-particle interactions. If such a DSL could be made widely
+available for the molecular simulation community, then a great deal of
+duplicated effort could be avoided, and new applications would
+benefit immediately.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -234,17 +267,19 @@ transition to long term viability.
 %    community?
 % \end{itemize}
 
+\section{The Challenges}
 There are many factors that affect the decision by the developers of a
 large scientific library or an application code base to use an 
 available programming paradigm, but the most important one is fear of
 adding a critical dependency that may not be supported in the long
-term. Often the developers will opt for a suboptimal or custom built
+term, or is portable now and in the future. Often the developers
+will opt for a suboptimal or custom-built
 solution that does not get in the way of being able to run their
 simulations. For this reason embedded DSLs, or code transformation
 technologies are more attractive to the applications. These
 techniques, because they are not all-or-none solutions, have the added
 advantage of providing an incremental path for transition. The trade-off
-is the possibly of missing out on some compiler level optimizations.  
+is the possibility of missing out on some compiler-level optimizations.  
 
 There are other less considered but possibly equally critical concerns
 that have to do with expressibility. The application developers can
@@ -252,7 +287,7 @@ have a very clear notion of their data model without finding ways of
 expressing them effectively in the available data structures and
 language constructs. The situation is even worse for expressing the
 latent locality in their data model to the compilers or other
-translational tools. None of the prevalent mature high level languages
+translational tools. None of the prevalent mature high-level languages
 being used in scientific computing have constructs to provide means of
 expressing data locality. There is no theoretical basis for the
 analysis of data movement within the local memory or remote
@@ -260,16 +295,22 @@ memory. Because there is no formalism to inform the application
 developers about the implications of their choices, the data
 structures get locked into the implementation before the algorithm
 design is fully fleshed out.  The typical development cycle of a
-numerical algorithm is to focus on correctness and stability first
+numerical algorithm is to focus on correctness and stability first,
 and then performance. By the time performance analysis tools are
-applied it is usually too late for anything but the incrementally
+applied, it is usually too late for anything but incremental
 corrective measures, which usually reduce the readability and
 maintainability of the code. A better approach would be to model the
 expected performance of a given data model before completing the
-implementation and let the design be informed by the expected
-performance model throughout the process. 
+implementation, and let the design be informed by the expected
+performance model throughout the process. Such a modelling tool
+would need to be highly configurable, so that its conclusions might
+be portable across a range of compilers and hardware, and valid
+into the future, in much the same way that numerical simulations
+often use ensembles of input-parameter space in order to obtain
+conclusions with reduced bias.
 
 % still have to do a paragraph on inline assembly Vs open source DSL
+% MJA - this could be tied in a new subsection with GROMACS para above?
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % T h e   W i s h   L i s t
@@ -289,21 +330,37 @@ performance model throughout the process.
 %     \end{itemize}
 % \end{itemize}
 
-As mentioned earlier, for the production grade applications the
-biggest non-negotiable is the stability of the paradigm. Code bases
-that have years of investment in algorithmic development will not
+\section{Application requirements and wishes}
+As mentioned earlier, for the production-grade applications, the
+biggest non-negotiable requirement is the stability of the paradigm.
+Code bases that have years of investment in algorithmic development will not
 adopt technologies that can prevent them from utilizing computational
-resources as they become available. There exist research groups even
-today that refuse to use parallel IO libraries, which have been robust
-and early to get on new platforms for a few years now. They still
-prefer to roll their own IO solution with all the attendant
+resources as they become available. 
+
+For example, even today research groups exist that refuse to use
+parallel I/O libraries, despite the fact that these have been robust
+and supported quickly on new platforms for several years. They still
+prefer to roll their own I/O solution with all the attendant
 performance and maintenance overhead just to avoid the dependency. It
-would be even harder to persuade these communities to adopt higher
-level abstractions unless there was a bound on the dependency through
-the use of easy to install and link library. With this model the code
+would be even harder to persuade these communities to adopt higher-level
+abstractions unless there was a bound on the dependency through
+the use of a library that was implemented in a highly portable way,
+and easy to install and link.
+
+Most languages provide standard containers and data structures
+that are easy to use in high-level code, yet very few languages
+or libraries provide interfaces for the application developer to
+inform the compiler about expectations upon data locality, data layout,
+or memory alignment. For example, it ought to be possible to program
+in arrays of structures, and have a full or partial transformation
+to structures of arrays take place automatically if that would
+suit the hardware - or at least to make such an experiment
+possible without a full re-write of the application module.
+
+% MJA - this sentence was hanging in its former paragraph - to what ``model'' does it refer?
+With this model, the code
 can always run in the high level language, while better translation
 tools can provide performance as they become available.
-
 
 
 
@@ -326,22 +383,28 @@ developers, while others are more applicable to the compilers and
 tools communities. The most important area of research for the
 applications community is the high level multi-component framework
 that can maximize data locality in presence of diverse and conflicting
-demands of data movement. The questions to be addressed include: (1)
-what methodology should be used to determine what constitutes a
-component, (2) what degree of locality awareness is appropriate in a
-component, (3) what is the optimum level abstraction in the component
-based design, i.e.\ who is aware of spatial decomposition, and who is
-aware of functional decomposition it it exists, (4) how to design so that
+demands of data movement. The questions to be addressed include:
+\begin{itemize}
+\item what methodology should be used to determine what constitutes a
+component,
+\item what degree of locality awareness is appropriate in a
+component,
+\item what is the optimum level of abstraction in the component-based
+design, i.e.\ who is aware of spatial decomposition, and who is
+aware of functional decomposition, if it exists,
+\item how to design so that
 numerical complexity does not interleave with the complexity arising
-out of locality management, and (4) how to account for concerns other
+out of locality management, and
+\item how to account for concerns other
 than data locality such as runtime management within the framework so
 that they do not collide with one another. 
+\end{itemize}
 
-From the applications perspectives it is important to understand the
+From the applications perspective, it is important to understand the
 impact of different locality models. For instance, with increase in
 the heterogeneity of available memory options it is worthwhile
 evaluating whether scratch-pads are more useful to the applications,
 or should the additional technology just be used to deepen the cache
-hierarchy. Similarly within the caching model it is important to know
-whether adding horizontal caching is a value proposition for the
-applications. 
+hierarchy. Similarly, within the caching model it is important to know
+whether adding horizontal caching is a valuable proposition for the
+applications.
