@@ -1,0 +1,22 @@
+[0] Config.pm:300> INFO - This is Biber 0.9.9
+[1] Config.pm:303> INFO - Logfile is 'padalreport.blg'
+[1] biber-darwin:145> INFO - === Mon Jun 30, 2014, 21:20:31
+[2] Biber.pm:271> INFO - Reading 'padalreport.bcf'
+[18] Biber.pm:586> INFO - Found 36 citekeys in bib section 0
+[28] Biber.pm:2585> INFO - Processing bib section 0
+[50] Biber.pm:2677> INFO - Looking for bibtex format file 'references.bib' for section 0
+[53] bibtex.pm:708> INFO - Found BibTeX data source 'references.bib'
+[119] Utils.pm:168> WARN - I didn't find a database entry for 'cosmo' (section 0)
+[119] Utils.pm:168> WARN - I didn't find a database entry for 'gromacs' (section 0)
+[119] Utils.pm:168> WARN - I didn't find a database entry for 'Hydra' (section 0)
+[120] Utils.pm:168> WARN - I didn't find a database entry for 'op2' (section 0)
+[120] Utils.pm:168> WARN - I didn't find a database entry for 'chombo' (section 0)
+[120] Utils.pm:168> WARN - I didn't find a database entry for 'vis' (section 0)
+[120] Utils.pm:168> WARN - I didn't find a database entry for 'all' (section 0)
+[236] Biber.pm:2480> INFO - Sorting list 'MAIN' keys
+[236] Biber.pm:2484> INFO - No sort tailoring available for locale 'en_US.UTF-8'
+[332] Biber.pm:2480> INFO - Sorting list 'SHORTHANDS' keys
+[332] Biber.pm:2484> INFO - No sort tailoring available for locale 'en_US.UTF-8'
+[373] bbl.pm:427> INFO - Writing 'padalreport.bbl' with encoding 'ascii'
+[374] bbl.pm:498> INFO - Output to padalreport.bbl
+[375] Biber.pm:106> INFO - WARNINGS: 7

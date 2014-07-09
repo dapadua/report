@@ -83,21 +83,34 @@ $ $\\
 \noindent
 Discussion of data locality from the perspective of applications implies
 consideration of the range of modeling methods used for exploring
-scientific phenomena. While the  
-applications space itself is very large, the set of
-applications/applications experts included in the workshop were fairly 
-representative of the numerical algorithms and techniques used in
+scientific phenomena. Even if we restrict ourselves to only a small
+group of scientific applications, there is still a big spectrum to be
+considered. We can loosely map the applications along two dimensions:
+spatial connectivity, and componentization. Spatial connectivity has
+direct implication on locality: the left end of this axis represents
+zero-connectivity applications which are embarrasingly parallel and at
+the right end are the ones with dynamic connectivity such as adaptive
+meshing with static meshes falling somewhere in-between. The componentization
+axis is more concerned with software engineering where the left end
+consists of the small static codes, while at the right end are the
+large-multicomponent  codes with a continuous development-debugging
+process. The HPC applications space mostly occupies the top right
+quadrant, and was the primary concern in this workshop. 
+
+While the applications space itself is very
+large, the participating applications and experts provided a good
+representation of the numerical algorithms and techniques used in
 majority of state-of-the-art application codes (i.e.\ COSMO\cite{cosmo},
-GROMACS\cite{gromacs4,gromacs4.5,gromacs-exascale}, Hydra \& OP2\cite{Hydra, op2}, CHOMBO\cite{chombo}, VIS\cite{vis}.
-Additionally, among the included applications were those that model
-multi-physics phenomena combining several different numerical and
-algorithmic technologies into one tightly coupled whole. These
-applications demonstrate the challenges of characterizing the behavior
-of individual solvers when embedded in a larger code base with
-multiple and heterogeneous solvers.  Because of the presence of many
-tightly coupled solvers these applications also
-highlight the importance of interoperability among solvers and
-libraries by implication. The science domain which rely on multiphysics modeling
+GROMACS\cite{gromacs4,gromacs4.5,gromacs-exascale}, Hydra \&
+OP2\cite{Hydra, op2}, CHOMBO\cite{chombo}, VIS\cite{vis}. 
+Additionally, because several of them model
+multi-physics phenomena with several different numerical and
+algorithmic technologies, they highlight the challenges of
+characterizing the behavior of individual solvers when embedded in a
+code base with heterogeneous solvers. %  Because of the presence of many
+% tightly coupled solvers 
+These applications also demonstrate the importance of interoperability
+among solvers and libraries. The science domain which rely on multiphysics modeling
 include many physical, biological and chemical systems, e.g.\ climate
 modeling, combustion, star formation, cosmology, blood flow, protein
 folding to name only a few. The numerical algorithms and solvers
@@ -126,17 +139,22 @@ such that a judicious decomposition and mapping confines
 a fairly small amount of computation to a small subset
 of processes. This retains reasonable data locality, which
 greatly reduces communication cost.
-\item By contrast, typical low-order partial
-differential equation solvers with structured mesh or particles
-typically have very few operations per data item and therefore
-struggle with achieving a high degree of data reuse. Unstructured
-meshes have an additional layer of indirection that exacerbates this
-problem.  Others fall somewhere in between.
-\item Multiphysics applications
-further add a dimension  in  the data locality challenge; that of the
-different data access patterns in different solvers. Here, increasing
-locality for one solver can decrease it for another, thereby
-necessitating carefully considered trade-offs.
+\item By contrast, typical low-order partial differential equation
+  solvers typically   have few operations per data item even with
+  static meshing and therefore struggle with achieving a high degree
+  of data reuse. Adaptivity in structured AMR (i.e. Chombo) further
+  reduces the ratio of arithmetic operations to data movement by
+  moving the application right along the connectivity
+  axis. Unstructured meshes have an additional   layer of indirection
+  that exacerbates this problem.
+\item Multiphysics applications further add a
+  dimension  in  the data locality challenge; that of the 
+different data access patterns in different solvers. For example in
+applications where particles co-exist with AMR, the distribution of
+particles relative to the mesh needs to balance spatial proximity with
+load balance, especially if the particles tend to cluster in some
+regions. 
+%AD - can we get some text here from climate ?
 \end{itemize}
 
 There is well known
@@ -241,7 +259,8 @@ particle-particle interactions. If such a DSL could be made widely
 available for the molecular simulation community, then a great deal of
 duplicated effort could be avoided, and new applications would
 benefit immediately.
-
+% AD- it would be nice to have a counter example here with Stella's
+% use in Cosmo.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % T h e   C h a l l e n g e s
@@ -330,7 +349,7 @@ conclusions with reduced bias.
 %     \end{itemize}
 % \end{itemize}
 
-\section{Application requirements and wishes}
+\section{Application requirements}
 As mentioned earlier, for the production-grade applications, the
 biggest non-negotiable requirement is the stability of the paradigm.
 Code bases that have years of investment in algorithmic development will not
@@ -351,19 +370,43 @@ Most languages provide standard containers and data structures
 that are easy to use in high-level code, yet very few languages
 or libraries provide interfaces for the application developer to
 inform the compiler about expectations upon data locality, data layout,
-or memory alignment. For example, it ought to be possible to program
-in arrays of structures, and have a full or partial transformation
-to structures of arrays take place automatically if that would
-suit the hardware - or at least to make such an experiment
-possible without a full re-write of the application module.
+or memory alignment. In the list below we outline some abstractions
+and/or language constructs that would be helpful to applications.
+ % For example, it ought to be possible to program
+% in arrays of structures, and have a full or partial transformation
+% to structures of arrays take place automatically if that would
+% suit the hardware - or at least to make such an experiment
+% possible without a full re-write of the application module.
 
 % MJA - this sentence was hanging in its former paragraph - to what ``model'' does it refer?
-With this model, the code
-can always run in the high level language, while better translation
-tools can provide performance as they become available.
+% With this model, the code
+% can always run in the high level language, while better translation
+% tools can provide performance as they become available.
 
-
-
+\subsection{The Wish List}
+\begin{itemize}
+\item Ability to write dimension independent code easily.
+\item Depending upon the data access preference of the target
+  architecture, switch the data structures between array-of-structures and
+  structure-of-arrays without having to rewrite the code.
+\item The ability to map abstract processes to given architectures,
+  and coupled to this, the ability to express these mappings in either
+  memory-unaware or at least flexible formulations. 
+\item More, and more complex, information has been demanded from
+  modelers that is not relevant to the model itself, but rather to the
+  machines. Requiring less information, and allowing
+  formulations close to the models in natural language, is a critical
+  point for applications. This does not restrict the possible
+  approaches, quite the opposite: for example, well engineered
+  libraries that provide the memory and operator mechanics can be very
+  successful, if they provide intelligent interfaces. DSL approaches should try
+  to reverse this direction.  
+\item Source-to-source transformations for mapping from high level
+  language to low level language.  If tools were made available for
+  creating DSLs or language extensions, this approach could even allow
+  communities to develop their own domain specific language without
+  having to build the underlying infrastructure.
+\end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % R e s e a r c h   A r e a s
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -408,3 +451,7 @@ or should the additional technology just be used to deepen the cache
 hierarchy. Similarly, within the caching model it is important to know
 whether adding horizontal caching is a valuable proposition for the
 applications.
+
+
+
+
