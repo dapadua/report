@@ -1,15 +1,16 @@
 \chapter{Motivating Applications and Their Requirements}
 \label{ch:apps}
 
-% define command for HIPAcc acronym
-\newcommand{\hipacc}{\textsf{HIPA\nolinebreak[4]\hspace{-0.1em}\textsuperscript{cc}}}
-
 
 \marginparsep 7pt % restore marginpar sep
 \marginparwidth 5.5pc % restore marginpar width
 \colorlet{fhcolor}{ProcessBlue}
 \newcommand{\TODO}[3]{\todo[#1]{\sffamily\footnotesize\textbf{\textcolor{black}{#2:\,}}\textcolor{black}{#3}}\xspace}
 \newcommand{\fh}[2][]{\TODO{color=fhcolor!40,#1}{Frank}{#2}}
+
+
+% define command for HIPAcc acronym
+\newcommand{\hipacc}{\textsf{HIPA\hspace{-0.1em}\textsuperscript{cc}}\xspace}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -102,7 +103,7 @@ large, the participating applications and experts provided a good
 representation of the numerical algorithms and techniques used in
 majority of state-of-the-art application codes (i.e.\ COSMO\cite{cosmo},
 GROMACS\cite{gromacs4,gromacs4.5,gromacs-exascale}, Hydra \&
-OP2\cite{Hydra, op2}, CHOMBO\cite{chombo}, VIS\cite{vis}. 
+OP2/PyOP2\cite{Hydra, PyOP2}, CHOMBO\cite{chombo}, VIS\cite{vis}. 
 Additionally, because several of them model
 multi-physics phenomena with several different numerical and
 algorithmic technologies, they highlight the challenges of
@@ -220,17 +221,35 @@ challenges they face.
 \textcolor{fhcolor}{Many have started to experiment with approaches
 recommended by the researchers from the compilers, programming
 abstractions and runtime systems communities in order to be better
-prepared for the platform heterogeneity.}\fh{Sentences that I
-changed / added, are marked in blue.}
+prepared for the platform heterogeneity.}%\fh{Sentences that I changed / added, are marked in blue.}
 
 At the workshop examples of many such efforts were presented.
-\textcolor{fhcolor}{These efforts can be mainly classified into two
-classes: (1) Approaches based on Domain-Specific programming Languages
-(DSL) and (2) library-based methods.}
+\textcolor{fhcolor}{These efforts can be mainly classified into:
+Approaches based on Domain-Specific programming Languages (DSL),
+library-based methods, or combinations of the two.}
 
-\textcolor{fhcolor}{For example \hipacc~\cite{MHTKE12a}, OP2~\cite{}\fh{I think OP2 is an active library for solving unstructured mesh-based applications, and PyOP2 is the DSL on top of it---I'll check and refine}, and Stella~\cite{} showed
-\emph{embedded domain-specific languages} (\textbf{$<$reference to appropriate place in Ch.~4 ``Language \ldots''$>$}) being used to good effect in their target science
-domains.}
+\textcolor{fhcolor}{
+For example, PyOP2~\cite{PyOP2}, STELLA (STEncil Loop LAnguage)~\cite{STELLA14}\fh{Ask Mauro whether there is a more appropriate reference to STELLA.}
+and \hipacc (Heterogeneous Image Processing Acceleration)~\cite{MHTKE12a} are
+\emph{embedded domain-specific languages} (\textbf{$<$reference to appropriate place in Ch.~4 ``Language \ldots''$>$})
+that are tailored for a certain field of application and abstract from details
+of a parallel implementation on a certain target architecture. 
+PyOP2 and the latter approaches use Python and C++ as host language,
+respectively.
+PyOP2 targets mesh-based simulation codes over unstructured meshes and uses
+FEniCS~\cite{fenics} to generate kernel code for different multicore CPUs and GPUs.
+Furthermore, it employs runtime compilation and scheduling.
+STELLA considers stencil codes on structured grids. An OpenMP and a CUDA back
+end are currently under development.  
+\hipacc targets the domain of geometric multigrid applications on
+two-dimensional structured grids~\cite{MHTK12} and provides code generation for
+accelerators, such as, GPUs (CUDA, OpenCL, RenderScript) and FPGAs (C code that
+is suited for high-level synthesis).
+All the aforementioned approaches can increase \emph{productivity}---e.g.,
+reducing the lines of application code may not only reduce programming but also
+debugging time---in their target science domain as well as \emph{performance
+portability} across different compute architectures.}
+
 Other efforts, such as use of tiling within patches in AMR for
 exposing greater parallelism rely on a library-based approach.
 Many of these efforts
