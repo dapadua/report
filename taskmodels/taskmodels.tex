@@ -35,12 +35,9 @@
 %‚ñ† How do we create a user community? (bonus question)
 
 
-HIGHLIGHTS
+\section{Introduction}
 
-\begin{itemize}
-
-
-	\item SCOPE (\textbf{Jesus})
+SCOPE (\textbf{Jesus})
 	\begin{itemize}
 		\item Design of interfaces to express
 		      locality in a task-based programming model
@@ -53,23 +50,13 @@ HIGHLIGHTS
 		\item Specific performance/debugging tools for task-based applications
 		\item Compiler technology RT Vs Library RT
 	\end{itemize}
+	
+	
+	
+\section{Key Points}
 
 
-
-	\item RELATED WORK: a few examples of work in that area  (\textbf{Hatem})
-	\begin{itemize}
-		\item OmpSs
-		\item Charm++
-		\item QUARK
-		\item StarPU
-		\item PaRSEC
-		\item SuperMatrix
-		\item ParalleX
-		\item OCR
-	\end{itemize}
-
-
-	\item DISCOVERIES/CHALLENGES
+DISCOVERIES/CHALLENGES
 	\begin{itemize}
 		\item Task granularity (flexibility) (\textbf{Miquel}): 
 		Large tasks (i.e. coarse-grained tasks) can result in load imbalance at synchronization points. Reducing task sizes is a common method
@@ -150,8 +137,34 @@ HIGHLIGHTS
 	\end{itemize}
 
 
+\section{The State-of-the-Art}
 
-	\item AREAS OF AGREEMENT (\textbf{Romain})
+A few examples of work in that area  (\textbf{Hatem})
+\begin{itemize}
+	\item OmpSs
+	\item Charm++
+	\item QUARK
+	\item StarPU
+	\item PaRSEC
+	\item SuperMatrix
+	\item ParalleX
+	\item OCR
+\end{itemize}
+
+APPLICATION DOMAINS  (\textbf{Hatem})
+		\begin{itemize}
+			\item Dense linear algebra
+			\item Computational astronomy
+			\item Uncertainty Quantification
+			\item Seismic
+			\item Weather/Climate modeling
+			\item Krylov-based solvers
+			\item Nbody problems
+		\end{itemize}
+
+\section{Discussions}
+
+AREAS OF AGREEMENT (\textbf{Romain})
           \begin{itemize}
           \item{
               The performance and energy characteristics of today's
@@ -200,7 +213,7 @@ to this]
 
 
 
-	\item AREAS OF DISAGREEMENT (\textbf{Romain})
+AREAS OF DISAGREEMENT (\textbf{Romain})
           \begin{itemize}
             \item{
                 There is agreement on the fact that a standardization
@@ -227,16 +240,13 @@ likely to yield positive results.
               }
             \end{itemize}
 
-% OLD STUFF
-		  % \begin{itemize}
-		  % \item The level at which standardization should be done: task-based
-		  %     runtime API, languages, interface to hardware, ...
-		  % \item What/who should have control of the granularity and how should
-		  %     it be expressed (is it easier to break-down or recompose?)
-		  % \end{itemize}
 
 
-	\item Identify Gaps / What is missing  (\textbf{Miquel})
+
+\section{Research Plan}
+
+
+Identify Gaps / What is missing  (\textbf{Miquel})
 	    \begin{itemize}
 		\item Better understanding of the performance features of task-parallel
 		systems. Need to convince developers of the value of these systems.
@@ -249,15 +259,292 @@ likely to yield positive results.
 	  \end{itemize}
 
 
-	\item APPLICATION DOMAINS  (\textbf{Hatem})
-		\begin{itemize}
-			\item Dense linear algebra
-			\item Computational astronomy
-			\item Uncertainty Quantification
-			\item Seismic
-			\item Weather/Climate modeling
-			\item Krylov-based solvers
-			\item Nbody problems
-		\end{itemize}
 
-\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% HIGHLIGHTS
+% 
+% \begin{itemize}
+% 
+% 
+% 	\item SCOPE (\textbf{Jesus})
+% 	\begin{itemize}
+% 		\item Design of interfaces to express
+% 		      locality in a task-based programming model
+% 		\item Terminology: ``task-based'', ``interfaces'' (mostly to specify the levels of the interfaces)
+% 		\item task-based parallelism is the way to go for many applications (MPI+Task)
+% 		\item Fast prototyping / productivity
+% 		\item Redesigning numerical algorithms to express locality
+% 		and how to express it (nested parallelism, divide and conquer, tree structure)
+% 		\item Interface betw app/rt/hw to support locality
+% 		\item Specific performance/debugging tools for task-based applications
+% 		\item Compiler technology RT Vs Library RT
+% 	\end{itemize}
+% 
+% 
+% 
+% 	\item RELATED WORK: a few examples of work in that area  (\textbf{Hatem})
+% 	\begin{itemize}
+% 		\item OmpSs
+% 		\item Charm++
+% 		\item QUARK
+% 		\item StarPU
+% 		\item PaRSEC
+% 		\item SuperMatrix
+% 		\item ParalleX
+% 		\item OCR
+% 	\end{itemize}
+% 
+% 
+% 	\item DISCOVERIES/CHALLENGES
+% 	\begin{itemize}
+% 		\item Task granularity (flexibility) (\textbf{Miquel}): 
+% 		Large tasks (i.e. coarse-grained tasks) can result in load imbalance at synchronization points. Reducing task sizes is a common method
+% 		to improve load balance.  On the other hand, the granularity of tasks directly influences scheduling overheads. Too fine-grained tasks
+% 		increase the amount of time spent inside the runtime performing tasks such as scheduling and work stealing.  Task granularity impacts
+% 		locality because larger tasks also have bigger memory footprints. Task sizes are not only a trade-off between parallelism and runtime
+% 		overheads, but should also be set in order to efficiently exploit the memory hierarchy. Last level shared caches provide larger
+% 		storage that can be exploited to improve performance and reuse. The optimal granularity depends on data sharing between tasks:
+% 		\begin{itemize}
+% 			\item In the absence of data sharing one should target a task footprint of $\frac{\mbox{SharedCacheSize}}{\mbox{Ncores}}$. 
+% 			\item In the extreme case, if all data is shared, the target task footprint can become $\mbox{SharedCacheSize}$. In general it
+% 				will lie somewhere in between these two cases.
+% 		\end{itemize} 
+% 		Finding the best granularity is a complex problem as all three metrics to be optimized (overheads, load balance, memory hierarchy) are
+% 		coupled.  Since the optimum configuration may be a data input dependent problem, auto-tuning techniques should be explored.  Enabling
+% 		autotuning involves programmer effort to find ways to partition data sets in a parametric way, allowing to tune the task size. This is
+% 		also a problem dependent issue. To enable parametric granularity control, program and data decomposition should preferably be
+% 		performed following a top-down approach rather than bottom-up.
+% 		\item Scheduling overhead (\textbf{Miquel}):
+% 			Scheduling overhead refers to the time required by the runtime to generate the execution plan of a DAG computation. It
+% 			includes everything that happens between two execution units except for waiting time (synchronization).  Depending on the
+% 			tasking semantics this involves different amount of work:
+% 			\begin{itemize}
+% 				\item  {\emph Task-parallel}: In task-parallel runtimes, spawned tasks are ready to be executed (cite: Cilk, TBB
+% 					task\_groups, OpenMP 3.0 Tasks). In this scenario scheduling involves fetching a task from the ready queue(s)
+% 					or running the work-stealing loop if there are no ready tasks in the queues. This scheme has low overhead but
+% 					supports mainly divide-and-conquer and parallel loop style of computation.
+% 				\item  {\emph Task-dataflow}: In dataflow schemes (cite: OmpSs, OpenMP 4.0 tasks, TBB dependencies) there are two
+% 					scheduling levels: 1) resolving dependencies to find ready tasks and 2) scheduling ready tasks to
+% 					workers. The latter is in general performed as in task-parallel schemes. 
+% 			\end{itemize} 
+% 				Because of these differences, task-parallel runtimes tend to have smaller scheduling overheads compared to
+% 				task-dataflow runtimes. It is an open research problem to reduce the overheads of task-dataflow schedulers in order to
+% 				efficiently support tasks of finer granularity. Some researchers propose to replace the dependency-tracking scheduler
+% 				with a ticket-based approach (cite: SWAN). Other groups propose to implement the parts of the scheduler in hardware,
+% 				such as the dependency tracking mechanism (cite: HTSS, Nexus++) or the ready queues and task scheduler (cite:
+% 				Carbon).
+% 		\item Efficient debugging/tracing mechanisms/tools (\textbf{Jesus})
+% 		\item Nested parallelism (recursive formulation) (\textbf{Hatem})
+% 		\item Work stealing (\textbf{Miquel}):
+% 			Work stealing is how idle cores obtain work in order to balance the load across processors. When work is stolen, the working
+% 			set of the task is also "stolen". Thus a work steal operation usually results in a data migration.  The impact and
+% 			optimization of work stealing depends on the particular case:
+% 				\begin{itemize}
+% 					\item Obviously, work stealing can only be optimized for locality if tasks feature sufficient
+% 						internal locality and are to an extent memory bound. If tasks have very bad locality or the miss rate
+% 						to main memory is already negligible, then work stealing has little effect beyond the overhead of the
+% 						stealing itself. 
+% 					\item When tasks have locality of reference, things become interesting. If sets of tasks can constructively
+% 						share the cache then limiting the work stealing to the tasks within the set will limit the working set
+% 						migration to the private caches (shared caches will not be affected).  Parallel-depth-first schedulers
+% 						attempt to constructively share the cache by scheduling the oldest sequential task in the set of cores
+% 						sharing the cache and only resorting to global work stealing when the task queues become empty.
+% 					\item In general we want to minimize the number of work steals. This works well if the application can be
+% 						rapidly partitioned into almost equivalent sets of work that can then proceed independently. This
+% 						works well for divide-and-conquer parallelism, but for more general approaches such as loop-style
+% 						parallelism (i.e., tasks generated inside a {\tt for} loop) using work stealing to keep all cores busy
+% 						is generally not efficient. This is because distributing $N$ tasks generated by a $N$-iteration loop
+% 						will require exactly $N$ work steals. If N is larger than the number of processors, then a worksharing
+% 						partitioning of the loop can be a more efficient method.
+% 					\item A big challenge is for the runtime to learn the hierarchical data properties of an application and
+% 						exploit them to generate efficient schedules. Classical random work stealing (e.g.  Cilk-like) does
+% 						not do any attempt to exploit this. Socket-aware policies exist (eg, Qthread) that perform
+% 						hierarchical work stealing: 1) first among cores in a socket and 2) then among sockets.  Some
+% 						programming models expose an API that allows programmers specify on which NUMA node/socket a
+% 						collection of tasks should be executed (cite: OmpSs). Configurable work stealers which can be
+% 						customized with {\it scheduling hints} have also been developed (cite: Pheet/PPoPP'13). Finally, a
+% 						more extreme option is to allow the application programmer to attach a custom work stealing function
+% 						to his application (e.g., MassiveThreads/ROSS13). How to effectively specify this information in a
+% 						programmer-friendly way is an open topic of research.
+% 				\end{itemize}
+% 		\item Scheduling priority, DAG critical path  (\textbf{Romain})
+% 		\item Socket-aware scheduling (\textbf{Hatem})
+% 		\item Detection of overlapped memory-region (\textbf{Jesus})
+% 		\item API Standardization (\textbf{Romain})
+% 		\item DAG Composition (\textbf{Hatem})
+% 		\item Handling data locality in presence of co-processors and accelerators (\textbf{Jesus})
+% 	\end{itemize}
+% 
+% 
+% 
+% 	\item AREAS OF AGREEMENT (\textbf{Romain})
+%           \begin{itemize}
+%           \item{
+%               The performance and energy characteristics of today's
+% hardware are difficult to predict; the unpredictability of a hit or
+% miss in a cache, the variable latencies introduced by branch
+% mis-predictions, etc.\ are only some of the factors that contribute to
+% a very dynamic hardware behavior. This trend will only accelerate with
+% future hardware as near threshold voltage (NTV) and aggressive energy
+% management increase the level of hardware dynamism. [TODO: Maybe
+% phrase it to say that the assembly interface does not guarantee
+% anything in terms of performance and/or energy].
+% 
+%               In light of this, toolchains will become more and more
+% unable to statically partition and schedule code to efficiently
+% utilize future parallel resources. Hardware characteristics will vary
+% dynamically and we therefore cannot do without a dose of dynamism in
+% the programming model: dynamic task based programming models need to
+% be a part of the solution.
+%             }
+%           \item{
+%               Task base programming models, however, rely on the
+% computation and data being split into chunks (``tasks'' for the
+% computation which implies a size of the data these tasks operate
+% on). The size of these chunks (the granularity) is difficult to
+% determine as it needs to balance the overheads of the task-based
+% system with the need to expose sufficient parallelism to fully occupy
+% the ever increasing number of parallel resources. A static granularity
+% will be sub-optimal for future machines [TODO: Do I need to add more
+% to this]
+%             }
+%           \end{itemize}
+% % OLD STUFF
+% 		  % \begin{itemize}
+% 		  % \item Static partitioning does not work for everything; we need to
+% 		  %     have a dynamic component.
+% 		  % \item A perfectly predictable hardware does not exist and, in the
+% 		  %     future will be even more far-fetched; we therefore cannot get
+% 		  %     away from some level of dynamism and task-based
+% 		  %     programming-models can make better use of this dynamism.
+% 		  % \item Granularity is a key issue that needs to be addressed with
+% 		  %     respect to locality. There is agreement that a static
+% 		  %     partitioning/granularity will not work for future
+% 		  %     machines. Granularity needs to balance overheads and exposing
+% 		  %     parallelism.
+% 		  % \end{itemize}
+% 
+% 
+% 
+% 	\item AREAS OF DISAGREEMENT (\textbf{Romain})
+%           \begin{itemize}
+%             \item{
+%                 There is agreement on the fact that a standardization
+% needs to happen for task based programming model but there is
+% disagreement as to the level at which this standardization needs to
+% happen. One option is to standardize the APIs at the runtime level in
+% a way similar to the Open Community Runtime (OCR). Another option is
+% to standardize what can be expressed by the user at the programming
+% model level [TODO: Jesus, I would like to understand your position a
+% bit more on this so I can clarify things a bit more].
+%               }
+%             \item{
+%                 Another area of disagreement is how best to deal with
+%  the expression of granularity; specifically, is it better for the
+%  programmer to break-down tasks and data and have a runtime system
+%  re-assemble them if needed or is it preferable to have the programmer
+% express coarse grained tasks and data and allow the runtime system to
+% break them down further. The latter approach has been used
+% successfully in runtimes targeted to problems that are recursively
+% divisible. The former approach would require a sort of ``recipe'' for
+% the runtime to be able to stich smaller tasks or chunks of data into
+% larger ones. There is debate as to which approach is simpler and more
+% likely to yield positive results.
+%               }
+%             \end{itemize}
+% 
+% % OLD STUFF
+% 		  % \begin{itemize}
+% 		  % \item The level at which standardization should be done: task-based
+% 		  %     runtime API, languages, interface to hardware, ...
+% 		  % \item What/who should have control of the granularity and how should
+% 		  %     it be expressed (is it easier to break-down or recompose?)
+% 		  % \end{itemize}
+% 
+% 
+% 	\item Identify Gaps / What is missing  (\textbf{Miquel})
+% 	    \begin{itemize}
+% 		\item Better understanding of the performance features of task-parallel
+% 		systems. Need to convince developers of the value of these systems.
+% 		\begin{itemize}
+% 		  \item Better performance tools. Better understanding of the impact of locality
+% 		  \item Case studies that show performance benefit in certain conditions (eg,
+% 		    in the presence of faults?). Focus on data aspects, i.e. show that
+% 		    a good management can be done even when there are a lot of work steals.
+% 	      \end{itemize}
+% 	  \end{itemize}
+% 
+% 
+% 	\item APPLICATION DOMAINS  (\textbf{Hatem})
+% 		\begin{itemize}
+% 			\item Dense linear algebra
+% 			\item Computational astronomy
+% 			\item Uncertainty Quantification
+% 			\item Seismic
+% 			\item Weather/Climate modeling
+% 			\item Krylov-based solvers
+% 			\item Nbody problems
+% 		\end{itemize}
+% 
+% \end{itemize}
