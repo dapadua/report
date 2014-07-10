@@ -11,110 +11,111 @@
 %% description of existing solutions and open problems. 
 
 
-
-
-
-HIGHLIGHTS
-
-\begin{itemize}
-
-\item SCOPE
-
-\begin{itemize}
-\item topology mapping
-\item storage and data
-\item Resource management and batch scheduler
-\end{itemize}
-
-\item KEY POINTS
-
-\begin{itemize}
-\item However the application is written and optimize, the way it is executed
-  has a huge impact on its performance
- \item Mapping of application to resources is important even in the case of
-   contiguous allocation. But joint allocation and mapping  (application
-   expresses its need and the batch scheduler tries to fulfill it) provides
-   better optimization
-\item there is a need for models of the machine at different scales (cache, node,
-memory, network, etc.) Such models are necessary to design algorithms to enhance
-performance
-  \item Usually, each part of the application ecosystem (storage, runtime, batch
-    scheduler, etc.) act independently. There is a need for joint decisions both
-    vertically (from node to storage) and horizontally (e.g. between compute
-    nodes)
-\item need model of application (same reason as above)
-\begin{itemize}
-\item shift in application communication models from BSP to over-decomposition model
-\item graph-based analytic applications
-\item applications using stencil communication patterns
-\item applications using transpose communication patterns
-\end{itemize}
-\item \ldots
-\end{itemize}
-
-\item RELATED WORK
-
-\begin{itemize}
-\item Topology mapping: TreeMatch, Libtopomap, MPIPP? scotch, metis  
-\item Geometric mapping: Zoltan2
-\item Storage: parallel file system (???)
-\item resource management: queuing systems 'SLURM, LSF, PBS, etc.)
-\item machine models: HWLOC, NETLOC, etc. 
-\item building app model: profilers (scalasca), compilers, runtime monitoring (openMPI), 
-miniApps, etc. 
-\end{itemize}
-
-\item CHALLENGES
-
-\begin{itemize}
-\item scalable management of the hierarchy and topology
-\item globality (tackle the problem system wide)
-\item interaction between different layers
-\item alternative node architectures
-\item alternative topologies, bottlenecks
-\item validation of models
-\item \ldots
-\end{itemize}
-
-\end{itemize}
-
-\section{Introduction}
-%% An idea of the presentation 
- 
+%    htor: all these key points are in the text below!
+%   
+%   
+%   HIGHLIGHTS
+%   
+%   \begin{itemize}
+%   
+%   \item SCOPE
+%   
+%   \begin{itemize}
+%   \item topology mapping
+%   \item storage and data
+%   \item Resource management and batch scheduler
+%   \end{itemize}
+%   
+%   \item KEY POINTS
+%   
+%   \begin{itemize}
+%   \item However the application is written and optimize, the way it is executed
+%     has a huge impact on its performance
+%    \item Mapping of application to resources is important even in the case of
+%      contiguous allocation. But joint allocation and mapping  (application
+%      expresses its need and the batch scheduler tries to fulfill it) provides
+%      better optimization
+%   \item there is a need for models of the machine at different scales (cache, node,
+%   memory, network, etc.) Such models are necessary to design algorithms to enhance
+%   performance
+%     \item Usually, each part of the application ecosystem (storage, runtime, batch
+%       scheduler, etc.) act independently. There is a need for joint decisions both
+%       vertically (from node to storage) and horizontally (e.g. between compute
+%       nodes)
+%   \item need model of application (same reason as above)
+%   \begin{itemize}
+%   \item shift in application communication models from BSP to over-decomposition model
+%   \item graph-based analytic applications
+%   \item applications using stencil communication patterns
+%   \item applications using transpose communication patterns
+%   \end{itemize}
+%   \item \ldots
+%   \end{itemize}
+%   
+%   \item RELATED WORK
+%   
+%   \begin{itemize}
+%   \item Topology mapping: TreeMatch, Libtopomap, MPIPP? scotch, metis  
+%   \item Geometric mapping: Zoltan2
+%   \item Storage: parallel file system (???)
+%   \item resource management: queuing systems 'SLURM, LSF, PBS, etc.)
+%   \item machine models: HWLOC, NETLOC, etc. 
+%   \item building app model: profilers (scalasca), compilers, runtime monitoring (openMPI), 
+%   miniApps, etc. 
+%   \end{itemize}
+%   
+%   \item CHALLENGES
+%   
+%   \begin{itemize}
+%   \item scalable management of the hierarchy and topology
+%   \item globality (tackle the problem system wide)
+%   \item interaction between different layers
+%   \item alternative node architectures
+%   \item alternative topologies, bottlenecks
+%   \item validation of models
+%   \item \ldots
+%   \end{itemize}
+%   
+%   \end{itemize}
+%   
+%   \section{Introduction}
+%   %% An idea of the presentation 
+%    
 
 Parallel computers are becoming more and more complex.  Indeed, they
 feature hundreds of thousands of cores, a deep memory hierarchy with
 several cache layers, non-uniform memory access with  several levels of
-memory (flash, non-volatile, RAM, etc), elaborate topologies (both at
+memory (e.g., flash, non-volatile, RAM), elaborate topologies (both at
 the shared-memory level and at the distributed-memory level using
-state-of-the-art interconnection networks) and advanced parallel storage
-systems and resource management tools.
-
-Nowadays it is already more challenging to write an application that
+state-of-the-art interconnection networks), advanced parallel storage
+systems, and resource management tools.
+%
+Today it is already more challenging to write an application that
 efficiently accesses its data than one that efficiently processes the
 data. In other words arranging bytes is more complex than computing
 flops. As it is expected that the memory per core will decrease in the
-coming years this problem will become even more important. 
+coming years this problem will become even more important and harder to
+attack. 
 
 To address the data locality issue system-wide, one approach consists of
 working on the application ecosystem and how the application is executed
-(interaction with the batch-scheduler and the storage, optimization on
-the way the application uses the resources, its relation with the
-topology, the interaction with other executing application, etc.). 
-
+(e.g., its interaction with the batch-scheduler and the storage,
+optimization on the way the application uses the resources, its relation
+with the topology, or the interaction with other executing application). 
+%
 More precisely, the important issue lies in the strong need for new
 models and algorithms, new mechanisms and tools for improving (1)
 topology-aware data accesses, (2) data movements across the various
-software layers, (3) data locality and transfers for applications. 
+software layers, and (3) data locality and transfers for applications. 
 
 
 \section{Key points}
-In the literature there are tremendous efforts for optimizing an application
-statically (better data layout, compilation optimization, parallelism
-structuring, etc.). However, once an application is written and compiled there
-are several factors that play an important role, that could not be known before
-the execution and have a dramatic impact on its performance. Among these
-factors are:
+There are tremendous efforts for optimizing an application statically in
+the literature. Among these are data layout optimizations, compilation
+optimization, and parallelism structuring. However, once an application
+is written and compiled there are several additional factors that play an important
+role, that could not be known before the execution and have a dramatic
+impact on its performance. Among these factors are:
 \begin{itemize}
 \item The allocated resources for the specific run and their interconnection,
 \item the other running applications and the network traffic they induce,   
@@ -147,7 +148,7 @@ compute ratio while increasing injection rates.  This shift is causing
 fundamental reconsideration of the BSP programming model and
 interconnect design.  A leading contender for a new interconnect is a
 multi-level direct network such as
-Dragonfly~\cite{4556717,ibm-percs-network}.  Such networks are formed
+Dragonfly~\cite{ibm-percs-network,4556717}.  Such networks are formed
 from highly-connected parts, placing every node within a few hops of all
 others.  This may benefit unstructured communications that often occur
 in graph
@@ -156,7 +157,7 @@ structured communication patterns and the network topologies have not been
 completely specified.  
 At the node level, a promising approach for fully utilizing
 higher core counts on next-generation architectures is over-decomposed
-task parallelism, which will stress the interconnect in ways different
+task parallelism~\cite{Kale:1993:CPC:165854.165874}, which will stress the interconnect in ways different
 from the traditional BSP model.
 
 
@@ -164,7 +165,8 @@ In order to optimize system-scale application execution we need models
 of the machine at different scales, models of the application and algorithms
 and tools to optimize its execution with its whole ecosystem. 
 The literature provides a lot of models and abstraction on how to write a
-parallel code. However, even with a huge parallelism, future applications will
+parallel code. However, even with sufficient parallelism, future
+applications may
 not scale due to the data traffic and coherence management. Current models and
 abstraction are geared towards computations and ignore the cost incurred by data
 movement, topology and synchronization.  It is important to provide new hardware
@@ -180,7 +182,7 @@ the multi-scale properties of the machine.
 Applications need abstractions allowing them to express their behavior
 and requirement in terms of data access, locality and communication.
 For this, we need to define metrics to capture the notions of data
-access, affinity, network traffic, etc. The MPI standard offers the
+access, affinity, and network traffic. The MPI standard offers the
 process topology interface that allows an application to specify the
 dataflow between processes~\cite{hoefler-mpi-2.2-scal-topo}. However,
 while this interface is a good first step, it is essentially limited to
@@ -199,18 +201,25 @@ possible to couple allocation and mapping.
 
 
 \section{State of the Art}
-Concerning topology mapping TreeMatch~\cite{jmt14b}, provides mapping
-of processes onto computing resources in the case of a tree topology (such as
-current NUMA nodes and fattree
-network). LibTopoMap~\cite{DBLP:conf/ics/HoeflerS11} addresses the same problem as
-TreeMatch but for arbitrary topology such as torus, grid, and others. Topology mapping is basically a graph embedding problem 
-where an application graph is embedded into a machine graph.  Therefore, graph partitioners 
-such as Scotch~\cite{scotch-man} or ParMetis~\cite{karypis2003parmetis} can address the
-problem even though they might require more precise information than specific
-tools and do not always provide good solutions~\cite{jmt14b}.  
-After processes are allocated to an application, Zoltan2~\cite{zoltan2,drl+14} is a 
-toolkit that can map processes to the allocated resources depending on the geometry of the 
-target machine and process affinity.
+Concerning topology mapping TreeMatch~\cite{jmt14b}, provides mapping of
+processes onto computing resources in the case of a tree topology (such
+as current NUMA nodes and fattree network).
+LibTopoMap~\cite{DBLP:conf/ics/HoeflerS11} addresses the same problem as
+TreeMatch but for arbitrary topology such as torus, grid, and others.
+The general problem is NP-hard and can thus only be approximated.
+However, several specialized versions of the problem can be solved
+near-optimal in polynomial time, for example, mapping Cartesian
+topologies to Dragonfly networks~\cite{prisacari-dragonfly-mapping}.
+
+Topology mapping can also be seen as a graph embedding problem where an
+application graph is embedded into a machine graph.  Therefore, graph
+partitioners such as Scotch~\cite{scotch-man} or
+ParMetis~\cite{karypis2003parmetis} can address the problem even though
+they might require more precise information than specific tools and do
+not always provide good solutions~\cite{jmt14b}.  After processes are
+allocated to an application, Zoltan2~\cite{zoltan2,drl+14} is a toolkit
+that can map processes to the allocated resources depending on the
+geometry of the target machine and process affinity.
 
 
 Hardware Locality (HWLOC)~\cite{hwloc} is a library and a set of tools aiming at
@@ -222,12 +231,14 @@ contention is managed may change the way the distance within the network is
 expressed or measured. 
 
 Modeling the data-movement requirements of an application in terms of
-network traffic and I/O can be supported through performance-analysis tools
-such as Scalasca~\cite{geimer_ea:2010:scalascaarchitecture}. It can also be done
-by tracing data exchange at the runtime level with a system like OVIS \cite{SystemMonitoring,ovis}, by monitoring the
-messages transferred between MPI processes for instance. Moreover, compilers, by analyzing
-the code and the way the array are accessed can, in some cases, determine the
-behavior of the application regarding this aspect. 
+network traffic and I/O can be supported through performance-analysis
+tools such as Scalasca~\cite{geimer_ea:2010:scalascaarchitecture}. It
+can also be done by tracing data exchange at the runtime level with a
+system like OVIS \cite{ovis,SystemMonitoring}, by monitoring the
+messages transferred between MPI processes for instance. Moreover,
+compilers, by analyzing the code and the way the array are accessed can,
+in some cases, determine the behavior of the application regarding this
+aspect. 
 
 Resource managers or job scheduler, such as SLURM~\cite{yoo2003slurm},
 OAR~\cite{capit2005batch,}, LSF~\cite{zhou1992lsf}
@@ -247,7 +258,7 @@ machine and the constraints incurred by already mapped applications.
 \section{Discussion}
 To address the locality problem at system scale, several challenges are required
 to be solved. 
-
+%
 First, scalability is a very important cross-cutting issue since the targets are
 very large-scale, high-performance computers. On one hand, applications
 scalability will mostly depends on the way data is accessed and locality is
@@ -256,7 +267,7 @@ at the same scale of the application and their inner decision time must
 therefore be very short.
 
 Second, it is important to tackle the problem for the whole system: taking into account
-the whole ecosystem of the application (storage, resource manager, etc.) and the
+the whole ecosystem of the application (e.g., storage, resource manager) and the
 whole architecture (i.e., from cores to network). It is important to investigate
 novel approaches to control data locality system-wide, by integrating
 cross-layer I/O stack mechanisms  with cross-node topology-aware mechanisms. 
