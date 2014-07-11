@@ -344,6 +344,31 @@ The following terms are used in this chapter:
 \item \emph{Active library:} a library which comes with a mechanism for delivering library-specific optimizations~\cite{DBLP:journals/corr/math-NA-9810022}.  Active library technologies differ in how this is achieved - examples include template metaprogramming in C++, Lightweight Modular Staging in Scala~\cite{DBLP:journals/cacm/RompfO12}, source-to-source transformation (for example using tools like ROSE~\cite{DBLP:conf/lcpc/YiQ04}), and run-time code generation, driven either by delayed evaluation of library calls~\cite{DBLP:journals/scp/RussellMKB11}, or explicit run-time construction of problem representations or data flow graphs.
 \item \emph{Embedded domain-specific language:} a technique for delivering a language-based solution within a host, general-purpose language~\cite{Hudak96buildingdomain-specific}.  Active libraries often achieve this to some extent, commonly by overloading to capture expression structure.  Truly syntactic embedding is also possible with more ambitious tool support~\cite{Erdweg:2011:SLS:2076021.2048099}.
 \item \emph{Directive-based language extensions:}
+
+\item \emph{Global-view vs. Local-view Languages:} Global-view
+  languages are those in which data structures, such as multidimensional
+  arrays, are declared and accessed in terms of their global problem
+  size and indices, as in shared-memory programming.  In contrast,
+  local-view languages are those in which such data structures are
+  accessed in terms of local indices and node IDs.
+
+\item \emph{Multiresolution Language Philosophy:} This is a concept
+  in which programmers can move from more language features that are
+  more declarative, abstract, and higher-level to those that are more
+  imperative, control-oriented, and low-level, as required by their
+  algorithm or performance goals.  The goal of this approach is to
+  support higher-level abstractions for convenience and productivity
+  without removing the fine-grained control that HPC programmers often
+  require in practice.  Ideally, the high-level features are
+  implemented in terms of the lower-level ones in a way that permits
+  programmers to supply their own implementations.  Such an approach
+  supports a separation of roles in which computational scientists can
+  write algorithms at high levels while parallel computing experts can
+  tune the mappings of those algorithms to the hardware platform(s) in
+  distinct portions of the program text.
+
+
+
 \end{itemize}
 
 \section{Key Points}
@@ -377,6 +402,68 @@ STANDARDS
   \end{itemize}
 
 }
+
+HPF and ZPL are two languages from the 1990s that support high-level
+locality specifications through the distribution of multidimensional
+arrays and index sets to rectilinear views of the target processors.
+Both can be considered \emph{global view} languages, and as a result
+all communication was managed by the compiler and runtime.  A key
+distinction between the languages was that all communication in ZPL
+was syntactically evident, while in HPF it was invisible.  While ZPL's
+approach made locality simpler for a programmer to reason about, it
+also required code to be rewritten whenever a local/non-distributed
+data structure or algorithm was converted to a distributed one.  HPF's
+lack of syntactic communication cues saved it from this problem, but
+it fell afoul of others in that it did not provide a clear semantic
+model for how locality would be implemented for a given program,
+requiring programmers to wrestle with a compiler to optimize for
+locality, and to then to rewrite their code when moving to a second
+compiler that took a different approach.
+
+As we consider current and next-generation architectures, we can
+expect the locality model for a compute node to differ from one vendor
+or machine generation to the next.  For this reason, the ZPL and HPF
+approaches are non-viable.  To this end, we advocate for pursuing
+languages that make communication syntactically invisible (to avoid
+ZPL's pitfalls) while supporting a strong semantic model as a contract
+between the compiler and programmer (to avoid HPF's).  Ideally, this
+model would be reinforced by execution-time queries to support
+introspection about the placement of data and tasks on the target
+architecture.
+
+Chapel is an emerging language that takes this prescribed approach,
+using a first-class language-level feature, the \emph{locale} to
+represent regions of locality in the target architecture.  Programmers
+can reason about the placement of data and tasks on the target
+architecture using Chapel's semantic model, or via runtime queries.
+Chapel follows the Partitioned Global Address Space~(PGAS) philosophy,
+supporting direct access to variables stored on remote locales based
+on traditional lexical scoping rules.  Chapel also follows the
+multiresolution philosophy by supporting low-level mechanisms for
+placing data or tasks on specific locales, as well as high-level
+mechanisms for mapping global-view data structures or parallel loops
+to the locales.  Advanced users may implement these data distributions
+and loop decompositions within Chapel itself, and can even define the
+model used to describe a machine's architecture in terms of locales.
+
+Unified Parallel C~(UPC) and Co-Array Fortran~(CAF) are two of the
+founding PGAS languages.  UPC supports global-view data structures and
+syntactically-invisible communication while CAF has local-view data
+structures and syntactically-evident communication.  Both differ from
+HPF, ZPL, and Chapel in that programs are written using an explicit
+Single-Program, Multiple Data~(SPMD) execution model.  These copies of
+the executing binary form the units of locality within these
+languages, and remote variable instances are referenced based on the
+symmetric namespaces inherent in the SPMD model.  There are good
+reasons to be skeptical about whether such SPMD-based locality models
+(including MPI) will be sufficient for leveraging the hierarchical
+architectural locality present in emerging architectures.  If not,
+such models will likely be forced to be part of hybrid programming
+models in which distinct locality abstractions are used to express
+finer-grained locality concerns.
+
+
+
 
 \section{Discussions}
 
@@ -429,3 +516,5 @@ CONCLUSION - RECOMMENDATIONS
   \end{itemize}
 }
 
+
+% LocalWords:  HPC
