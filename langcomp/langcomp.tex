@@ -328,15 +328,23 @@ SCOPE
   \end{itemize}
 }
 
-Locality is a fundamental concern in the current and future HPC architectures, where the cost of data movement defines a large fraction of overall application performance. The concept of locality, however, has not yet become a first-class citizen in general-purpose programming languages. As a result, although application programmers are often confronted with the necessity of restructuring program codes for better exploiting locality inherent in their algorithms, even a simple simulation code can become highly non-intuitive, difficult to maintain, and non portable across diverse architectures. 
+Locality is a fundamental concern for current and future HPC architectures, since the cost of data movement defines a large fraction of overall application performance. The concept of locality, however, has not yet become a first-class citizen in general-purpose programming languages. As a result, although application programmers are often confronted with the necessity of restructuring program codes to better exploit locality inherent in their algorithms, even a simple simulation code can become highly non-intuitive, difficult to maintain, and non portable across diverse architectures. 
 
 The overarching vision of this workshop is to solve these issues by presenting application programmers with proper abstractions for expressing locality. In this chapter, we explore the proposition that management of locality in parallel programming is a \emph{language} problem. More specifically, we discuss language concepts for data locality, their delivery in general-purpose languages, domain-specific languages and active libraries, and the compiler technology to support them. 
  
 Language-based solutions may come in the form of new, general-purpose parallel
-programming languages.  As well as supporting intuitive syntax, doing so creates the scope for ambitious compilation techniques, sophisticated use of type systems, and compile-time checking of important program properties. Language concepts for locality can also be delivered within existing languages, supported in libraries, through metaprogramming in C++, and in `active libraries'' with library-specific analysis and optimizations.
+programming languages.  In addition to supporting intuitive syntax, language-based approaches enable ambitious compilation techniques, sophisticated use of type systems, and compile-time checking of important program properties. Language concepts for locality can also be delivered within existing languages, supported in libraries, through metaprogramming in C++, and in ``active libraries'' with library-specific analysis and optimizations.
  
 
-Locality is about data, and locality abstractions refer to abstract data types. Multidimensional arrays are a crucial starting point.  Many more complex domains can be characterized by the abstract, distributed data structure on which parallel computation occurs. Domain-specific tools are often focused on particular data structures - graphs, meshes, octrees, structured adaptive-mesh multigrids etc.  While Chapter~\ref{ch:datastructures} tackles particular data structures, in this chapter we look at how to build tools to support programmers who build such abstractions.
+Locality is about data, and locality abstractions often refer to abstract data types. Multidimensional arrays are a crucial starting point.  Many more complex domains can be characterized by the abstract, distributed data structures on which parallel computation occurs. Domain-specific tools are often focused on particular data structures---graphs, meshes, octrees, structured adaptive-mesh multigrids, etc.  While Chapter~\ref{ch:datastructures} tackles particular data structures, in this chapter we look at how to build tools to support programmers who build such abstractions.
+
+Locality is also about affinity---the placement of computations (e.g.,
+tasks) relative to the data they access.  Dominant HPC programming
+models have typically been based on long-running tasks executing in
+fixed locations fetching remote data.  Emerging architectures may also
+compel us to pursue languages in which computations are moved to the
+data they wish to access.  To implement such models, languages will
+need to also support the creation of remote tasks or activities.
 
 The following terms are used in this chapter:
 
