@@ -480,7 +480,28 @@ AGREEMENTS
 \begin{itemize}
 \item PRINCIPLES
   \begin{itemize}
-  \item Avoid losing information through premature ``lowering" of the program representation.
+
+  \item Avoid losing information through premature ``lowering'' of the
+    program representation.  In particular, many locality-oriented
+    analyses and optimizations are most naturally effective when
+    applied to multidimensional index spaces and data structures.  To
+    that end, languages lacking multidimensional data structures, or
+    compilers that aggressively normalize to 1D representations,
+    undermine such optimization strategies.  Expression of
+    computations in their natural dimensionality and maintenance of
+    that dimensionality during compilation are key.
+
+  \item A common theme in many promising language- and
+    library-oriented approaches to locality is to express
+    distribution- and/or locality-oriented specifications in a
+    program's variable and type declarations rather than scattering it
+    throughout the computation.  Since locality is a cross-cutting
+    concern, this minimizes the amount of code that needs to change
+    when the mapping of the program's constructs to the hardware must.
+    The compiler and runtime can then leverage the locality properties
+    exposed in these declarations to customize and optimize code based
+    on that information.
+
   \item Isolate cross-cutting locality concerns.  Locality --- data layout and distribution --- is fundamentally more difficult than parallelization because it affects all the code that touches the data.   
   \end{itemize}
 \item SOLUTIONS
@@ -495,7 +516,21 @@ AGREEMENTS
 DISAGREEMENTS
   \begin{itemize}
    \item No consensus on the requirements on intermediate representations and runtime systems
-   \item Do what I say vs do what I mean [[PK: I thnk this is \emph{agreement} on the need for "multiresolution" solutions, see earlier]]
+
+   \item There was disagreement within the workshop attendees about
+     the extent to which a language's locality-specification
+     mechanisms should be explicit (``allocate/run this here'')
+     vs. suggestive (``allocate/run this somewhere near-ish to here,
+     please'') vs. locality-oblivious or automatic (``I don't want to
+     worry about this, someone else [the compiler / the parallel
+       expert] should figure it out for me.'').  This disagreement is
+     arguably an indication that pursuing multiresolution features
+     would be attractive.  In such a model, a programmer could be more
+     or less explicit as the situation warrants; and/or distinct
+     concerns (algorithm vs. mapping) could be expressed in different
+     parts of the program by programmers with differing levels of
+     expertise.
+
    \item Compositional metadata vs explicit dependence/synchronisation/movement (Brad has words)
   \end{itemize}
 
