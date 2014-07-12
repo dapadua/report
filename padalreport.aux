@@ -20,10 +20,21 @@
 \@writefile{toc}{\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax }
 \@writefile{lof}{\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax }
 \@writefile{lot}{\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax }
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{\numberline {1}Introduction}{4}{chapter.1}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{\numberline {1}Introduction}{5}{chapter.1}}
 \@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\defcounter {refsection}{0}\relax }\@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{ch:intro}{{1}{4}{Introduction}{chapter.1}{}}
+\newlabel{ch:intro}{{1}{5}{Introduction}{chapter.1}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{\numberline {2}Background}{6}{chapter.2}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\defcounter {refsection}{0}\relax }\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:background}{{2}{6}{Background}{chapter.2}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {2.1}Hardware Basis for Locality Optimizations}{6}{section.2.1}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.1}The End of Classical Performance Scaling}{6}{subsection.2.1.1}}
+\abx@aux@cite{GreenFlash}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.2}Data Locality}{7}{subsection.2.1.2}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces Data movement is overtaking computation as the most dominant cost of a system both in terms of dollars and in terms of energy consumption. Consequently, we should be more explicit about reasoning about data movement. This diagram shows the cost of operations or data movement for a 64-bit operand. By 2018, the cost of moving a 64-bit operand a mere 5mm across the chip will exceed that of a floating point operation that uses that operand. {\em  The FPU and Register File energy model is computed from Tensilica's RTL design for an LX4 core with FPU. The data movement on-chip is based on a standard resistive/capacitive model with simple signal regeneration. The DRAM is based on Micron's projections for DDR parts. The interconnect model is based on extrapolating historical improvements in optical transceiver efficiency and data rates.}}}{8}{figure.2.1}}
+\newlabel{fig:datamovement}{{2.1}{8}{Data movement is overtaking computation as the most dominant cost of a system both in terms of dollars and in terms of energy consumption. Consequently, we should be more explicit about reasoning about data movement. This diagram shows the cost of operations or data movement for a 64-bit operand. By 2018, the cost of moving a 64-bit operand a mere 5mm across the chip will exceed that of a floating point operation that uses that operand. {\em The FPU and Register File energy model is computed from Tensilica's RTL design for an LX4 core with FPU. The data movement on-chip is based on a standard resistive/capacitive model with simple signal regeneration. The DRAM is based on Micron's projections for DDR parts. The interconnect model is based on extrapolating historical improvements in optical transceiver efficiency and data rates.}}{figure.2.1}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.3}Performance Heterogeneity}{8}{subsection.2.1.3}}
 \abx@aux@cite{cosmo}
 \abx@aux@cite{gromacs4}
 \abx@aux@cite{gromacs4.5}
@@ -32,69 +43,69 @@
 \abx@aux@cite{PyOP2}
 \abx@aux@cite{chombo}
 \abx@aux@cite{vis}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{\numberline {2}Motivating Applications and Their Requirements}{5}{chapter.2}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{\numberline {3}Motivating Applications and Their Requirements}{10}{chapter.3}}
 \@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\defcounter {refsection}{0}\relax }\@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{ch:apps}{{2}{5}{Motivating Applications and Their Requirements}{chapter.2}{}}
+\newlabel{ch:apps}{{3}{10}{Motivating Applications and Their Requirements}{chapter.3}{}}
 \abx@aux@cite{STELLA14}
 \abx@aux@cite{MHTKE12a}
 \abx@aux@cite{fenics}
 \abx@aux@cite{MHTK12}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {2.1}The State-of-the-Art}{6}{section.2.1}}
-\@writefile{tdo}{\defcounter {refsection}{0}\relax }\@writefile{tdo}{\contentsline {todo}{\sffamily  \relax \fontsize  {8}{9.5}\selectfont  \abovedisplayskip 6\p@ plus2\p@ minus4\p@ \abovedisplayshortskip \z@ plus\p@ \belowdisplayshortskip 3\p@ plus\p@ minus2\p@ \def \leftmargin \leftmargini \parsep 4\p@ plus2\p@ minus\p@ \topsep 8\p@ plus2\p@ minus4\p@ \itemsep 4\p@ plus2\p@ minus\p@ {\leftmargin \leftmargini \topsep 3\p@ plus\p@ minus\p@ \parsep 2\p@ plus\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip \textbf  {\leavevmode {\color  {black}Frank:\tmspace  +\thinmuskip {.1667em}}}\leavevmode {\color  {black}Ask Mauro whether there is a more appropriate reference to STELLA.}}{6}{section*.4}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {3.1}The State-of-the-Art}{11}{section.3.1}}
+\@writefile{tdo}{\defcounter {refsection}{0}\relax }\@writefile{tdo}{\contentsline {todo}{\sffamily  \relax \fontsize  {8}{9.5}\selectfont  \abovedisplayskip 6\p@ plus2\p@ minus4\p@ \abovedisplayshortskip \z@ plus\p@ \belowdisplayshortskip 3\p@ plus\p@ minus2\p@ \def \leftmargin \leftmargini \parsep 4\p@ plus2\p@ minus\p@ \topsep 8\p@ plus2\p@ minus4\p@ \itemsep 4\p@ plus2\p@ minus\p@ {\leftmargin \leftmargini \topsep 3\p@ plus\p@ minus\p@ \parsep 2\p@ plus\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip \textbf  {\leavevmode {\color  {black}Frank:\tmspace  +\thinmuskip {.1667em}}}\leavevmode {\color  {black}Ask Mauro whether there is a more appropriate reference to STELLA.}}{11}{section*.4}}
 \pgfsyspdfmark {pgfid1}{29475147}{14815495}
 \pgfsyspdfmark {pgfid2}{31621451}{14827783}
 \pgfsyspdfmark {pgfid3}{33767755}{14603869}
 \pgfsyspdfmark {pgfid4}{36096104}{14827783}
 \pgfsyspdfmark {pgfid5}{38242408}{14603869}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {2.2}The Challenges}{7}{section.2.2}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {2.3}Application requirements}{8}{section.2.3}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}The Wish List}{8}{subsection.2.3.1}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {2.4}Research Areas}{8}{section.2.4}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {3.2}The Challenges}{12}{section.3.2}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {3.3}Application requirements}{13}{section.3.3}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}The Wish List}{13}{subsection.3.3.1}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {3.4}Research Areas}{13}{section.3.4}}
 \abx@aux@cite{all}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{\numberline {3}Data Structures and Layout Abstractions}{10}{chapter.3}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{\numberline {4}Data Structures and Layout Abstractions}{15}{chapter.4}}
 \@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\defcounter {refsection}{0}\relax }\@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{ch:datastructures}{{3}{10}{Data Structures and Layout Abstractions}{chapter.3}{}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {3.1}Introduction}{10}{section.3.1}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {3.2}Key Points}{11}{section.3.2}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {3.3}State of the Art}{11}{section.3.3}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {3.4}Discussion}{12}{section.3.4}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {3.5}Research Plan}{14}{section.3.5}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {3.6}OUTLINE}{14}{section.3.6}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{\numberline {4}Language and Compiler Support for Data Locality}{19}{chapter.4}}
+\newlabel{ch:datastructures}{{4}{15}{Data Structures and Layout Abstractions}{chapter.4}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.1}Introduction}{15}{section.4.1}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.2}Key Points}{16}{section.4.2}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.3}State of the Art}{16}{section.4.3}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.4}Discussion}{17}{section.4.4}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.5}Research Plan}{19}{section.4.5}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.6}OUTLINE}{19}{section.4.6}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{\numberline {5}Language and Compiler Support for Data Locality}{24}{chapter.5}}
 \@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\defcounter {refsection}{0}\relax }\@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{ch:langcomp}{{4}{19}{Language and Compiler Support for Data Locality}{chapter.4}{}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.1}Introduction}{19}{section.4.1}}
+\newlabel{ch:langcomp}{{5}{24}{Language and Compiler Support for Data Locality}{chapter.5}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {5.1}Introduction}{24}{section.5.1}}
 \abx@aux@cite{DBLP:journals/corr/math-NA-9810022}
 \abx@aux@cite{DBLP:journals/cacm/RompfO12}
 \abx@aux@cite{DBLP:conf/lcpc/YiQ04}
 \abx@aux@cite{DBLP:journals/scp/RussellMKB11}
 \abx@aux@cite{Hudak96buildingdomain-specific}
 \abx@aux@cite{Erdweg:2011:SLS:2076021.2048099}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.2}Key Points}{20}{section.4.2}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.3}State of the Art}{21}{section.4.3}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.4}Discussions}{22}{section.4.4}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.5}Research Plan}{23}{section.4.5}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{\numberline {5}Data Locality in Task Models}{24}{chapter.5}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {5.2}Key Points}{25}{section.5.2}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {5.3}State of the Art}{26}{section.5.3}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {5.4}Discussions}{27}{section.5.4}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {5.5}Research Plan}{28}{section.5.5}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{\numberline {6}Data Locality in Task Models}{29}{chapter.6}}
 \@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\defcounter {refsection}{0}\relax }\@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{ch:taskmodels}{{5}{24}{Data Locality in Task Models}{chapter.5}{}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {5.1}Introduction}{24}{section.5.1}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {5.2}Key Points}{24}{section.5.2}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {5.3}The State-of-the-Art}{26}{section.5.3}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {5.4}Discussions}{27}{section.5.4}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {5.5}Research Plan}{27}{section.5.5}}
+\newlabel{ch:taskmodels}{{6}{29}{Data Locality in Task Models}{chapter.6}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {6.1}Introduction}{29}{section.6.1}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {6.2}Key Points}{29}{section.6.2}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {6.3}The State-of-the-Art}{31}{section.6.3}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {6.4}Discussions}{32}{section.6.4}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {6.5}Research Plan}{32}{section.6.5}}
 \abx@aux@cite{cui2013accelerating}
 \abx@aux@cite{kramer13}
 \abx@aux@cite{DBLP:conf/ics/ChenCHRK06}
 \abx@aux@cite{jm10}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{\numberline {6}System-Scale Data Locality Management}{28}{chapter.6}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{\numberline {7}System-Scale Data Locality Management}{33}{chapter.7}}
 \@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\defcounter {refsection}{0}\relax }\@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{ch:systemscale}{{6}{28}{System-Scale Data Locality Management}{chapter.6}{}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {6.1}Key points}{28}{section.6.1}}
+\newlabel{ch:systemscale}{{7}{33}{System-Scale Data Locality Management}{chapter.7}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {7.1}Key points}{33}{section.7.1}}
 \abx@aux@cite{ibm-percs-network}
 \abx@aux@cite{4556717}
 \abx@aux@cite{Kale:1993:CPC:165854.165874}
@@ -110,7 +121,7 @@
 \abx@aux@cite{drl+14}
 \abx@aux@cite{hwloc}
 \abx@aux@cite{netloc}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {6.2}State of the Art}{29}{section.6.2}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {7.2}State of the Art}{34}{section.7.2}}
 \abx@aux@cite{geimer_ea:2010:scalascaarchitecture}
 \abx@aux@cite{ovis}
 \abx@aux@cite{SystemMonitoring}
@@ -118,10 +129,10 @@
 \abx@aux@cite{capit2005batch}
 \abx@aux@cite{zhou1992lsf}
 \abx@aux@cite{henderson1995job}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {6.3}Discussion}{30}{section.6.3}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {6.4}Research Plan}{30}{section.6.4}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusion}{31}{chapter.7}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {7.3}Discussion}{35}{section.7.3}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {7.4}Research Plan}{35}{section.7.4}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{\numberline {8}Conclusion}{36}{chapter.8}}
 \@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\defcounter {refsection}{0}\relax }\@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{ch:conclusion}{{7}{31}{Conclusion}{chapter.7}{}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{References}{32}{section*.5}}
+\newlabel{ch:conclusion}{{8}{36}{Conclusion}{chapter.8}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{References}{37}{section*.5}}

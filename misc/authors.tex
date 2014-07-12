@@ -15,19 +15,18 @@
 {\bf \huge Programming Abstractions for Data Locality
 }\\[\baselineskip] % d. Proposal title \vspace{2em}
 
-{\em March 27 -- 29, 2014 \\
-Swiss National Supercomputing Center (CSCS) \\
-Lugano, Switzerland} \\
+{\em April 28 -- 29, 2014 \\
+Swiss National Supercomputing Center (CSCS), Lugano, Switzerland} \\
 \end{center}
 
-%\noindent
+\noindent
 \textbf{Co-Chairs}\\
 \noindent
 Didem Unat (LBNL)\\
 Torsten Hoefler (ETH Z{\"u}rich) \\
 John Shalf (LBNL) \\
 Thomas Schulthess (CSCS) \\
-\\
+
 \begin{center}
 \noindent
 \textbf{Workshop Participants/Co-Authors} \\
@@ -73,14 +72,19 @@ Vitus Leung (Sandia National Laboratories)\\
 \end{multicols}
 \noindent
 \begin{center}
-\textbf{Abstract}
+\textbf{Executive Summary}
 \end{center}
-{\small\em
-This paper reports on the results of a workshop on programming
-models, languages, compilers and runtime systems for exascale
-machines.  The goal was to identify some of the challenges in each of
-these areas, the promising approaches that should be pursued, and
-measures to assess progress. etc. etc. etc... .\\
+{\small
+The cost of data movement has become the dominant factor of a high performance computing system both in terms of energy consumption and performance. To minimize data movement, applications have to be optimized both for vertical data movement in the memory hierarchy and horizontal data movement between processing units. While microarchitectural technology trends allow the scaling of the number of cores per chip, cache coherence  will likely not scale to the large number of cores due to the traffic overhead of maintaining coherence. 
+%In the future, software-managed memory and incoherent caches or scratchpad memory will be prevalent. Thus, application developers need a set of programming abstractions to describe data locality for the new computing ecosystem.
+Architectural trends break our existing programming paradigm because the current software tools optimize for floating point operations not memory traffic. They ignore the incurred cost of communication and simply rely on the hardware cache coherency to virtualize data movement. For example, the current OpenMP-3 usage model describes how to parallelize loop iterations and divides the iteration space evenly among processors with limited flexibility for expressing data layout.  
+% It implicitly assumes all the processing elements are equidistant to each other and equidistant to main memory. This does not reflect the underlying machine architecture. 
+Application developers need a set of programming abstractions to describe data locality for the new computing ecosystem.
+The new programming paradigm should be more data centric and allow to describe how to decompose and how to layout data in the memory.
+
+Fortunately, there are many emerging concepts such as {\em tiling}, {\em array views} and {\em iterators} to managing data locality. There is an opportunity to identify commonalities in strategy to enable us to combine together the best of these concepts to develop a comprehensive approach to expressing and managing data locality on exascale programming systems. These programming model abstractions can expose crucial information about data locality to the compiler and runtime system to enable performance-portable code. The research question is to identify the right level of abstraction, which includes techniques that range from template libraries all the way to language constructs to achieve this goal.
+
+\textbf{\em The goal of the workshop and this resultant report to identify common themes and standardize concepts for locality-preserving abstractions for exsacale programming models.}
 }
 
 \pagebreak
