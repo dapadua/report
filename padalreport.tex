@@ -12,6 +12,38 @@
 \usepackage[backend=biber,style=numeric,sorting=nyt,hyperref,defernumbers=true,maxcitenames=4,mincitenames=4,maxbibnames=100,firstinits=true]{biblatex}
 
 
+\newcommand{\caf}{{\sc CAF}}
+\newcommand{\upc}{{\sc UPC}}
+\newcommand\subsubsubsection[1]{{\vspace{1ex}\noindent\bf #1}}
+\newcommand{\spmd}{{\sc SPMD}}
+\newcommand{\mcl}[2]{\multicolumn{#1}{|l|}{#2}}
+\newcommand{\mc}[2]{\multicolumn{#1}{|c|}{#2}}
+\newcommand{\mcf}[2]{\multicolumn{#1}{c|}{#2}}
+\newcommand{\mcb}[2]{\multicolumn{#1}{|c}{#2}}
+\newcommand{\mcn}[2]{\multicolumn{#1}{c}{#2}}
+\newcommand{\mcfd}[2]{\multicolumn{#1}{c||}{#2}}
+\newcommand{\vst}{\vspace{-15pt}}
+\newcommand{\fix}[1]{\textcolor{red}{\textbf{\textit{#1}}}}
+
+
+\newcommand\imp[1]{{\em #1}}
+\newcommand\ignore[1]{}
+\newcommand\paragraphem[1]{{\vspace{.5ex}\noindent\bf #1}}
+%\newcommand{\comment}[1]
+%        { \mbox{}\marginpar{\raggedleft\hspace{0pt}{\color{red} #1 }}}
+\newcommand\eg{{\em e.g.}}
+\setlength{\marginparwidth}{0.75in}
+\let\oldmarginpar\marginpar
+\renewcommand\marginpar[1]{\-\oldmarginpar[\raggedleft\footnotesize \textcolor{red}{#1}]{\raggedright\footnotesize \textcolor{red}{#1}}}
+%\renewcommand\marginpar[1]{}
+%
+%\hypersetup {
+%colorlinks= true,
+%urlcolor=blue,
+%citecolor=blue,
+%linkcolor=blue,
+%}
+
 \addbibresource[label=primary]{references.bib}
 
 %\usepackage{draftwatermark}
@@ -24,20 +56,20 @@
 
 \date{}           % Leave this here but empty
 
-\input{misc/authors}
 
-\PADALInstitutionOne{}
-\PADALInstitutionOneShort{}
 
-\PADALInstitutionTwo{}
-\PADALInstitutionTwoShort{}
+%\PADALInstitutionOne{}
+%\PADALInstitutionOneShort{}
+%
+%\PADALInstitutionTwo{}
+%\PADALInstitutionTwoShort{}
 
 % Start the document
 \begin{document}
     \PADALfrontpage
-
-    \input{misc/abstract}
-    \maketitle
+   \input{misc/authors}
+%    \input{misc/abstract}
+%  \maketitle
 
     \clearpage
     \chapter*{Acknowledgment}

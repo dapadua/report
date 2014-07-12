@@ -1,7 +1,304 @@
-\PADALauthor{
-author list goes here
+%\PADALauthor{
+%author list goes here
+%}
+%
+%\PADALauthorshort{
+%author list goes here
+%}
+
+\pagestyle{empty}
+\phantomsection
+%\addcontentsline{toc}{section}{Abstract}
+%\pdfbookmark{1}{Abstract}{Abstract}
+\begin{center}
+\vspace{2em}
+{\bf \huge Programming Abstractions for Data Locality
+}\\[\baselineskip] % d. Proposal title \vspace{2em}
+
+{\em March 27 -- 29, 2014 \\
+Swiss National Supercomputing Center (CSCS) \\
+Lugano, Switzerland} \\
+\end{center}
+
+%\noindent
+\textbf{Co-Chairs}\\
+\noindent
+Didem Unat (LBNL)\\
+Torsten Hoefler (ETH Z{\"u}rich) \\
+John Shalf (LBNL) \\
+Thomas Schulthess (CSCS) \\
+\\
+\begin{center}
+\noindent
+\textbf{Workshop Participants/Co-Authors} \\
+\end{center}
+\begin{multicols}{2}
+
+% Perhaps identify section leads using asterisk and footnotes, or in separate column?
+\noindent
+{\small
+Adrian Tate (Cray) \\
+Amir Kamil (Lawrence Berkeley National Laboratory)\\
+Anshu Dubey (Lawrence Berkeley National Laboratory)\\
+Armin Größlinger (University of Passau)\\
+Brad Chamberlain (Cray)\\
+Carter Edwards (Sandia National Laboratories)\\
+Chris J. Newburn (Intel)\\
+David Padua (UIUC)\\
+Didem Unat (Lawrence Berkeley National Laboratory)\\
+Emmanuel Jeannot (INRIA) \\
+Frank Hannig (University of Erlangen-Nuremberg)\\
+Gysi Tobias (ETH Z{\"u}rich)\\
+Hatem Ltaief (KAUST)\\
+James Sexton (IBM)\\
+Jesus Labarta (Barcelona Supercomputing Center)\\
+John Shalf (Lawrence Berkeley National Laboratory)\\
+Karl Fuehrlinger (Ludwig-Maximilians-University)\\
+Kathryn O'Brien (IBM)\\
+Leonidas Linardakis (Max Planck Inst. for Meteorology)\\
+Maciej Besta (ETH Z{\"u}rich)\\
+Marie-Christine Sawley (Intel, Europe)\\
+Mark Abraham (KTH)\\
+Mauro Bianco (CSCS)\\
+Miquel Pericas (Chalmers University of Technology)\\
+Naoya Maruyama (RIKEN)\\
+Paul Kelly (Imperial College)\\
+Peter Messmer (Nvidia)\\
+Romain Cledat (Intel)\\
+Satoshi Matsuoka (Tokyo Institute of Technology)\\
+Thomas Schulthess (CSCS)\\
+Torsten Hoefler (ETH Z{\"u}rich)\\
+Vitus Leung (Sandia National Laboratories)\\
+} \\
+\end{multicols}
+\noindent
+\begin{center}
+\textbf{Abstract}
+\end{center}
+{\small\em
+This paper reports on the results of a workshop on programming
+models, languages, compilers and runtime systems for exascale
+machines.  The goal was to identify some of the challenges in each of
+these areas, the promising approaches that should be pursued, and
+measures to assess progress. etc. etc. etc... .\\
 }
 
-\PADALauthorshort{
-author list goes here
-}
+\pagebreak
+%
+%Adrian Tate (Cray) 
+%Amir Kamil (Lawrence Berkeley National Laboratory)
+%Anshu Dubey (Lawrence Berkeley National Laboratory)
+%Armin Größlinger (University of Passau)
+%Brad Chamberlain (Cray)
+%Carter Edwards (Sandia National Laboratories)
+%Chris J. Newburn (Intel)
+%David Padua (UIUC)
+%Didem Unat (Lawrence Berkeley National Laboratory)
+%Emmanuel Jeannot (INRIA) 
+%Frank Hannig (University of Erlangen-Nuremberg)
+%Gysi Tobias (ETH Zürich)
+%Hatem Ltaief (KAUST)
+%James Sexton (IBM)
+%Jesus Labarta (BSC)
+%John Shalf (Lawrence Berkeley National Laboratory)
+%Karl Fuehrlinger (Ludwig-Maximilians-University, München )
+%Kathryn O'Brien (IBM)
+%Leonidas Linardakis (Max Planck Institute for Meteorology)
+%Maciej Besta (ETH Zürich)
+%Marie-Christine Sawley (Intel, Europe)
+%Mark Abraham (KTH)
+%Mauro Bianco (CSCS)
+%Miquel Pericas (Chalmers University of Technology)
+%Naoya Maruyama (RIKEN)
+%Paul Kelly (Imperial College)
+%Peter Messmer (Nvidia)
+%Romain Cledat (Intel)
+%Satoshi Matsuoka (Tokyo Institute of Technology)
+%Thomas Schulthess (CSCS)
+%Torsten Hoefler (ETH Zürich)
+%Vitus Leung (Sandia National Laboratories)
+%
+%
+%Session 1 - Applications 
+%
+%Memory Abstraction via Subsets in the ICON Domain Specific Language
+%Leonidas Linardakis 
+%Max Planck Institute for Meteorology
+%
+%Abstract: ICON is a next generation climate and weather prediction model, utilizing unstructured grids. Its memory layout, as well its access patterns, were originally designed for vector machines, which is suboptimal for cache-based machines. On the other hand, adapting large codes, like ICON, to new architectures is a tedious and error-prone process. We propose a memory abstraction scheme, in a form of a simple DSL extension, that allows the modelers to write their code in a way "natural" to the model, while at the same time provides the ability to adapt the memory layout and the access patterns to a given architecture.
+%
+%
+%Increasing Productivity and Performance Portability through Domain-Specific Languages
+%Frank Hannig 
+%University of Erlangen - Nuremberg
+%
+%Abstract: Due to limited power budgets as well as the dark silicon phenomenon, the performance of computing systems will scale in the future only if energy efficiency will be improved significantly. Therefore, one trend is that systems become more and more heterogeneous and customized. The downside of this trend is the programmability of such complex systems, which requires either detailed knowledge of the specific architecture components or sophisticated compilers and runtime management. To cope with this programming challenge, we consider domain-specific approaches in order to automatically generate code for different architectures. More specific, I will present two approaches: The first one, HIPAcc (http://hipacc-lang.org), is a framework for designing image processing kernels in a domain-specific language (DSL) and subsequent generation of low-level target code for GPU accelerators by source-to-source translation. The second approach, ExaStencils (http://www.exastencils.org), targets stencil codes for exascale computing. Here, we currently develop a new software technology that is based on a multi-layered DSL, which forms the foundation for performance-portable refinement at different abstraction levels and allows for incorporation of techniques such as software product line engineering and polyhedral optimization.
+%
+%
+%Exploration of Finer Computation Granularity Through Micro-blocking in AMR
+%Anshu Dubey and Daniel T. Graves
+%Lawrence Berkeley National Laboratory, USA
+%
+%Abstract: When using block structured adaptive mesh refinement (SAMR) with explicit numerical schemes a ?block? of discretized cells with surrounding ghost cells is the most common computational abstraction. The ?stencil? for updating each cell in the mesh determines the depth of ghost-cells layer and the memory overhead for each block. The fine-grain parallelism of newer HPC platforms makes smaller block sizes more attractive for better utilization of compute resources, but decreasing block sizes increases memory overheads. Therefore the ?block? abstraction is not very effective for fine-grain parallelism. However, if we separate the source and destination data containers for computing the state update of a block then it is possible to treat the source block as read-only. This allows blocks to be logically split into arbitrarily small ?micro-blocks? where the ghost cells of one micro- block overlap with the active cells of its neighboring micro-blocks in physical memory without any conflicts. No conflict arises in the destination data container either because there is no need for overlapped cells where updates are stored. We have implemented a prototype application with micro-blocking in Chombo to evaluate the potential of this abstraction in exploiting fine-grain parallelism of newer HPC platforms. We will present our findings from experiments using threading for fine-grain parallelism on various platforms.
+%
+%
+%On the Need for Data Structures for Cache-aware Algorithms in GROMACS 
+%Mark Abraham (KTH)
+%
+%Abstract: The authors of the high-performance molecular-dynamics simulation package GROMACS have identified problems in making best use of data locality in multi-core processors, despite the compute-bound parts of the code not leaving L2 cache. These problems will get worse in the exascale era. Solution constructs that do not require custom language features or compiler support are particularly important for highly portable code. I will show these problems and discuss how we think we can improve the situation with data structures that have more explicit awareness of the need to manage the side-effects of caches.
+%
+%Back to Schedule
+%
+%Session 2 - Data Structure and Layout Abstractions 
+%
+%An Overview of the DASH Project
+%Karl Fuerlinger 
+%Ludwig-Maximilians-University, München 
+%
+%Abstract: The DASH (Data Structures with Support for Hierarchical Locality) project develops a data-structure oriented C++ template library that provides hierarchical PGAS-like abstractions for various data containers (multidimensional arrays, lists, hash tables, etc.) and allows a developer to control (and explicitly take advantage of) the hierarchical data layout of global data structures. In contrast to other PGAS approaches, DASH does not propose a new language or require compiler support to realize global address space semantics. Instead, operator overloading and other C++ features are used to provide the semantics of data residing in a global and hierarchically partitioned address space based on a runtime system with one-sided messaging primitives provided by MPI or GASNet.
+%
+%
+%Addressing Data Locality Challenge with Tiling Abstraction 
+%Didem Unat and John Shalf 
+%Lawrence Berkeley National Laboratory
+%
+%Abstract: Tiling, or blocking, is a well-known loop transformation to improve parallelism and data locality. Hardware trends towards massively parallel chips and mesh-like on-chip network topologies increase the importance of tiling transformations. As the data movement cost dominates both the energy consumption and performance, a programming model designed for exascale machines should take a data centric approach abstracting the hierarchy in memory subsystem and topology of the cores. We propose a programming abstraction that centralizes tiling information within array data types with minimal changes to the source code. The metadata about the data layout can be used by the compiler and runtime to automatically manage parallelism, optimize data locality, schedule tasks intelligently and map them on the cores. In this talk, we present the design features and the interface of the programming model along with performance results on combustion applications. 
+%
+%
+%Array Language Extensions for Locality
+%Prof. David Padua
+%University of Illinois at Urbana-Champaign
+%
+%Abstract: Array notation, as found today in Fortran and MATLAB, is an elegant notation to represent a wide range of algorithms in a machine independent manner and describe parallel computations including communication operations. Thus, APL, Fortran, R, NumPy, and MATLAB use array notation because of its elegance while in other cases array notation has been used to describe parallel computations for Illiac IV (e.g. CFD), the Connection Machine (e.g. CM Fortran), and microprocessor vector extensions (Intel?s C vector extensions). Extending array notations with directives and operations for locality and communication is clearly appealing. Such extensions would serve as a convenient mechanism to control the performance of array languages on all classes of machines, parallel and sequential, and would enable the use of array notations to write efficient programs for distributed memory machines. Designing the extensions was one of the main goals of the High Performance Fortran design and is also an important component of our Hierarchically Tiled Arrays project at Illinois. I will describe some of the most important directives and operations developed for locality in array languages, our experience with their use in HTAs, and future directions in this area.
+%
+%A Standards-based Path to Data Layout Abstraction
+%CJ Newburn, Pascal Costanza, Serge Preis, Arch Robison, Kevin B. Smith, Matt Walsh, Alex Wells
+%
+%Abstract: Effectively scaling workloads on distributed architectures and future-proofing them is a long-standing and difficult challenge. New features and abstractions are being developed by platform vendors and standards bodies to help address such challenges. Some require direct support in standardized language interfaces and compilers, while others may be enabled in libraries. Talks for each of these topics are outlined below.
+%
+%Standardized language interfaces and compiler support for user abstraction: Most programmers want the freedom to use data structures of their choice, even if they might be specifying inefficient access patterns, and they prefer performance portability to re-optimizing their code for each new target. Two impediments to portability are a compiler?s lack of freedom from language rules to optimize data layout and an over-specification of how data collections should be traversed. Vector kernels, such as OpenMP 4.x simd functions, can be extended to overcome these impediments. This talk highlights some of the ways in which we are actively exploring and advocating evolutions of language and programming model standards to give programmers these freedoms in ways that enable efficient code generation. OpenMP 4.x simd functions can be extended to give the compiler greater freedom in optimizing data layout. C++ introspection and intercession may help to integrate user-specified rules into compile-time actions to enable more powerful transformations and to relax language rules in a controlled manner. We are investigating an application of this that gives programmers the logical abstraction of struct and class member accesses that have an underlying efficient SoA (structure of arrays) data layout. 
+%
+%Libraries that enable hierarchical parallelism and memory optimization: We characterized and studied parallelism in scalable workloads from the energy segment. We explored the best balance of parallelism across and within non-coherent domains, and will highlight some library implementations that maximize performance while minimizing memory and communication scaling overheads and programming complexity for distributed computing. We are also exploring abstractions by which users can offer hints on how certain memory objects will be used, so that they get allocated and managed appropriately for emerging memory structures, e.g. those with higher bandwidth.
+%
+%
+%Kokkos: Enabling Performance Portability Across Manycore Architectures
+%Carter Edwards and Christian Trott
+%Sandia National Laboratoryies, USA
+%
+%Abstract: The manycore revolution in computational hardware can be characterized by increasing thread counts, decreasing memory per thread, and architecture specific performance constraints for memory access patterns. High performance computing (HPC) on emerging manycore architectures requires codes to exploit every opportunity for thread-level parallelism and satisfy conflicting performance constraints. We developed the Kokkos C++ library to provide scientific and engineering codes with an intuitive manycore performance portable programming model. The two foundational abstractions of Kokkos are (1) dispatch work to a manycore device for parallel execution and (2) manage multidimensional arrays with polymorphic layouts. The integration of these abstractions enables users? code to satisfy multiple architecture specific memory access pattern performance constraints without having to modify their source code. In this presentation we describe the Kokkos abstractions, summarize its application programmer interface (API), and present performance results for molecular dynamics and finite element mini-applications.
+%
+%
+%GridTools Libraries for Regular Grid Applications
+%Mauro Bianco 
+%Swiss National Supercomputing Centre 
+%
+%Abstract: GridTools is a project founded by the PASC initiative in Switzerland. The aim of the project is to provide a set of libraries for developing structured and block-structured grid applications. The main focus are stencil-like applications in which many stencils have to be executed in each iteration, like weather and geo-science simulations. In many cases the stencils employed in the target applications are bandwidth bound so tiling and fusing helps in optimizing resource usage and scalability on multi- and many-cores machines. The libraries developed in the context of GridTools project will raise the level of abstraction with respect to traditional programming language such as FORTRAN. The reason for this is twofold: first we can abstract algorithms and data structures in a way to easily map them to various architectures, second we can approximate the language used by application developers for improved productivity. The goal of the project is to have developers to adopt the libraries in application codes, and this requires facing several challenges, such as express boundary conditions, grid staggering, conditional execution, and others. The talk will discuss the challenges and the approach we follow in the development of GridTools libraries.
+%
+%Back to Schedule
+%
+%Session 3 - Language and Compiler Support
+%
+%The Decoupled Access-execute Model for Parallel Unstructured-Mesh Computations
+%Prof. Paul H J Kelly (Imperial College )
+%
+%Abstract: Unstructured meshes are essential for many structure- and fluid-modelling applications. Finite-volume and finite-element solvers rely on parallel stencil loops using indirection to access mesh entities, leading to major challenges in management of locality. OP2 and PyOP2 are embedded DSLs which deliver performance, and performance portability, for unstructured-mesh codes, on clusters, multicore and GPU systems. The key idea is to decouple data access from the computational kernel, thus making the data access explicit in the programming model. I will talk about an industrial finite-volume application coded directly in OP2, and also how PyOP2 is being used as an intermediate representation in Firedrake (http://www.firedrakeproject.org/), a compiler for a higher-level DSL. I will show how this model allows automatic parallelisation, locality optimisation, and tiling optimisations. This is joint work with Michelle Strout, Fabio Luporini, Carlo Bertolli, David Ham, Mike Giles, Istvan Reguly, Lawrence Mitchell, Doru Bercea and others.
+%
+%
+%Language Constructs for Data Locality: Moving Policy Decisions from Language Definition to User Space
+%Brad Chamberlain (Cray Inc. )
+%
+%Abstract: In this talk, I will describe features within the Chapel language that support controlling and reasoning about data locality for current and emerging parallel architectures. Adopted HPC programming models --- like C, Fortran, MPI, OpenMP, CUDA, OpenACC, and UPC --- tend to either hard-code crucial locality-related policies like array layout, loop schedules, and architectural models into their definition; or else they provide a limited menu of options that are baked into the language definition and its implementation.
+%
+%In contrast, Chapel permits parallel-savvy programmers to implement such policies within the language itself, and then exposes them to parallel-aware computational scientists via high-level abstractions. We believe that designing such flexibility into a language definition has many benefits including user extensibility, compiler optimizations, improved interoperability, and forward portability to future architectures. The obvious liability of such an approach, in its purest form, is that a greater investment is required to achieve performance that is competitive with current programming models. I'll address this concern in my talk as well. 
+%
+%Time permitting, I will also describe ways in which Cray is addressing emerging locality concerns in conventional programming models. 
+%
+%
+%Managing Hierarchy with Teams in the SPMD Programming Model
+%Amir Kamil  (Lawrence Berkeley National Laboratory) 
+%
+%Abstract: The single program, multiple data (SPMD) model of parallelism is the dominant programming model for large-scale distributed-memory machines. Its simple structure maps well to such machines: it exposes the actual degree of available parallelism, leads to good locality, and can be implemented by efficient runtime systems. However, its simplicity also makes it difficult to manage hierarchy, both at the algorithmic level (e.g. divide-and-conquer algorithms) and in addressing the communication characteristics of hierarchical machines. In this talk, we present a hierarchical team mechanism that allows SPMD programs to manage hierarchy. We show that it allows divide-and-conquer algorithms such as sorting to be expressed in SPMD and that it enables optimizations for hierarchical machines, increasing the scalability and/or performance of multiple benchmarks. We also explore how hierarchical teams may prove useful in other programming abstractions, such as expressing hierarchical distribution of data and implementing locality-aware work-stealing algorithms.
+%
+%
+%Designing Future Locality Aware Languages from Past Experiences
+%Peter Messmer (Nvidia) 
+%
+%Abstract: Current supercomputing architectures require software developers to manage a range of memory spaces, including memories distributed across nodes, multiple NUMA domains per node and attached accelerators. Future hardware trends indicate that this fragmentation and specialization of the global address space will only be increasing. Mechanisms to efficiently express locality of data and processing without impeding programmers productivity are therefore needed. A single global address-space would be convenient to the programmer, even if it resulted in a potential performance hit. At the same time, it is desirable to empower the programmer with full control over data and compute task locality for performance critical parts of the application. Building on the lessons learnt from CUDA and OpenACC, we will explore different mechanisms for expressing locality in a hardware transparent fashion.
+%
+%
+%On Trends and Opportunities in Polyhedral Compilation
+%Armin Größlinger
+%University of Passau
+%
+%Abstract: Current trends in hardware architecture such as manycore CPUs and GPGPU computing are challenging for traditional programming models as the required degree of parallelism and data locality are increasing. For several decades the polyhedron model has been promising full automation in parallelization and data locality optimization. The main idea of the model is to represent a nest of n for loops by a set of points in n-dimensional space where each point corresponds to one iteration of the loop nest. The data dependences between loop iterations are represented by a relation on this iteration space. In case the iteration spaces and the dependence relations can be described by affine formulas, integer linear programming can be used to infuse parallelism and perform data locality optimization in the model automatically by transforming the iteration spaces. Despite its power, mathematical elegance and successes demonstrated in theory and practice, the history of compilation based on the polyhedral model is also a history of missed opportunities. Several optimization techniques and tools have been presented which address a class of codes which could be handled by polyhedral means but the techniques used are more or less ad-hoc for the studied domain and do not use a broader polyhedral approach. We will present some thoughts on why polyhedral compilation has missed so many opportunities and talk about current research perspectives on how polyhedral methods can be used more effectively by going beyond some of the restrictions of the model and by combining polyhedral compilation with domain-specific optimization techniques and just-in-time compilation.
+%
+%
+%Locality Optimizations for Stencil Computations: Algorithms and Implementations
+%Naoya Maruyama (RIKEN) and Toshio Endo (Tokyo Institute of Technology)
+%
+%Abstract: We present two algorithms for optimizing data movement costs by exploiting localities in typical stencil computations on GPUs. First, our novel host-GPU hybrid algorithm for stencils achieves highly efficient, large-scale stencil computations using host memory over PCI. We minimize the cost of PCI data transfer by blocking tens and even hundreds of iterations across time, allowing for using much larger capacity of host memory as a heap memory space. Second, we present a model-based scalable kernel fusion algorithms for CUDA programs. Kernel fusion is a well-known technique to minimize redundant memory accesses, however, GPU architectural constraints such a limited on-chip memory capacity makes it nontrivial to effectively apply fusion to applications with a large number of kernels. Our fusion optimizer first build light-weight, yet accurate performance models for stencil-like computations, and then a scalable search heuristic finds optimal combinations of fused kernels using the performance models. To show the effectiveness of the two algorithms, we first present experimental results using manual implementations. We also discuss how such aggressive optimizations can be integrated to system software to reduce implementation cost in two approaches: The first one is to use our oversubscription based runtime library called HHRT, on which memory swapping is automated. The second approach is to automate optimizations by extending the Physis framework, out high-level DSL for stencil computations. 
+%
+%Back to Schedule
+%
+%Session 4 - Data Locality in Task Models
+%
+%Toward Scalable Locality Management for Manycore Runtimes
+%Miquel Pericas, Abdelhalim Amer, Satoshi Matsuoka 
+%Tokyo Institute of Technology
+%
+%Abstract: Task-based programming models, including worksharing models, offer a problem-centric description of parallelism that targets a flat shared memory model, simplifying programmability and portability. However, on real platforms featuring deep cache hierarchies runtime task schedulers distort temporal and spatial localities, leading to increased data access latencies and energy waste. Thread affinity interfaces have been proposed to allow developers bind tasks to specific cores and improve locality. But for applications with complex task graphs or irregular data access patterns, this static approach is very hard to exploit effectively. Runtime approaches are better equipped to address this dynamic optimization problem.
+%
+%To understand the limits of current dynamically-managed locality we have developed a set of tools to characterize data sharing and reuse in parallel shared memory applications while emphasizing tracing accuracy and scalability. Using these tools we are analyzing several scheduling approaches, including worksharing, data-driven execution, and nested task parallelism. The impact of scheduling on locality and parallelism has been studied on several benchmarks and applications such as the Fast Multipole Method. While parallelism generally benefits from dataflow and greedy schedulers, improving locality is more complex and depends on the data decomposition across NUMA nodes, the per-node concurrent reuse distance, and the exploitation of producer-consumer relationships. All the explored models trade-off locality and parallelism, and at high thread counts they suffer considerable degradation in the form of overheads, lack of parallelism or work time inflation. These results indicate that future manycore runtimes will have to be extremely lightweight and greedy, and yet be able to make intelligent decisions that minimize communication. In this talk we will present our experimental study of runtimes and discuss language/runtime extensions that can improve locality on future manycore systems without hampering parallelism.
+%
+%
+%Rethinking of Exascale SW Stack 
+%Romain Cledat (Intel) 
+%
+%Abstract: Achieving Exascale performance in an affordable (about 20 MW) power envelope is challenging. In the true spirit of co-design, the hardware outlook requires serious rethinking of the Exascale software stack, with new programming and execution models. Our approach is to adopt a dataflow-inspired event-driven asynchronous execution model, where a problem is decomposed into small event-driven tasks (EDT) with explicit data dependences (data-blocks). We are promoting the Open Community Runtime (OCR) to orchestrate this new execution model, which maps EDTs and data-blocks to the underlying hardware ? scheduling tasks on execution resources and placing data-blocks on memory resources ?, and manages resources. This talk will present the rethinking of the software stack, the programming and execution models, their implementation in OCR, and validation of the concept using a system simulator capturing a straw-man hardware system optimized for EDT-style software implementation.
+%
+%
+%Locality Management in StarSs
+%Prof. Jesus Labarta
+%Barcelona Supercomputing Center and Technical Unviersity of Catalonia
+%
+%Abstract: The StarSs model draws on the idea of superscalar out of order execution to enable the detection and exploitation of inherent parallelism in otherwise fairly regular sequential source code. The OmpSs programming model at the fine grain parallel computing level and PyCOMPSs at the medium grain computational workflow level are two incarnations of the basic StarSs concept. The sequential execution of a program in a single linear address space instantiates tasks annotated by the programmer with data access directionality clauses. These annotations provide information to the runtime not only to build a dependency DAG between the tasks and exploit potential concurrency but also about the access pattern of the application. Intelligent runtimes use this information to minimize data movement and overlap it with computation. The high level abstract nature of the approach enables different runtime decisions for the same source code depending on the latencies supported by the target architectures and thus supporting both productivity and performance in program development. We will present the potential of the model with different examples of past and ongoing experiments in designing scheduling policies to achieve such automatic locality management. 
+%
+%
+%Dense Cholesky Factorization on NUMA Architectures with Socket-aware Work Stealing 
+%Hatem Ltaief (KAUST)
+%
+%High-end multicore systems are now ubiquitous in the hardware landscape. Besides dealing with the non-trivial high concurrency environment, the end users should often take into consideration the underlying memory architecture to decrease the overhead of data motion, especially when running on non-uniform memory access (NUMA) platforms. We propose a high-level parallel programming model approach using the dynamic runtime system OmpSs to solve this challenging problem, through an innovative NUMA aware scheduling policy to reduce data movement between NUMA nodes. The overall approach stems from the idea of separation of concerns by abstracting the complexity of the hardware from the end users so that high productivity can be achieved. The dense Cholesky factorization is used as a representative benchmark of dense numerical linear algebra algorithms. Performance results on a NUMA system outperform existing implementations up to 30%, while the OmpSs-enabled code maintains strong similarity to its original sequential version. 
+%
+%Back to Schedule
+%
+%Session 5 - System-Scale Data and Locality Management 
+%
+%Abstractions for Convergence of Big Data and HPC in Deep Memory Hierarchy Machines
+%Satoshi Matsuoka, Hitoshi Sato 
+%Tokyo Institute of Technology
+%
+%Abstract: Big data applications such as health care, system biology, social networks, business intelligence, and electric power grid, etc., require fast and scalable data analytics capability, posing significant opportunities for HPC, as evidenced by recent attentions to the Graph500 list and the Green Graph500 list. In order to cope with massive capacity requirements of such big data applications, emerging NVM(Non-Volatile Memory) devices, such as Flash, realize low cost high energy-efficiency compared to conventional DRAM devices, at the expense of low throughput and latency, requiring deepening of the memory hierarchy. As such effective abstractions and efficient implementation techniques for algorithms and data structures for big data to overcome the deepening memory hierarchy is becoming essential.
+%
+%Our recent projects such as ?EBD (Extreme Big Data)? and ?"ScaleGraph" aim to come up with a big data / HPC convergence architecture that provide such algorithms and abstractions. In particular, we devised a novel graph data offloading technique using NVMs for the hybrid BFS (Breadth-First Search) algorithm widely used in the Graph500 benchmark. We show that our approach can achieve competitive performance to the conventional DRAM only approach while aggressively extending the memory footprints onto NVMs, achieving 4.35MTEPS/Watt on a Scale 30 problem, ranked 4th in the big data category in the Green Graph500 (November 2013). We are achieving similar results for sorting massively large data on HPC architectures. We are also developing a scalable graph and other big data libraries, based on the languages, such as the X10 language, as instances of abstraction for extreme-scale computing systems with massive parallelism and deep memory hierarchy.
+%
+%
+%Topology-aware Data Management
+%Emmanuel Jeannot (INRIA)
+%
+%Abstract: We will give an overview of the current and future research issues that we are addressing at Inria Bordeaux concerning data locality: modelling the topology (form NUMA nodes to the network), data management mechanisms in runtime systems (allocation, access, transfer) at the application level, from the I/O point of view or for the storage systems. We will also discuss some required enhancement of the MPI standard to provide topology-aware process mapping with an interaction with the job scheduler.
+%
+%
+%Data Centric Systems and Programming Models
+%James Sexton and Kathryn O'Brien (IBM)
+%
+%Abstract: As we move closer to Exascale class systems, data aware programming will be increasingly important. Increasingly computational resources will be available throughout the systems hierarchy to provide compute capability where the data resides. Workflow and File System solutions are emerging which already support "compute in data" capability. However a data centric programming model still remains elusive. We describe workflow solutions for data aware computing which IBM is currently deploying, and discuss the challenges and opportunities for future data aware programming models.
+%
+%
+%Zoltan2: Exploiting Geometric Partitioning in Task Mapping for Parallel Computers
+%Vitus Leung, Sivasankaran Rajamanickam, Kevin Pedretti, Stephen L. Olivier, and Karen Devine (Sandia National Laboratories) Mehmet Deveci and Ümit Çatalyürek (The Ohio State University) and David Bunde (Knox College)
+%
+%Abstract: We present a new method for mapping applications? MPI tasks to cores of a parallel computer such that communication and execution time are reduced. We consider the case of sparse node allocation within a parallel machine, where the nodes assigned to a job are not necessarily located within a contiguous block nor within close proximity to each other in the network. The goal is to assign tasks to cores so that interdependent tasks are performed by ?nearby? cores, thus lowering the distance messages must travel, the amount of congestion in the network, and the overall cost of communication. Our new method applies a geometric partitioning algorithm to both the tasks and the processors, and assigns task parts to the corresponding processor parts. We show that, for the structured finite difference mini-app MiniGhost, our mapping method reduced execution time 31% on average on 65,536 cores of a Cray XE6. In a molecular dynamics mini-app, MiniMD, our mapping method reduced communication time by 26% on average on 6144 cores. We also compare our mapping with graph-based mappings from the LibTopoMap library and show that our mappings reduced the communication time on average by 15% in MiniGhost and 10% in MiniMD. For programs to make use of this capability in the Zoltan2 library, the programming abstractions necessary are an understanding that all cores are not equivalent, an embedding of the tasks and cores in a coordinate space, and the ability to use a task to core mapping.
+%
+%
+%
+%
