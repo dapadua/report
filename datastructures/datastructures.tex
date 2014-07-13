@@ -217,47 +217,27 @@ with generic programming capabilities, such as C++.
 
 \section{Discussion}
 
-This chapter of the report focuses on performance controls that are
-used to manage data to achieve performance, rather than on how
-parallelism is exposed at the semantic layer.  We address language
-interface issues and provide a taxonomy of performance controls.
-\note {It would also be good to highlight issues that can impact
-  productivity, performance, and performance portability.  } We have
-identified some areas of agreement on where to start in this overall
-effort.
+There is a concern that data structure and layout features that are needed to ``get us to
+exascale'' are lacking in existing, standard languages.  There are at
+least four options for mitigating this situation: extend standard languages,
+augment standard languages with embedded domain-specific languages (DSLs), 
+depart from standards with specialized languages, or develop ``active libraries'' using standard language features. 
 
-In the area of language interfaces, some consensus was reached on
-several points.  Differences in the objectives of domain experts and
-performance tuning experts shape the set of language interface
-attributes that are best suited for each.
-
-At the semantic layer, language interfaces should be high level,
-minimalist, and standardized.  Because the diversity of target
-platforms, performance factors, and implementation details are
-abstracted away at this level, the opportunity for simplicity and
-consistency is greater.  Base languages can be a good long-term target
-for providing ways for the user to expose parallelism and to describe
-characteristics of how data is to be used.
-
-There is greater innovation and less standardization in the area of
-performance controls.  This suggests that they be implemented using
-library interfaces.  This reduces the dependence on commercial
-compilers, enables greater variety, and eases deployment where
-target-specific optimizations are made.
+Different language rules may be required to overcome limitations imposed by current
+languages. For example, C exposes physical data layout, and limits a
+compiler's ability to modify the data layout. Source to source
+translators are still subject to language rules, whereas new languages
+may remove such limitations through abstraction.  The contributors to this chapter of the report largely followed the library-based approach, where the choice of base language to express abstraction varies among different groups. Some prefer standard languages such as Fortran and C/C++ in order to maximize impact and leverage market breadth of the
+supporting tool chain (e.g., compilers, debuggers, profilers).
+Wherever profitable, there can be a push to ``redeem'' existing
+languages by amending or extending them, e.g. via changes to the
+specifications or by introducing new ABIs. 
 
 C++ seems to provide some of the greatest opportunities for enabling
 data layout abstractions in an established base language. By contrast,
 Fortran is relatively inflexible and while dynamically typed scripting
 languages provide lots of flexibility to users, they make optimization
 difficult.
-
-The choice of base language to express abstraction varies among
-different groups. Some prefer standard languages such as Fortran and
-C/C++ in order to maximize impact and leverage market breadth of the
-supporting tool chain (e.g., compilers, debuggers, profilers).
-Wherever profitable, there can be a push to ``redeem'' existing
-languages by amending or extending them, e.g. via changes to the
-specifications or by introducing new ABIs. 
 
 C++ meta-programming can cover a significant fraction of the desired
 capabilities, e.g. polymorphic data layout and execution policy.
@@ -280,17 +260,15 @@ number of applications are implemented in Fortran, there is a concern
 about Fortran's lack of extensibility in terms of lambdas and
 templates.
 
-There's a concern that features that are needed to ``get us to
-exascale'' are lacking in existing, standard languages.  There are at
-least three options for mitigating that: extend standard languages,
-augment standard languages with embedded domain-specific languages, or
-depart from standards with specialized languages.  Different language
-rules may be required to overcome limitations imposed by current
-languages. For example, C exposes physical data layout, and limits a
-compiler's ability to modify the data layout. Source to source
-translators are still subject to language rules, whereas new languages
-may remove such limitations through abstraction.  In conclusion, there
-is no single language to physically implement the layout abstractions.
+This chapter of the report focuses on performance controls that are
+used to manage data to achieve performance, rather than on how
+parallelism is exposed at the semantic layer.  We address language
+interface issues and provide a taxonomy of performance controls.
+\note {It would also be good to highlight issues that can impact
+  productivity, performance, and performance portability.  } We have
+identified some areas of agreement on where to start in this overall
+effort.
+
 
 Performance-related controls pertain to data and to execution policy.  These may vary in their function, scope and granularity.
     \begin{itemize}
@@ -313,7 +291,6 @@ Performance-related controls pertain to data and to execution policy.  These may
       \item Function or construct modifiers - local coarse-grained, can vary within a scope
       \item Environmental variable controls - global policies
       \end{itemize}
-
 
 <Summarize areas of low-hanging fruit.>
 
