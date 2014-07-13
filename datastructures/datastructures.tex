@@ -37,7 +37,7 @@
 
 \section{Introduction}
 
-There is a diversity of ways to organize and represent data structures.  One source of diversity is among users, based on what they find to be convenient, intuitive and expressive.  A second source is differences between what is natural to users and what leads to efficient performance on target architectures.  A third source of diversity arises from differences among target architectures in what organizations and representations are most efficient.  Rarely does a single abstraction effectively span these three kinds of diversity.  Our goals are to enable a range of abstractions, to converge on ways to specify abstractions and map among them, and to enable those abstractions to be freely and effectively layered without undue restriction. Recently, a number of programming interfaces such as Kokkos, TiDA, OpenMP extensions, GridTools, Dash, Array Extensions \cite{all} have arise to give developers more control over 
+There is a diversity of ways to organize and represent data structures.  One source of diversity is among users, based on what they find to be convenient, intuitive and expressive.  A second source is differences between what is natural to users and what leads to efficient performance on target architectures.  A third source of diversity arises from differences among target architectures in what organizations and representations are most efficient.  Rarely does a single abstraction effectively span these three kinds of diversity.  Our goals are to enable a range of abstractions, to converge on ways to specify abstractions and map between them, and to enable those abstractions to be freely and effectively layered without undue restriction. Recently, a number of programming interfaces such as Kokkos, TiDA, OpenMP extensions, GridTools, DASH, Array Extensions \cite{all} have arisen to give developers more control over 
  data layout and to abstract the data layout itself from the application. 
  In this chapter, we discuss the key points when designing such abstractions, emerging approaches with (im)mature
  solutions, and potential research areas. Here, we focus on  locality management on data-parallel algorithms 
@@ -61,7 +61,7 @@ Memory spaces may have different access characteristics, e.g. NUMA nodes of diff
 %
 %
 %\note{It is too narrow to say that {\em Data layout} is the mapping of a data structure's chunk to the physical addressing scheme of the assigned memory space.}
-{\em Data layout} is the arrangement of a data structure according to the addressing scheme used by a given abstraction layer.  But there may be multiple {\em abstraction layers}, which together serve a diversity of objectives, as outlined above.  For example, users may prefer to refer to struct members of an array (AoS), whereas an array of structures of arrays (AoSoA) layout may be more profitable at the physical storage level.  Physical layout may differ between a software-managed memory that uses Hilbert curves, and a hardware-managed cache, for example.  There must be a mapping among the data layouts in the various abstraction layers, and potentially in each of the memory spaces.
+{\em Data layout} is the arrangement of a data structure according to the addressing scheme used by a given abstraction layer. There may be multiple {\em abstraction layers}, which together serve a diversity of objectives, as outlined above.  For example, users may prefer to refer to struct members of an array (AoS), whereas an array of structures of arrays (AoSoA) layout may be more profitable at the physical storage level.  Physical layout may differ between a software-managed memory that uses Hilbert curves, and a hardware-managed cache, for example.  There must be a mapping between the data layouts in the various abstraction layers, and potentially in each of the memory spaces.
 %
 A computation accesses memory according to a {\em data access pattern} which is determined by the composition of (1) how the computation's parallel tasks traverse the data structure,
 (2) how the computation's tasks are scheduled (i.e., the {\em execution policy}), 
@@ -105,11 +105,11 @@ the interface, an architecture agnostic {\em abstract machine}
 (AM). An AM is necessary to express an algorithm, being it a
 functional language or a Turing machine. An algorithm written for an
 AM must be translated into program for a {\em physical machine} (PM),
-which can be closely related to AM or completely different. The
+which can be closely related to the AM or completely different. The
 translation effort depends on the ``distance'' between the AM and the
 PM. Since there are many different PMs, and the lifetime of
 applications should be much longer that the lifetime of an
-architecture, the usual request is that an algorithm for an AM should
+architecture, the usual requirement is that an algorithm for an AM should
 be executed efficiently in the widest possible class of forseeable
 PMs. This is the well know problem of {\em portable efficiency}. From
 this perspective an AM should be distant from PMs for two reasons:
@@ -170,32 +170,35 @@ with the algorithm logical locality.
 {\bf TiDA} allows the programmer to express data locality and layout  at the array construction. 
  Under TiDA, each array is extended with metadata that describes its layout and tiling policy and topological affinity for an intelligent mapping on cores.  This metadata follows the array through the program so that a different configuration in layout or tiling strategy do not require any of the loop nests to be modified. Various layout scenarios are supported to enable multidimensional decomposition of data on NUMA  and cache coherence domains. 
 % In order to convert the existing application codes to TiDA, the programmer replaces the default array allocator with a TiDA array allocator that embeds additional metadata about the array layout into the array handle. 
-TiDA is currently packaged as a fortran library, and is minimally invasive to Fortran codes.  It provides a tiling traversal interface, which can hide complicated loop traversals, parallelization or execution strategies. 
-{\bf DASH} provides a PGAS abstraction in C++, so that DASH AM is
-basically an universal parallel machine with the concept of (two
-levels: local and remote) locality made explicit. {\bf GridTools} provides a
-set of libraries for expressing distributed memory implementations of
-regular grid applications, like stencils. It is not meant to be
-universal, in the sense that non regular grid applications should not
-be expressed using Gridtools libraries, even though possible in
-principle, for performance reasons. Since the constructs provided by
-GridTools are high level and semi-functional, locality issues are
-taken into account at the level of performance tuners and not by
-application programmers. At user level the locality is taken into
-consideration only implicitly. \note{Not sure what to say about
-  the others}. 
+TiDA is currently packaged as a Fortran library and is minimally
+invasive to Fortran codes. It provides a tiling traversal interface,
+which can hide complicated loop traversals, parallelization or
+execution strategies.  {\bf DASH} is built on a one-sided
+communication substrate and provides a PGAS abstraction in C++ using
+operator overloading. The DASH AM is basically a distributed parallel
+machine with the concept of hierarchical locality. {\bf GridTools}
+provides a set of libraries for expressing distributed memory
+implementations of regular grid applications, like stencils. It is not
+meant to be universal, in the sense that non regular grid applications
+should not be expressed using Gridtools libraries, even though
+possible in principle, for performance reasons. Since the constructs
+provided by GridTools are high level and semi-functional, locality
+issues are taken into account at the level of performance tuners and
+not by application programmers. At user level the locality is taken
+into consideration only implicitly. \note{Not sure what to say about
+  the others}.
   
-  As can be seen, there is not a single way of treating
-locality concerns, and there is not consensus on which one is the
-best. Each of these approaches are appealing to different scenarios
-that depends on the scope of the particular application domain. In the case of
-C++ libraries, there is the possibility of naturally building
-higher level interfaces using lower level ones, for instance a DASH
+As can be seen, there is no single way of treating locality concerns,
+and there is no consensus on which one is the best. Each of these
+approaches is appealing in different scenarios that depend on the
+scope of the particular application domain. In the case of C++
+libraries, there is the opportunity of naturally building higher level
+interfaces using lower level ones. For instance, a DASH
 multidimensional array could be implemented using Kokkos arrays, and
-GridTools parallel algorithms could use DASH library, and Kokkos
+GridTools parallel algorithms could use the DASH library, and Kokkos
 arrays for storage, etc. This is a potential benefit from
-interoperability that arises from using a common language provided with
-generic programming capabilities, as C++.
+interoperability that arises from using a common language provided
+with generic programming capabilities, such as C++.
 
 
 %note{the following paragraph didn't fit here}
@@ -218,9 +221,10 @@ This chapter of the report focuses on performance controls that are
 used to manage data to achieve performance, rather than on how
 parallelism is exposed at the semantic layer.  We address language
 interface issues and provide a taxonomy of performance controls.
-\note {It would also be good to highlight issues that can impact productivity, 
-performance, and performance portability.  } We have identified some
-areas of agreement on where to start in this overall effort.
+\note {It would also be good to highlight issues that can impact
+  productivity, performance, and performance portability.  } We have
+identified some areas of agreement on where to start in this overall
+effort.
 
 In the area of language interfaces, some consensus was reached on
 several points.  Differences in the objectives of domain experts and
@@ -241,12 +245,11 @@ library interfaces.  This reduces the dependence on commercial
 compilers, enables greater variety, and eases deployment where
 target-specific optimizations are made.
 
-C++ seems to provide some of the greatest opportunity for enabling
-data layout abstraction in a base language.  By contrast, Fortran is
-relatively inflexible, and scripting languages' polymorphic types
-provide lots of flexibility to users, but have so little structure
-that optimization is difficult.
-\note {we need a much better articulation of that.}  
+C++ seems to provide some of the greatest opportunities for enabling
+data layout abstractions in an established base language. By contrast,
+Fortran is relatively inflexible and while dynamically typed scripting
+languages provide lots of flexibility to users, they make optimization
+difficult.
 
 The choice of base language to express abstraction varies among
 different groups. Some prefer standard languages such as Fortran and
@@ -348,7 +351,7 @@ HIGHLIGHTS
     \item map parallel work onto underlying hardware mechanisms for supporting parallelism, and 
     \item exercise control over temporal sequencing of work and movement of data for locality.
     \end{itemize}
-  \item Some (im)mature solutions implemented in different languages include: Kokkos, TiDA, OpenMP extensions, GridTools, Dash, Array Extensions
+  \item Some (im)mature solutions implemented in different languages include: Kokkos, TiDA, OpenMP extensions, GridTools, DASH, Array Extensions
 \end{itemize}
 
 
