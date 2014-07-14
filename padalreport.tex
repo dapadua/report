@@ -1,5 +1,6 @@
 \documentclass{padalreport}
 
+\usepackage[light,timestamp,first,bottomafter]{draftcopy}
 \usepackage{rotating}
 \usepackage{textcomp}
 
@@ -10,7 +11,10 @@
 
 % modern bibliography management
 \usepackage[backend=biber,style=numeric,sorting=nyt,hyperref,defernumbers=true,maxcitenames=4,mincitenames=4,maxbibnames=100,firstinits=true]{biblatex}
+%
+\usepackage{url}
 
+%
 
 \newcommand{\caf}{{\sc CAF}}
 \newcommand{\upc}{{\sc UPC}}
@@ -43,6 +47,15 @@
 %citecolor=blue,
 %linkcolor=blue,
 %}
+%
+\newcommand{\pagestylelow}{
+\lfoot{\vspace{0.15in}\it Programming Abstractions for Data Locality}
+\rfoot{\vspace{0.15in}\thepage{}}
+}
+\newcommand{\pagestylenormal}{
+\lfoot{\it Programming Abstractions for Data Locality}
+\rfoot{\thepage}
+}
 
 \addbibresource[label=primary]{references.bib}
 
@@ -66,18 +79,31 @@
 
 % Start the document
 \begin{document}
+\pagenumbering{gobble}
     \PADALfrontpage
    \input{misc/authors}
 %    \input{misc/abstract}
 %  \maketitle
 
-    \clearpage
-    \chapter*{Acknowledgment}
-    \input{misc/ack}
+%    \clearpage
+%    \chapter*{Acknowledgment}
+%    \input{misc/ack}
 
     % The table of contents and list of figures and tables
     \cleardoublepage            % TOC needs to start on an odd page
     \tableofcontents
+\pagestyle{fancy}
+%\lhead{}
+%\chead{}
+\rhead{}
+\lfoot{}
+\cfoot{}
+%\renewcommand{\headrule}{}
+\renewcommand{\footrule}{}
+
+\pagestylenormal
+\setcounter{page}{1}
+\pagenumbering{arabic}
  %   \listoffigures
  %   \listoftables
 
@@ -96,10 +122,15 @@
     % ---------------------------------------------------------------------- %
     % References
     %
-    \clearpage
+ \clearpage
+% \newpage
+%\bibliographystyle{abbrv}
+%\section{References}
+%\bibliography{references}
+
     % If hyperref is included, then \phantomsection is already defined.
     % If not, we need to define it.
-    \providecommand*{\phantomsection}{}
+ %   \providecommand*{\phantomsection}{}
     \phantomsection
     \addcontentsline{toc}{chapter}{References}
 %     \bibliographystyle{plain}
