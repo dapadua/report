@@ -459,35 +459,56 @@ founding PGAS languages.  UPC supports global-view data structures and
 syntactically-invisible communication while CAF has local-view data
 structures and syntactically-evident communication.  Both differ from
 HPF, ZPL, and Chapel in that programs are written using an explicit
-Single-Program, Multiple Data~(SPMD) execution model.  These copies of
-the executing binary form the units of locality within these
-languages, and remote variable instances are referenced based on the
-symmetric namespaces inherent in the SPMD model.  While the flat SPMD
-models used in UPC and CAF (and commonly in MPI) do allow programmers
-to colocate data and execution, they will likely be insufficient for
-leveraging the hierarchical architectural locality present in emerging
-architectures. Currently such models are often forced to be part of
-hybrid programming models in which distinct locality abstractions are
-used to express finer-grained locality concerns.
+bulk-synchronous Single-Program, Multiple Data~(SPMD) execution model.
+These copies of the executing binary form the units of locality within
+these languages, and remote variable instances are referenced based on
+the symmetric namespaces inherent in the SPMD model. While the flat
+SPMD models used in UPC and CAF (and commonly in MPI) do allow
+programmers to colocate data and execution, they will likely be
+insufficient for leveraging the hierarchical architectural locality
+present in emerging architectures. Currently such models are often
+forced to be part of hybrid programming models in which distinct
+locality abstractions are used to express finer-grained locality
+concerns.
 
-Titanium is also one of the early PGAS languages, with a local-view
-data model built around ZPL-style multidimensional arrays. It's type
-system distinguishes between data guaranteed to be local and data that
-may be remote using annotations on variable declarations. On the other
-hand, access to local and remote data is provided by the same syntax.
-Thus, Titanium strikes a balance between the HPF and ZPL approaches,
-making communication explicit in declarations but allowing the same
-code fragments to operate on local and remote data. Originally,
-Titanium's execution model used the same flat SPMD model as UPC and
-CAF. However, recent work has replaced the flat SPMD model with the
-more hierarchical Recursive Single-Program, Multiple-Data~(RSPMD)
-model. This model groups together data and execution contexts into
-teams that are arranged in hierarchical structures that match the
-structure of recursive and compositional algorithms and emerging
-hierarchical architectures. Hierarchical teams can be created
-dynamically, and Titanium allows the user to query the machine
-structure at runtime, allowing the same program to target different
-platforms by building the appropriate team structure during execution.
+Titanium \cite{titanium} is also one of the early PGAS languages, with
+a local-view data model built around ZPL-style multidimensional
+arrays. It's type system distinguishes between data guaranteed to be
+local and data that may be remote using annotations on variable
+declarations. On the other hand, access to local and remote data is
+provided by the same syntax. Thus, Titanium strikes a balance between
+the HPF and ZPL approaches, making communication explicit in
+declarations but allowing the same code fragments to operate on local
+and remote data. Originally, Titanium's execution model used the same
+flat SPMD model as UPC and CAF. However, recent work has replaced the
+flat SPMD model with the more hierarchical Recursive Single-Program,
+Multiple-Data~(RSPMD) model \cite{kamil_lcpc13}. This model groups
+together data and execution contexts into teams that are arranged in
+hierarchical structures, which match the structure of recursive and
+compositional algorithms and emerging hierarchical architectures.
+While the total set of threads is fixed at startup as in SPMD,
+hierarchical teams can be created dynamically, and threads can enter
+and exit teams as necessary. Titanium provides a mechanism for
+querying the machine structure at runtime, allowing the same program
+to target different platforms by building the appropriate team
+structure during execution.
+
+Other work has been done to address the limitations of the flat SPMD
+model in the context of Phalanx \cite{phalanx} and UPC++
+\cite{upcxx_ipdps14}, both active libraries for C++. The Phalanx
+library uses the Hierarchical Single-Program, Multiple-Data (HSPMD)
+model, which is a hybrid of SPMD and dynamic tasking. The HSPMD model
+retains the cooperative nature of SPMD by allowing thread teams, as in
+RSPMD, but it allows new teams of threads to be spawned dynamically.
+Unlike SPMD and RSPMD, the total set of executing threads is not fixed
+at startup. Both RSPMD and HSPMD allow expression of locality and
+concurrency at multiple levels, though through slightly different
+mechanisms, allowing the user to take advantage of hierarchical
+architectures. The UPC++ library uses RSPMD as its basic execution
+model but additionally allows X10-style asynchronous tasks to be
+spawned at remote locations. This allows execution to be moved
+dynamically to where data are located and adds a further degree of
+adaptibility to the basic bulk-synchronous SPMD model.
 
 \section{Discussions}
 
