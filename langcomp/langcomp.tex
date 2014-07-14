@@ -462,16 +462,32 @@ HPF, ZPL, and Chapel in that programs are written using an explicit
 Single-Program, Multiple Data~(SPMD) execution model.  These copies of
 the executing binary form the units of locality within these
 languages, and remote variable instances are referenced based on the
-symmetric namespaces inherent in the SPMD model.  There are good
-reasons to be skeptical about whether such SPMD-based locality models
-(including MPI) will be sufficient for leveraging the hierarchical
-architectural locality present in emerging architectures.  If not,
-such models will likely be forced to be part of hybrid programming
-models in which distinct locality abstractions are used to express
-finer-grained locality concerns.
+symmetric namespaces inherent in the SPMD model.  While the flat SPMD
+models used in UPC and CAF (and commonly in MPI) do allow programmers
+to colocate data and execution, they will likely be insufficient for
+leveraging the hierarchical architectural locality present in emerging
+architectures. Currently such models are often forced to be part of
+hybrid programming models in which distinct locality abstractions are
+used to express finer-grained locality concerns.
 
-
-
+Titanium is also one of the early PGAS languages, with a local-view
+data model built around ZPL-style multidimensional arrays. It's type
+system distinguishes between data guaranteed to be local and data that
+may be remote using annotations on variable declarations. On the other
+hand, access to local and remote data is provided by the same syntax.
+Thus, Titanium strikes a balance between the HPF and ZPL approaches,
+making communication explicit in declarations but allowing the same
+code fragments to operate on local and remote data. Originally,
+Titanium's execution model used the same flat SPMD model as UPC and
+CAF. However, recent work has replaced the flat SPMD model with the
+more hierarchical Recursive Single-Program, Multiple-Data~(RSPMD)
+model. This model groups together data and execution contexts into
+teams that are arranged in hierarchical structures that match the
+structure of recursive and compositional algorithms and emerging
+hierarchical architectures. Hierarchical teams can be created
+dynamically, and Titanium allows the user to query the machine
+structure at runtime, allowing the same program to target different
+platforms by building the appropriate team structure during execution.
 
 \section{Discussions}
 
