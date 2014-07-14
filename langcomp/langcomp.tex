@@ -454,6 +454,17 @@ to the locales.  Advanced users may implement these data distributions
 and loop decompositions within Chapel itself, and can even define the
 model used to describe a machine's architecture in terms of locales.
 
+X10 \cite{x10} is another PGAS language that uses \emph{places} as
+analogues to Chapel's locales. In X10, execution must be colocated
+with data. Operating on remote data requires spawning a task at the
+place that owns the data. The user can specify that the new task run
+asynchronously, in which case it can be explicitly synchronized later
+and any return value accessed through a future. Thus, X10 makes
+communication explicit in the form of remote tasks. Hierarchical Place
+Trees \cite{hpt} extend X10's model of places to arbitrary
+hierarchies, allowing places to describe every location in a
+hierarchical machine.
+
 Unified Parallel C~(UPC) and Co-Array Fortran~(CAF) are two of the
 founding PGAS languages.  UPC supports global-view data structures and
 syntactically-invisible communication while CAF has local-view data
